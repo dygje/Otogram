@@ -4,7 +4,7 @@ Configuration Service - Handles system configuration
 from typing import List, Optional, Any
 from loguru import logger
 from src.core.database import database
-from src.models.config import Configuration, ConfigUpdate, DEFAULT_CONFIGS
+from src.models.config import Configuration, DEFAULT_CONFIGS
 
 
 class ConfigService:
