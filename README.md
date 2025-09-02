@@ -44,6 +44,33 @@ Sistem otomatisasi pengiriman pesan massal ke grup Telegram menggunakan MTProto 
 
 ## 🚀 Instalasi & Setup
 
+### 0. System Requirements
+
+**Minimum Requirements:**
+- Python 3.8+ (Recommended: Python 3.11+)
+- MongoDB 4.4+ (Local atau Cloud)
+- 1GB RAM minimum (2GB recommended)
+- Internet connection yang stabil
+
+**Supported Operating Systems:**
+- ✅ Ubuntu 20.04+ / Debian 11+
+- ✅ macOS 12+
+- ✅ Windows 10/11
+- ✅ CentOS 8+ / RHEL 8+
+
+**Quick System Check:**
+```bash
+# Check Python version
+python --version  # Should be 3.8+
+
+# Check MongoDB (if local)
+mongo --version  # atau mongod --version
+
+# Check available RAM
+free -h  # Linux
+# sysctl hw.memsize | awk '{print $2/1024/1024/1024" GB"}'  # macOS
+```
+
 ### 1. Persiapan Credentials
 
 #### a. Dapatkan Telegram API Credentials
