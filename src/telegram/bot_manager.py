@@ -1,9 +1,7 @@
 """
 Bot Manager - Manages Telegram Bot and Userbot
 """
-import asyncio
 from loguru import logger
-from src.core.config import settings
 from src.telegram.management_bot import ManagementBot
 from src.telegram.userbot import UserBot
 from src.services.config_service import ConfigService
