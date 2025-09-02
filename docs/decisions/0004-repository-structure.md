@@ -133,16 +133,11 @@ docs/
 - **SECURITY.md**: Security policy, vulnerability reporting process
 - **LICENSE**: Legal terms for usage and distribution
 
-### Development Workflow  
+### Development Workflow
 - **Makefile**: Common development commands and shortcuts
 - **.pre-commit-config.yaml**: Automated quality checks
 - **.env.example**: Configuration template with documentation
 - **.editorconfig**: Cross-editor consistency
-
-### AI Integration
-- **.cursorrules**: Comprehensive project context for AI assistants
-- **.gptignore**: Files to exclude from AI analysis (security)
-- **.aiignore**: Additional AI context control (performance)
 
 ### GitHub Integration
 - **.github/**: Issue templates, PR templates, CODEOWNERS
