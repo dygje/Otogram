@@ -6,8 +6,7 @@ from typing import List, Optional
 from loguru import logger
 from src.core.database import database
 from src.models.blacklist import (
-    Blacklist, BlacklistCreate, BlacklistType, BlacklistReason,
-    determine_blacklist_from_error
+    Blacklist, BlacklistCreate, BlacklistType, determine_blacklist_from_error
 )
 
 
