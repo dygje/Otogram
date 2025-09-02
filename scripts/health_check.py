@@ -7,8 +7,8 @@ import sys
 import os
 from pathlib import Path
 
-# Add app directory to path
-sys.path.insert(0, str(Path(__file__).parent))
+# Add app directory to path - Updated untuk reorganisasi
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 def check_python_version():
     """Check Python version compatibility"""
