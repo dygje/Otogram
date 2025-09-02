@@ -108,8 +108,9 @@ def run_system():
     
     input("Tekan ENTER untuk melanjutkan...")
     
-    # Import and run main
+    # Import and run main - Updated untuk reorganisasi
     try:
+        sys.path.insert(0, str(Path(__file__).parent.parent))
         from main import main
         import asyncio
         asyncio.run(main())
