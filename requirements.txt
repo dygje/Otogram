@@ -1,6 +1,7 @@
 # Telegram Libraries - Updated untuk stabilitas
 pyrogram==2.0.106
 python-telegram-bot==20.8
+TgCrypto==1.2.5
 
 # Database - Stable versions untuk Python 3.11
 motor==3.7.0
