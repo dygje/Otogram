@@ -29,6 +29,18 @@ class Settings(BaseSettings):
     MIN_CYCLE_DELAY_HOURS: float = Field(default=1.1)
     MAX_CYCLE_DELAY_HOURS: float = Field(default=1.3)
     
+    @validator('TELEGRAM_API_ID', pre=True)
+    def parse_api_id(cls, v):
+        if isinstance(v, str) and v.strip() == '':
+            return None
+        return v
+    
+    @validator('TELEGRAM_API_HASH', 'TELEGRAM_BOT_TOKEN', 'TELEGRAM_PHONE_NUMBER', pre=True)
+    def parse_empty_strings(cls, v):
+        if isinstance(v, str) and v.strip() == '':
+            return None
+        return v
+    
     class Config:
         env_file = ".env"
         case_sensitive = True
