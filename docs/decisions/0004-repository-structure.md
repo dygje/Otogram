@@ -30,11 +30,6 @@ We will implement a complete modern repository structure with:
 - **CODEOWNERS**: Automatic code review assignments
 - **GitHub Discussions**: Community support integration
 
-### AI Assistant Context Files
-- **.cursorrules**: Detailed project context for Cursor IDE/AI
-- **.gptignore**: Files to exclude from AI analysis
-- **.aiignore**: Additional AI context control
-
 ### Development Workflow
 - **.pre-commit-config.yaml**: Automated code quality checks
 - **Makefile**: Convenient development commands
