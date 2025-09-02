@@ -84,18 +84,6 @@ python_version = "3.11"
 disallow_untyped_defs = true
 ```
 
-### AI Context (.cursorrules)
-```
-## Architecture Overview
-- **Pattern**: Clean Architecture with layered approach
-- **Structure**: src/core, src/models, src/services, src/telegram
-
-## Code Style Guidelines
-- Follow PEP 8 for code style
-- Use type hints for all functions
-- Maximum line length: 100 characters
-```
-
 ### Development Workflow (Makefile)
 ```makefile
 setup: install pre-commit
@@ -106,13 +94,14 @@ format: ## Format code
 	isort src/ scripts/
 ```
 
-### Security Controls (.gptignore)
+### Documentation Structure
 ```
-# Sensitive files - never include in AI context
-.env
-sessions/
-*.session
-credentials.json
+docs/
+├── README.md              # Documentation index
+├── GETTING_STARTED.md     # Complete setup guide
+├── API.md                 # Code interfaces
+├── CHANGELOG.md           # Version history
+└── decisions/             # Architecture Decision Records
 ```
 
 ## Consequences
