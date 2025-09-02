@@ -59,6 +59,18 @@ class Blacklist(BaseDocument):
         
         return datetime.utcnow() >= self.expires_at
     
+    @property
+    def time_remaining(self) -> Optional[timedelta]:
+        """Get remaining time for temporary blacklist"""
+        if self.blacklist_type == BlacklistType.PERMANENT or not self.expires_at:
+            return None
+        
+        now = datetime.utcnow()
+        if now >= self.expires_at:
+            return None
+            
+        return self.expires_at - now
+    
     class Config:
         json_schema_extra = {
             "example": {
