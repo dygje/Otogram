@@ -39,11 +39,11 @@ We will implement a complete modern repository structure with:
 ## Rationale
 
 ### AI Assistant Clarity
-Modern AI assistants (ChatGPT, Cursor, Copilot) need clear context to provide accurate help:
-- **Architecture understanding**: `.cursorrules` explains Clean Architecture
-- **Code style**: `.editorconfig` and `pyproject.toml` define standards
-- **Security boundaries**: `.gptignore` prevents exposure of sensitive files
-- **Development patterns**: Clear examples and templates
+Modern AI platforms (like Emergent.sh, ChatGPT, GitHub Copilot) understand projects through:
+- **Clear documentation**: README.md, CONTRIBUTING.md, docs/ structure
+- **Project metadata**: pyproject.toml with comprehensive configuration
+- **Consistent structure**: Well-organized folders and clear naming
+- **Self-documenting code**: Type hints, clear function names, docstrings
 
 ### Developer Experience
 Contributing developers need clear guidance:
