@@ -81,7 +81,9 @@ class BlacklistCreate(BaseModel):
     error_message: Optional[str] = Field(None)
 
 
-def determine_blacklist_from_error(error_msg: str) -> tuple[BlacklistType, BlacklistReason]:
+def determine_blacklist_from_error(
+    error_msg: str
+) -> tuple[BlacklistType, BlacklistReason]:
     """Determine blacklist type and reason from error message"""
     
     error_lower = error_msg.lower()
