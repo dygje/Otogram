@@ -1,94 +1,78 @@
 # 🤖 Telegram Automation System
 
-Sistem otomatisasi pengiriman pesan massal ke grup Telegram dengan manajemen lengkap melalui Telegram Bot.
+> **Sistem otomatisasi pengiriman pesan massal ke grup Telegram dengan manajemen lengkap melalui Telegram Bot.**
 
 ## 🚀 Quick Start
 
-### 1. Install Dependencies
 ```bash
+# 1. Install dependencies
 pip install -r requirements.txt
-```
 
-### 2. Setup Credentials
-```bash
+# 2. Setup credentials  
 python scripts/setup.py
-```
 
-### 3. Run System
-```bash
+# 3. Run system
 python main.py
 ```
 
-## 📁 Project Structure
+## 🏗️ Architecture
+
+- **Language**: Python 3.11+
+- **Framework**: Pyrogram (MTProto) + python-telegram-bot
+- **Database**: MongoDB 
+- **Pattern**: Clean Architecture
 
 ```
-/app/
-├── main.py                    # 🚀 Entry point aplikasi
-├── requirements.txt           # 📦 Dependencies
-├── .env                      # ⚙️ Configuration
-├── README.md                 # 📖 Quick guide (file ini) 
-├── docs/                     # 📚 Dokumentasi lengkap
-│   ├── README_FULL.md        # Detail documentation
-│   ├── USAGE_GUIDE.md        # Panduan penggunaan
-│   ├── CHANGELOG.md          # Riwayat perubahan
-│   ├── CLEANUP_REPORT.md     # Laporan cleanup
-│   ├── MODERN_BOT_INTERFACE.md # Interface modern
-│   └── SLOWMODE_BEHAVIOR.md  # Behavior slowmode
-├── scripts/                  # 🛠️ Utility scripts
-│   ├── setup.py             # Setup wizard
-│   └── health_check.py      # Health checker
-├── src/                     # 💻 Source code
-│   ├── core/                # Core configuration & database
-│   ├── models/              # Data models
-│   ├── services/            # Business logic
-│   └── telegram/            # Telegram components
-├── logs/                    # 📝 Application logs
-├── sessions/                # 🔐 Pyrogram sessions  
-└── tests/                   # 🧪 Future tests
+src/
+├── core/           # Infrastructure (config, database)
+├── models/         # Domain entities  
+├── services/       # Business logic
+└── telegram/       # Interface layer
 ```
 
-## ✨ Features
+## 📖 Documentation
 
-- ✅ **Broadcast otomatis** ke grup Telegram
-- ✅ **Management via Bot** - Control penuh lewat Telegram
-- ✅ **Blacklist otomatis** - Skip grup bermasalah
-- ✅ **Modern interface** - Dashboard visual
-- ✅ **Clean architecture** - Mudah dikembangkan
+| Document | Purpose | Audience |
+|----------|---------|----------|
+| [Getting Started](docs/GETTING_STARTED.md) | Setup & basic usage | New developers |
+| [API Reference](docs/API.md) | Code interfaces | Contributors |
+| [ADRs](docs/decisions/) | Architecture decisions | Technical leads |
 
-## 🔧 System Requirements
-
-- **Python**: 3.8+ (Recommended: 3.11+)
-- **MongoDB**: 4.4+ (Local atau Cloud)
-- **RAM**: 1GB minimum (2GB recommended)
-- **OS**: Ubuntu, macOS, Windows, CentOS
-
-## 📚 Documentation
-
-- **Full Documentation**: [docs/README_FULL.md](docs/README_FULL.md)
-- **Usage Guide**: [docs/USAGE_GUIDE.md](docs/USAGE_GUIDE.md)
-- **Changelog**: [docs/CHANGELOG.md](docs/CHANGELOG.md)
-
-## 🩺 Health Check
-
-Sebelum menjalankan, verifikasi sistem:
+## 🔧 Development
 
 ```bash
+# Health check
 python scripts/health_check.py
+
+# Run tests (when available)
+python -m pytest tests/
+
+# Development mode
+LOG_LEVEL=DEBUG python main.py
 ```
 
-## ⚠️ Important Notes
+## ⚠️ Requirements
 
-1. **Credentials**: Diperlukan API ID/Hash dari https://my.telegram.org
-2. **Bot Token**: Buat bot baru di @BotFather
-3. **Phone Number**: Gunakan nomor yang dedicated
-4. **Compliance**: Patuhi Terms of Service Telegram
+- Python 3.11+
+- MongoDB 4.4+
+- Telegram API credentials ([my.telegram.org](https://my.telegram.org))
+- Bot token from [@BotFather](https://t.me/BotFather)
 
-## 🤝 Support
+## 📊 Status
 
-- Check logs: `logs/app.log` 
-- Health check: `python scripts/health_check.py`
-- Bot help: `/help` di Telegram Bot
+![Health Check](https://img.shields.io/badge/health-pass-brightgreen)
+![Python](https://img.shields.io/badge/python-3.11+-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Run health check (`python scripts/health_check.py`)
+4. Commit changes (`git commit -m 'Add amazing feature'`)
+5. Push to branch (`git push origin feature/amazing-feature`)
+6. Open a Pull Request
 
 ---
 
-**Built with Modern Python Best Practices & Clean Architecture**
+**Built with modern Python best practices & clean architecture**
