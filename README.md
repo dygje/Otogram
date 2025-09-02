@@ -226,20 +226,101 @@ Format grup yang didukung:
 
 ## 🛠️ Troubleshooting
 
-### Error Authentication
-- Pastikan API ID/Hash benar
-- Pastikan nomor telepon format internasional
-- Check session files di folder `sessions/`
+### ⚠️ Error Authentication
+**Gejala:** `Authentication failed` atau `401 Unauthorized`
+**Solusi:**
+```bash
+# 1. Pastikan API ID/Hash benar dari https://my.telegram.org
+# 2. Pastikan nomor telepon format internasional (+628...)
+# 3. Hapus session lama dan login ulang
+rm -rf sessions/
+python main.py
+```
 
-### Error Database
-- Pastikan MongoDB running
-- Check connection string di `.env`
-- Verify database permissions
+### 💾 Error Database
+**Gejala:** `Database connection failed` atau `pymongo.errors.ServerSelectionTimeoutError`
+**Solusi:**
+```bash
+# 1. Install dan start MongoDB
+sudo apt-get install mongodb  # Ubuntu/Debian
+brew install mongodb-community  # macOS
 
-### Error Bot
-- Pastikan bot token valid
-- Check network connectivity
-- Verify bot permissions
+# 2. Start MongoDB service
+sudo systemctl start mongod  # Linux
+brew services start mongodb-community  # macOS
+
+# 3. Verify connection
+mongo --eval "db.adminCommand('ismaster')"
+```
+
+### 🤖 Error Bot
+**Gejala:** Bot tidak merespon atau `401 Unauthorized`
+**Solusi:**
+1. **Verify bot token:** Chat dengan @BotFather, ketik `/mybots`
+2. **Check network:** `ping api.telegram.org`
+3. **Test bot token:**
+```bash
+curl -X GET "https://api.telegram.org/bot<YOUR_TOKEN>/getMe"
+```
+
+### 📦 Error Dependencies
+**Gejala:** `ModuleNotFoundError` atau import errors
+**Solusi:**
+```bash
+# Install ulang semua dependencies
+pip install --upgrade pip
+pip install -r requirements.txt
+
+# Atau gunakan virtual environment
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# venv\Scripts\activate  # Windows
+pip install -r requirements.txt
+```
+
+### 🔐 Error Permissions
+**Gejala:** `ChatForbidden` atau `UserBannedInChannel`
+**Solusi:**
+1. **Check membership:** Pastikan akun Anda masih member grup
+2. **Check admin status:** Beberapa grup butuh admin privileges
+3. **Clean blacklist:** Gunakan `/blacklist` di bot untuk lihat grup bermasalah
+
+### ⚡ Performance Issues
+**Gejala:** Sistem lambat atau memory tinggi
+**Solusi:**
+```bash
+# 1. Monitor resource usage
+top -p $(pgrep -f "python main.py")
+
+# 2. Check logs untuk bottleneck
+tail -f logs/app.log | grep "ERROR\|WARNING"
+
+# 3. Optimize settings di bot: /config
+# - Increase message delays
+# - Reduce grup aktif
+# - Enable auto cleanup
+```
+
+### 📱 Bot Command Tidak Bekerja
+**Gejala:** Perintah `/start` tidak response
+**Solusi:**
+1. **Restart bot:** `Ctrl+C` kemudian `python main.py`
+2. **Check bot logs:**
+```bash
+grep "Management bot" logs/app.log
+```
+3. **Verify bot settings dengan @BotFather**
+
+### 🔄 Cycling Issues
+**Gejala:** Broadcast tidak berjalan atau stuck
+**Solusi:**
+1. **Check sistem status:** `/status` di bot
+2. **Force restart cycle:** `/config` → System Control
+3. **Check blacklist:** Mungkin semua grup di-blacklist
+```bash
+# Monitor cycling
+grep "Broadcast cycle" logs/app.log
+```
 
 ## 📈 Pengembangan Lanjutan
 
