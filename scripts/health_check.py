@@ -13,11 +13,14 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 def check_python_version():
     """Check Python version compatibility"""
     version = sys.version_info
-    if version.major >= 3 and version.minor >= 8:
+    if version.major >= 3 and version.minor >= 11:
         print(f"✅ Python {version.major}.{version.minor}.{version.micro} - OK")
         return True
+    elif version.major >= 3 and version.minor >= 8:
+        print(f"⚠️ Python {version.major}.{version.minor}.{version.micro} - Works but 3.11+ recommended")
+        return True
     else:
-        print(f"❌ Python {version.major}.{version.minor}.{version.micro} - Requires 3.8+")
+        print(f"❌ Python {version.major}.{version.minor}.{version.micro} - Requires 3.11+ (minimum 3.8)")
         return False
 
 def check_dependencies():
