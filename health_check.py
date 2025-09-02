@@ -23,8 +23,14 @@ def check_python_version():
 def check_dependencies():
     """Check if all required packages are installed"""
     required_packages = [
-        'pyrogram', 'telegram', 'motor', 'pymongo', 
-        'pydantic', 'pydantic_settings', 'loguru', 'python_dotenv'
+        ('pyrogram', 'pyrogram'),
+        ('telegram', 'python-telegram-bot'), 
+        ('motor', 'motor'),
+        ('pymongo', 'pymongo'),
+        ('pydantic', 'pydantic'),
+        ('pydantic_settings', 'pydantic-settings'),
+        ('loguru', 'loguru'),
+        ('dotenv', 'python-dotenv')
     ]
     
     missing = []
