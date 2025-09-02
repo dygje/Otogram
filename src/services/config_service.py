@@ -91,13 +91,7 @@ class ConfigService:
         if doc:
             return Configuration(**doc)
         return None
-        """Get messaging-related configurations"""
-        messaging_configs = await self.get_configs_by_category("messaging")
-        
-        config_dict = {}
-        for config in messaging_configs:
-            config_dict[config.key] = config.get_typed_value()
-        
+    
     async def get_messaging_config(self) -> dict:
         """Get messaging-related configurations"""
         messaging_configs = await self.get_configs_by_category("messaging")
