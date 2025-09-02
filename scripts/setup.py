@@ -81,8 +81,8 @@ def setup_credentials():
         print("\n❌ Nomor telepon harus dimulai dengan + (contoh: +628123456789)")
         return False
     
-    # Update .env file
-    env_path = Path(".env")
+    # Update .env file - Updated untuk reorganisasi
+    env_path = Path(__file__).parent.parent / ".env"
     env_content = env_path.read_text()
     
     # Replace credentials
