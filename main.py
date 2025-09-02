@@ -35,7 +35,10 @@ class TelegramAutomationApp:
         # Console logging
         logger.add(
             sys.stdout,
-            format="<green>{time:HH:mm:ss}</green> | <level>{level: <8}</level> | <cyan>{name}</cyan> - <level>{message}</level>",
+            format=(
+                "<green>{time:HH:mm:ss}</green> | <level>{level: <8}</level> | "
+                "<cyan>{name}</cyan> - <level>{message}</level>"
+            ),
             level=settings.LOG_LEVEL
         )
         
