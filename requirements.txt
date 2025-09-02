@@ -12,6 +12,7 @@ apscheduler==3.10.4
 # Core Dependencies
 python-dotenv==1.0.1
 pydantic==2.6.4
+pydantic-settings==2.2.1
 loguru==0.7.2
 aiofiles==23.2.1
 
