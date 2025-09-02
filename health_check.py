@@ -34,13 +34,13 @@ def check_dependencies():
     ]
     
     missing = []
-    for package in required_packages:
+    for import_name, package_name in required_packages:
         try:
-            __import__(package.replace('_', '-'))
-            print(f"✅ {package} - Installed")
+            __import__(import_name)
+            print(f"✅ {package_name} - Installed")
         except ImportError:
-            print(f"❌ {package} - Missing")
-            missing.append(package)
+            print(f"❌ {package_name} - Missing")
+            missing.append(package_name)
     
     return len(missing) == 0
 
