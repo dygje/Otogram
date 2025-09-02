@@ -1,7 +1,7 @@
 """
 Blacklist Models
 """
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Optional
 from enum import Enum
 from pydantic import BaseModel, Field
