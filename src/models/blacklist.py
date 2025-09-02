@@ -42,7 +42,9 @@ class Blacklist(BaseDocument):
     group_identifier: Optional[str] = Field(None, description="Group username/link")
     blacklist_type: BlacklistType = Field(..., description="Blacklist type")
     reason: BlacklistReason = Field(..., description="Reason for blacklisting")
-    expires_at: Optional[datetime] = Field(None, description="Expiration time (temporary only)")
+    expires_at: Optional[datetime] = Field(
+        None, description="Expiration time (temporary only)"
+    )
     duration_seconds: Optional[int] = Field(None, description="Duration in seconds")
     error_message: Optional[str] = Field(None, description="Original error message")
     
