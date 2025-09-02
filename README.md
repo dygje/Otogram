@@ -85,13 +85,44 @@ MIN_CYCLE_DELAY_HOURS=1.1
 MAX_CYCLE_DELAY_HOURS=1.3
 ```
 
-### 3. Menjalankan Sistem
+### 3. Install Dependencies
 
 ```bash
+# Update pip
+pip install --upgrade pip
+
+# Install semua dependencies
+pip install -r requirements.txt
+
+# Verifikasi instalasi
+python -c "import pyrogram, telegram, motor; print('✅ All packages installed')"
+```
+
+### 4. Menjalankan Sistem
+
+#### Opsi 1: Setup Otomatis (Recommended)
+```bash
+# Gunakan setup wizard
+python setup.py
+```
+
+#### Opsi 2: Manual
+```bash
+# Jalankan langsung
+python main.py
+```
+
+#### Opsi 3: Dengan Virtual Environment (Production)
+```bash
+# Buat virtual environment
+python -m venv telegram_automation
+source telegram_automation/bin/activate  # Linux/Mac
+# telegram_automation\Scripts\activate  # Windows
+
 # Install dependencies
 pip install -r requirements.txt
 
-# Jalankan sistem
+# Run sistem
 python main.py
 ```
 
