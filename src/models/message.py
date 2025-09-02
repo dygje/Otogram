@@ -26,7 +26,9 @@ class Message(BaseDocument):
 class MessageCreate(BaseModel):
     """Model for creating messages"""
     
-    content: str = Field(..., min_length=1, max_length=4096, description="Message content")
+    content: str = Field(
+        ..., min_length=1, max_length=4096, description="Message content"
+    )
 
 
 class MessageUpdate(BaseModel):
