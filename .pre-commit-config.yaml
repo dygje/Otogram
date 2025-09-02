@@ -1,0 +1,118 @@
+# Pre-commit hooks for code quality and consistency
+# Install: pip install pre-commit && pre-commit install
+
+repos:
+  # Pre-commit hooks for basic checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-docstring-first
+      - id: debug-statements
+      - id: requirements-txt-fixer
+
+  # Python code formatting with Black
+  - repo: https://github.com/psf/black
+    rev: 23.12.1
+    hooks:
+      - id: black
+        language_version: python3.11
+        args: [--line-length=100]
+
+  # Import sorting with isort
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        args: [--profile=black, --line-length=100]
+
+  # Type checking with MyPy
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.8.0
+    hooks:
+      - id: mypy
+        additional_dependencies: [types-python-dateutil, types-aiofiles]
+        exclude: ^(tests/|scripts/setup\.py)
+
+  # Security linting with Bandit
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.5
+    hooks:
+      - id: bandit
+        args: [--skip, "B101,B601"]  # Skip assert_used and shell injection in dev scripts
+        files: ^src/
+
+  # Python linting with Flake8
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.0.0
+    hooks:
+      - id: flake8
+        args: [--max-line-length=100, --extend-ignore=E203,W503]
+        additional_dependencies: [flake8-docstrings, flake8-bugbear]
+
+  # Check dependencies for known security vulnerabilities
+  - repo: https://github.com/Lucas-C/pre-commit-hooks-safety
+    rev: v1.3.2
+    hooks:
+      - id: python-safety-dependencies-check
+        files: requirements\.txt$
+
+  # Markdown linting
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.38.0
+    hooks:
+      - id: markdownlint
+        args: [--fix]
+        exclude: ^docs/CHANGELOG\.md$
+
+  # YAML linting
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.33.0
+    hooks:
+      - id: yamllint
+        args: [-d, relaxed]
+
+  # Custom project-specific checks
+  - repo: local
+    hooks:
+      # Health check validation
+      - id: health-check
+        name: Project Health Check
+        entry: python scripts/health_check.py
+        language: system
+        pass_filenames: false
+        stages: [commit]
+
+      # Check for TODO/FIXME in production code
+      - id: check-todos
+        name: Check for TODOs in source code
+        entry: bash -c 'if grep -r "TODO\|FIXME" src/; then echo "Remove TODOs before committing"; exit 1; fi'
+        language: system
+        pass_filenames: false
+
+      # Validate ADR format
+      - id: validate-adrs
+        name: Validate ADR format
+        entry: bash -c 'for f in docs/decisions/*.md; do if [[ -f "$f" && ! "$f" =~ README.md$ ]]; then grep -q "^# ADR-" "$f" || (echo "ADR $f missing proper header"; exit 1); fi; done'
+        language: system
+        pass_filenames: false
+        files: ^docs/decisions/.*\.md$
+
+# Configuration
+ci:
+  autofix_commit_msg: |
+    [pre-commit.ci] auto fixes from pre-commit hooks
+
+    for more information, see https://pre-commit.ci
+  autofix_prs: true
+  autoupdate_branch: ''
+  autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+  autoupdate_schedule: weekly
+  skip: []
+  submodules: false

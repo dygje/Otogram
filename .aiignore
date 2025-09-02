@@ -1,0 +1,68 @@
+# .aiignore - Additional AI context control
+# More specific rules for AI assistants
+
+# == SECURITY - NEVER INCLUDE ==
+.env*
+**/credentials*
+**/secrets*
+**/*.key
+**/*.pem
+**/sessions/**
+**/*.session*
+**/config.ini
+**/auth.json
+
+# == GENERATED/TEMPORARY - SKIP ==
+**/__pycache__/**
+**/*.pyc
+**/*.log
+**/logs/**
+**/build/**
+**/dist/**
+**/.pytest_cache/**
+**/.mypy_cache/**
+**/node_modules/**
+
+# == LARGE DATA - SKIP ==
+**/data/**
+**/datasets/**
+**/models/**
+**/checkpoints/**
+**/*.pkl
+**/*.pickle
+**/*.db
+**/*.sqlite*
+
+# == VERSION CONTROL - SKIP ==
+.git/**
+**/.git/**
+
+# == AI ASSISTANT PREFERENCES ==
+
+# Focus areas for code analysis
+# INCLUDE: src/, docs/, scripts/
+# ANALYZE: *.py, *.md (in focus areas)
+# UNDERSTAND: pyproject.toml, requirements.txt
+
+# Context priorities:
+# 1. Architecture (src/core/, ADRs)
+# 2. Business logic (src/services/)
+# 3. Interfaces (src/telegram/)
+# 4. Documentation (README.md, docs/API.md)
+# 5. Configuration (pyproject.toml, .env template)
+
+# Skip for code suggestions but OK for structure understanding:
+**/CHANGELOG.md
+**/LICENSE
+**/CODE_OF_CONDUCT.md
+**/.github/**
+**/.pre-commit-config.yaml
+
+# Always analyze these for understanding project:
+# - README.md (project overview)
+# - docs/API.md (interfaces)
+# - docs/GETTING_STARTED.md (setup)
+# - docs/decisions/*.md (architecture context)
+# - src/**/*.py (all source code)
+# - pyproject.toml (project metadata)
+# - requirements.txt (dependencies)
