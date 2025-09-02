@@ -172,3 +172,7 @@ local_settings.py
 backup/
 backups/
 *.backup
+
+# Linting cache
+.ruff_cache/
+.pylint.d/
