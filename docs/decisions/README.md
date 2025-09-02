@@ -9,6 +9,7 @@ This directory contains architectural decisions made for the Telegram Automation
 | [0001](0001-clean-architecture.md) | Clean Architecture Implementation | Accepted | 2025-09-02 |
 | [0002](0002-dependency-management.md) | Stable Dependency Management | Accepted | 2025-09-02 |
 | [0003](0003-documentation-strategy.md) | Minimal Documentation Strategy | Accepted | 2025-09-02 |
+| [0004](0004-repository-structure.md) | Modern Repository Structure and AI Context | Accepted | 2025-09-02 |
 
 ## ADR Format
 
