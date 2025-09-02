@@ -1,0 +1,36 @@
+# Code Owners for Telegram Automation System
+# These owners will be requested for review when PRs are opened
+
+# Global ownership - all files require review
+* @project-maintainers
+
+# Core architecture - requires architecture review
+/src/core/ @architecture-team @project-maintainers
+/docs/decisions/ @architecture-team @project-maintainers
+
+# Documentation - technical writers and maintainers
+/docs/ @docs-team @project-maintainers
+README.md @docs-team @project-maintainers
+CONTRIBUTING.md @docs-team @project-maintainers
+
+# Configuration files - DevOps and maintainers
+requirements.txt @devops-team @project-maintainers
+.env @devops-team @project-maintainers
+/scripts/ @devops-team @project-maintainers
+
+# Telegram integration - requires Telegram expertise
+/src/telegram/ @telegram-experts @project-maintainers
+
+# Database layer - requires database expertise
+/src/models/ @database-team @project-maintainers
+/src/services/ @database-team @project-maintainers
+
+# Security-sensitive files - requires security review
+SECURITY.md @security-team @project-maintainers
+/src/core/config.py @security-team @project-maintainers
+
+# GitHub configuration - requires DevOps review
+/.github/ @devops-team @project-maintainers
+
+# Note: Replace team names with actual GitHub usernames or team slugs
+# Example: @username or @organization/team-name
