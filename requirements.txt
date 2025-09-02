@@ -1,0 +1,19 @@
+# Telegram Libraries
+pyrogram==2.0.106
+python-telegram-bot==20.7
+
+# Database
+motor==3.3.1
+pymongo==4.5.0
+
+# Background Tasks
+apscheduler==3.10.4
+
+# Core Dependencies
+python-dotenv==1.0.1
+pydantic==2.6.4
+loguru==0.7.2
+aiofiles==23.2.1
+
+# Utils
+python-dateutil==2.8.2
