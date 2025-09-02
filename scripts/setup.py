@@ -20,7 +20,7 @@ def print_banner():
 
 def check_env_file():
     """Check if .env file exists and has required fields"""
-    env_path = Path(".env")
+    env_path = Path(__file__).parent.parent / ".env"
     
     if not env_path.exists():
         print("❌ File .env tidak ditemukan!")
