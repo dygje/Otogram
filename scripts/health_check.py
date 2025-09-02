@@ -103,7 +103,7 @@ def check_configuration():
 def check_file_structure():
     """Check if all required files exist"""
     required_files = [
-        'main.py', 'requirements.txt', 'setup.py', '.env',
+        'main.py', 'requirements.txt', 'scripts/setup.py', '.env',
         'src/core/config.py', 'src/core/database.py',
         'src/services/message_service.py',
         'src/telegram/bot_manager.py'
