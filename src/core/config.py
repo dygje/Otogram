@@ -35,7 +35,10 @@ class Settings(BaseSettings):
             return None
         return v
     
-    @validator('TELEGRAM_API_HASH', 'TELEGRAM_BOT_TOKEN', 'TELEGRAM_PHONE_NUMBER', pre=True)
+    @validator(
+        'TELEGRAM_API_HASH', 'TELEGRAM_BOT_TOKEN', 'TELEGRAM_PHONE_NUMBER', 
+        pre=True
+    )
     def parse_empty_strings(cls, v):
         if isinstance(v, str) and v.strip() == '':
             return None
