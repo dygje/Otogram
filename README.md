@@ -282,6 +282,40 @@ Format grup yang didukung:
 - Waktu siklus terakhir
 - Estimasi siklus berikutnya
 
+## ⚡ Performance Optimization
+
+### Resource Usage
+**Normal Operation:**
+- RAM: 50-100MB (idle), 200-300MB (broadcasting)
+- CPU: 5-15% (broadcasting), <5% (idle)
+- Network: 10-50KB/s (depending on message frequency)
+
+### Optimization Tips
+```bash
+# 1. Monitor system resource
+htop  # atau top
+df -h  # disk space
+
+# 2. Optimize MongoDB
+# Enable compression
+mongod --wiredTigerCollectionConfig='block_compressor=zlib'
+
+# 3. Configure optimal delays
+# Via bot: /config
+# Recommended settings:
+# - Message delay: 7-12 seconds
+# - Cycle delay: 1.2-1.4 hours
+# - Auto cleanup: enabled
+```
+
+### Scaling Guidelines
+| Groups | RAM | Cycle Time | Notes |
+|--------|-----|------------|-------|
+| 1-50 | 128MB | 15-30min | Optimal |
+| 51-200 | 256MB | 30-60min | Good |
+| 201-500 | 512MB | 1-2 hours | Monitor |
+| 500+ | 1GB+ | 2+ hours | Consider multiple instances |
+
 ## 🛠️ Troubleshooting
 
 ### ⚠️ Error Authentication
