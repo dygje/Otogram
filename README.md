@@ -153,6 +153,26 @@ pip install -r requirements.txt
 python main.py
 ```
 
+### 5. Health Check (Opsional)
+
+Sebelum menjalankan sistem, verifikasi bahwa semua komponen berfungsi dengan baik:
+
+```bash
+# Jalankan health check
+python health_check.py
+
+# Output yang diharapkan:
+# 🎉 System is HEALTHY and ready to run!
+# 🚀 Next: Configure .env and run 'python main.py'
+```
+
+**Health check akan memeriksa:**
+- ✅ Python version (3.8+)
+- ✅ Semua dependencies terinstall
+- ✅ File struktur lengkap
+- ✅ Semua imports berfungsi
+- ✅ Konfigurasi sistem
+
 ### 4. Setup Awal
 
 1. **Otentikasi Userbot**: Saat pertama kali jalan, sistem akan meminta:
