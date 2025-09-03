@@ -119,7 +119,7 @@ class ManagementBot:
             welcome_text, parse_mode="Markdown", reply_markup=reply_markup
         )
 
-    async def main_menu(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+    async def main_menu(self, update: Update, _context: ContextTypes.DEFAULT_TYPE):
         """Show modern main menu dashboard"""
         # Get system stats (we'll implement this)
         stats_text = await self._get_system_stats()
