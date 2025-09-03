@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 
-def check_outdated_packages():
+def check_outdated_packages() -> bool:
     """Check for outdated packages"""
     print("🔍 Checking for outdated packages...")
 
