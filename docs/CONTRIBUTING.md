@@ -1,140 +1,369 @@
 # Contributing to Telegram Automation System
 
-Thank you for your interest in contributing! This document provides guidelines for contributing to this project.
+Thank you for your interest in contributing! This document provides guidelines and information for contributors.
 
-## 🚀 Quick Start
+## 🚀 Quick Start for Contributors
 
-1. **Fork and clone** the repository
-2. **Set up development environment**:
-   ```bash
-   pip install -r requirements.txt
-   python scripts/health_check.py
-   ```
-3. **Create a feature branch**: `git checkout -b feature/amazing-feature`
-4. **Make your changes** following our guidelines below
-5. **Test your changes**: `python scripts/health_check.py`
-6. **Submit a pull request**
+```bash
+# 1. Fork and clone the repository
+git clone https://github.com/your-username/Otogram.git
+cd Otogram
 
-## 📋 Development Guidelines
+# 2. Set up development environment
+make setup
 
-### Code Standards
+# 3. Install pre-commit hooks
+make pre-commit
 
-- **Python Version**: 3.11+
-- **Code Style**: Follow PEP 8
-- **Type Hints**: Use type hints for function parameters and return values
-- **Docstrings**: Use docstrings for public functions and classes
-- **Imports**: Use absolute imports, organize with `src.` prefix
+# 4. Run health check
+make health
 
-### Architecture
+# 5. Create a feature branch
+git checkout -b feature/amazing-feature
+```
 
-This project follows **Clean Architecture**:
-- `src/core/`: Infrastructure (database, config)
-- `src/models/`: Domain entities  
-- `src/services/`: Business logic
-- `src/telegram/`: Interface layer
+## 📋 Development Setup
 
-See [ADR-0001](docs/decisions/0001-clean-architecture.md) for rationale.
+### Requirements
 
-### Testing
+- **Python**: 3.11+ (required)
+- **MongoDB**: 4.4+ (for testing)
+- **Git**: Latest version
+- **Make**: For development commands
 
-- Run health check: `python scripts/health_check.py`
-- Test imports: `python -c "from src.core.config import settings; print('OK')"`
-- Manual testing: Use `scripts/setup.py` for test environment
+### Development Dependencies
 
-### Dependencies
+The project uses modern Python tooling:
 
-- **Add new dependencies**: Update `requirements.txt` with specific versions
-- **Research compatibility**: Ensure Python 3.11+ support
-- **Document rationale**: Create ADR for major dependency changes
+```bash
+# Install development dependencies
+pip install -e ".[dev]"
+```
 
-See [ADR-0002](docs/decisions/0002-dependency-management.md) for guidelines.
+This includes:
+- **pytest** - Testing framework
+- **black** - Code formatting
+- **isort** - Import sorting
+- **mypy** - Type checking
+- **pre-commit** - Git hooks
+- **flake8** - Linting
 
-## 📝 Documentation
+## 🛠️ Development Workflow
 
-Follow our **Minimal Documentation Strategy**:
+### 1. Code Quality
 
-### When to Update Documentation
+We maintain high code quality standards:
 
-| Change Type | Action Required |
-|-------------|-----------------|
-| New public API | Update `docs/API.md` |
-| Setup process change | Update `docs/GETTING_STARTED.md` |
-| Breaking change | Update `CHANGELOG.md` + `README.md` |
-| Architecture decision | Create new ADR in `docs/decisions/` |
-| Bug fix | Usually no documentation change |
+```bash
+# Format code
+make format
 
-### Documentation Guidelines
+# Run linting
+make lint
 
-- **Essential only**: Don't document implementation details
-- **Clear language**: Write for humans, not robots
-- **Living documents**: Update with code changes
-- **Link to rationale**: Reference ADRs for context
+# Type checking
+mypy src/
 
-See [ADR-0003](docs/decisions/0003-documentation-strategy.md) for full strategy.
+# Run all checks
+make ci-test
+```
 
-## 🔄 Pull Request Process
+### 2. Testing
 
-### Before Submitting
+Write tests for new features:
 
-1. **Health check passes**: `python scripts/health_check.py`
-2. **Documentation updated**: If needed per guidelines above
-3. **Clean commits**: Squash related commits, clear messages
-4. **Branch updated**: Rebase on latest main if needed
+```bash
+# Run tests
+make test
 
-### PR Template
+# Run specific test
+pytest tests/test_specific.py -v
 
-Our PR template will guide you through:
-- [ ] Description of changes
-- [ ] Type of change (bug fix, feature, etc.)
-- [ ] Testing performed
-- [ ] Documentation updates
-- [ ] Health check results
+# Run with coverage
+pytest --cov=src --cov-report=html
+```
 
-### Code Review
+### 3. Pre-commit Hooks
 
-- **Automatic reviews**: CODEOWNERS will assign reviewers
-- **Review criteria**: Code quality, architecture compliance, documentation
-- **Response time**: We aim to review within 48 hours
+Pre-commit hooks ensure code quality:
+
+- **black** - Code formatting
+- **isort** - Import sorting  
+- **mypy** - Type checking
+- **flake8** - Linting
+- **bandit** - Security scanning
+- **safety** - Dependency vulnerability check
+
+## 📝 Coding Standards
+
+### Python Style Guide
+
+We follow **PEP 8** with these specifics:
+
+- **Line length**: 100 characters
+- **Docstrings**: Google style
+- **Type hints**: Required for public APIs
+- **Import sorting**: isort with black profile
+
+### Code Structure
+
+```python
+"""
+Module docstring explaining purpose.
+"""
+from typing import Optional, List
+import asyncio
+
+from external_lib import something
+from src.core import config
+
+
+class ExampleClass:
+    """Class docstring explaining purpose."""
+    
+    def __init__(self, param: str) -> None:
+        """Initialize with parameter."""
+        self.param = param
+    
+    async def async_method(self, data: List[str]) -> Optional[str]:
+        """
+        Async method with proper typing.
+        
+        Args:
+            data: List of strings to process
+            
+        Returns:
+            Processed string or None if empty
+        """
+        if not data:
+            return None
+        return " ".join(data)
+```
+
+### Documentation
+
+- **Docstrings**: Required for all public classes and functions
+- **Type hints**: Required for public APIs
+- **Comments**: For complex logic only
+- **README updates**: For new features
+
+## 🔍 Testing Guidelines
+
+### Test Structure
+
+```
+tests/
+├── test_core/          # Core functionality tests
+├── test_models/        # Data model tests  
+├── test_services/      # Business logic tests
+├── test_telegram/      # Telegram integration tests
+├── conftest.py         # Pytest fixtures
+└── __init__.py
+```
+
+### Test Types
+
+1. **Unit Tests**: Test individual functions/classes
+2. **Integration Tests**: Test component interactions
+3. **Health Check Tests**: Validate system health
+
+### Writing Tests
+
+```python
+import pytest
+from src.models.message import Message
+
+
+class TestMessage:
+    """Test Message model."""
+    
+    def test_message_creation(self):
+        """Test message creation with valid data."""
+        message = Message(content="Test message")
+        
+        assert message.content == "Test message"
+        assert message.is_active is True
+        assert message.usage_count == 0
+    
+    def test_message_validation(self):
+        """Test message validation."""
+        with pytest.raises(ValidationError):
+            Message(content="")  # Empty content should fail
+```
+
+## 🔧 Architecture Guidelines
+
+### Clean Architecture
+
+The project follows clean architecture:
+
+```
+src/
+├── core/           # Infrastructure & configuration
+├── models/         # Domain entities
+├── services/       # Business logic
+└── telegram/       # Interface adapters
+```
+
+### Dependency Rules
+
+- **Core**: No dependencies on other layers
+- **Models**: Only depend on core
+- **Services**: Depend on models and core
+- **Telegram**: Can depend on all layers
+
+### Adding New Features
+
+1. **Models**: Define data structures in `src/models/`
+2. **Services**: Implement business logic in `src/services/`
+3. **Handlers**: Add Telegram handlers in `src/telegram/handlers/`
+4. **Tests**: Write comprehensive tests
+5. **Docs**: Update documentation
+
+## 📦 Submitting Changes
+
+### Pull Request Process
+
+1. **Create Issue**: Describe the problem/feature
+2. **Fork Repository**: Create your own copy
+3. **Create Branch**: Use descriptive name
+4. **Make Changes**: Follow coding standards
+5. **Write Tests**: Ensure good coverage
+6. **Update Docs**: Keep documentation current
+7. **Submit PR**: Use the template
+
+### Pull Request Template
+
+```markdown
+## Description
+Brief description of changes
+
+## Type of Change
+- [ ] Bug fix
+- [ ] New feature  
+- [ ] Breaking change
+- [ ] Documentation update
+
+## Testing
+- [ ] Tests pass locally
+- [ ] New tests added
+- [ ] Manual testing completed
+
+## Checklist
+- [ ] Code follows style guidelines
+- [ ] Self-review completed
+- [ ] Documentation updated
+- [ ] No breaking changes (or documented)
+```
+
+### Review Process
+
+1. **Automated Checks**: CI/CD pipeline runs
+2. **Maintainer Review**: Code review by maintainers
+3. **Testing**: Manual testing if needed
+4. **Merge**: Approved changes get merged
 
 ## 🐛 Bug Reports
 
-Use the bug report template in Issues:
-- **Clear description**: What happened vs. what expected
-- **Reproduction steps**: How to reproduce the issue
-- **Environment**: Python version, OS, dependencies
-- **Logs**: Include relevant log snippets
+### Before Reporting
 
-## ✨ Feature Requests
+- Check existing issues
+- Run health check: `python scripts/health_check.py`
+- Collect system information
 
-Use the feature request template in Issues:
-- **Problem statement**: What problem does this solve?
-- **Proposed solution**: How should it work?
-- **Alternatives considered**: Other approaches you've thought of
-- **Additional context**: Screenshots, examples, etc.
+### Bug Report Template
 
-## 🏗️ Architecture Changes
+```markdown
+**Description**
+Clear description of the bug
 
-For significant architectural changes:
+**Steps to Reproduce**
+1. Go to '...'
+2. Click on '....'
+3. See error
 
-1. **Discuss first**: Open an issue to discuss the approach
-2. **Create ADR**: Document the decision rationale
-3. **Update documentation**: Ensure docs reflect changes
-4. **Consider impact**: Breaking changes need version bump
+**Expected Behavior**
+What should happen
 
-## ❓ Questions & Support
+**Actual Behavior**  
+What actually happens
 
-- **Documentation**: Check `docs/` first
-- **Issues**: Search existing issues for similar problems
-- **Discussions**: Use GitHub Discussions for questions
-- **Health Check**: Run `python scripts/health_check.py` for system issues
+**Environment**
+- OS: [e.g. Ubuntu 20.04]
+- Python: [e.g. 3.11.0] 
+- Version: [e.g. 2.0.0]
 
-## 📊 Code Quality
+**Logs**
+Include relevant log files
+```
 
-We maintain high code quality through:
-- **Clear architecture**: Well-defined layers and responsibilities
-- **Type safety**: Type hints and validation
-- **Error handling**: Comprehensive exception handling
-- **Logging**: Structured logging with Loguru
-- **Testing**: Health checks and integration testing
+## 💡 Feature Requests
 
-Thank you for contributing to make this project better! 🎉
+### Before Requesting
+
+- Check if already requested
+- Consider if it fits project scope
+- Think about implementation complexity
+
+### Feature Request Template
+
+```markdown
+**Feature Description**
+Clear description of the feature
+
+**Use Case**
+Why is this feature needed?
+
+**Proposed Solution**
+How should it work?
+
+**Alternatives Considered**
+Other ways to solve this
+
+**Additional Context**
+Screenshots, examples, etc.
+```
+
+## 🏆 Recognition
+
+Contributors are recognized in:
+
+- **CHANGELOG.md**: Feature contributors
+- **Contributors Graph**: GitHub automatically tracks
+- **Special Thanks**: Major contributors get special mentions
+
+## 📚 Resources
+
+### Learning Materials
+
+- **Clean Architecture**: [Clean Code Blog](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+- **Python Async**: [Real Python Async Guide](https://realpython.com/async-io-python/)
+- **Telegram Bots**: [Official Bot API](https://core.telegram.org/bots/api)
+- **MongoDB**: [Motor Documentation](https://motor.readthedocs.io/)
+
+### Development Tools
+
+- **VS Code**: Recommended editor with Python extension
+- **PyCharm**: Professional Python IDE
+- **Git**: Version control
+- **MongoDB Compass**: Database management
+
+## 🤝 Community Guidelines
+
+### Code of Conduct
+
+- Be respectful and inclusive
+- Focus on constructive feedback
+- Help newcomers learn
+- Maintain professional communication
+
+### Communication Channels
+
+- **Issues**: Bug reports and feature requests
+- **Discussions**: General questions and ideas
+- **Pull Requests**: Code contributions
+- **Email**: Security issues only
+
+---
+
+**Thank you for contributing to making Telegram Automation System better!** 🎉
