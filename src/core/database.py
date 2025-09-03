@@ -82,7 +82,7 @@ class Database:
         """Get a collection"""
         if self.db is None:
             raise RuntimeError("Database not connected")
-        return self.db[name]
+        return self.db[name]  # type: ignore[unreachable]
 
 
 # Global database instance
