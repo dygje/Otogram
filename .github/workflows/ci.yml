@@ -237,7 +237,7 @@ jobs:
   ci-success:
     name: "✅ CI Success"
     runs-on: ubuntu-latest
-    needs: [quality, test, build, docs]
+    needs: [quality, test, security, build, docs]
     if: always()
     
     steps:
