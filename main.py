@@ -86,7 +86,7 @@ class TelegramAutomationApp:
             logger.error(f"❌ Failed to start: {e}")
             await self.stop()
 
-    async def stop(self):
+    async def stop(self) -> None:
         """Stop the application"""
         logger.info("🛑 Shutting down...")
         self.running = False
