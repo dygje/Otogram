@@ -122,7 +122,7 @@ class GroupService:
         if not update_dict:
             return await self.get_group_by_id(group_id)
 
-        update_dict["updated_at"] = Group().updated_at
+        update_dict["updated_at"] = datetime.utcnow()
 
         result = await self.collection.update_one({"id": group_id}, {"$set": update_dict})
 
