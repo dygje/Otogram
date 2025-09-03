@@ -74,7 +74,7 @@ class GroupService:
 
     async def get_all_groups(self) -> list[Group]:
         """Get all groups"""
-        cursor = self.collection.find()
+        cursor = self.collection.find()  # type: ignore[attr-defined]
         groups = []
 
         async for doc in cursor:
