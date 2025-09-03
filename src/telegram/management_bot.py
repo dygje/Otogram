@@ -153,7 +153,7 @@ class ManagementBot:
                 text, parse_mode="Markdown", reply_markup=reply_markup
             )
 
-    async def status_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+    async def status_command(self, update: Update, _context: ContextTypes.DEFAULT_TYPE):
         """Show system status"""
         # This will be implemented with actual status checking
         status_text = (
