@@ -63,9 +63,9 @@ class TestSettings:
     def test_delay_validation(self):
         """Test message delay validation"""
         # Valid delays
-        settings = Settings(MIN_MESSAGE_DELAY=5, MAX_MESSAGE_DELAY=10)
-        assert settings.MIN_MESSAGE_DELAY == 5
-        assert settings.MAX_MESSAGE_DELAY == 10
+        settings = Settings(MIN_MESSAGE_DELAY=DEFAULT_MIN_MESSAGE_DELAY, MAX_MESSAGE_DELAY=DEFAULT_MAX_MESSAGE_DELAY)
+        assert settings.MIN_MESSAGE_DELAY == DEFAULT_MIN_MESSAGE_DELAY
+        assert settings.MAX_MESSAGE_DELAY == DEFAULT_MAX_MESSAGE_DELAY
 
         # Invalid delays (max < min)
         with pytest.raises(ValidationError) as exc_info:
