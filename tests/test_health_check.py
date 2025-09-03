@@ -25,14 +25,14 @@ from scripts.health_check import (
 class TestHealthCheck:
     """Test health check functions"""
 
-    def test_check_python_version(self):
+    def test_check_python_version(self) -> None:
         """Test Python version check"""
         result = check_python_version()
 
         # Should return boolean for basic function
         assert isinstance(result, bool)
 
-    def test_check_file_structure(self):
+    def test_check_file_structure(self) -> None:
         """Test file structure validation"""
         result = check_file_structure()
 
@@ -40,7 +40,7 @@ class TestHealthCheck:
         assert isinstance(result, bool)
 
     @patch("scripts.health_check.importlib.import_module")
-    def test_check_dependencies_success(self, mock_import):
+    def test_check_dependencies_success(self, mock_import) -> None:
         """Test dependency check with all dependencies available"""
         mock_import.return_value = MagicMock()
 
@@ -49,7 +49,7 @@ class TestHealthCheck:
         assert isinstance(result, bool)
 
     @patch("scripts.health_check.importlib.import_module")
-    def test_check_dependencies_missing(self, mock_import):
+    def test_check_dependencies_missing(self, mock_import) -> None:
         """Test dependency check with missing dependencies"""
         mock_import.side_effect = ImportError("Module not found")
 
@@ -57,7 +57,7 @@ class TestHealthCheck:
 
         assert isinstance(result, bool)
 
-    def test_check_telegram_credentials_missing(self):
+    def test_check_telegram_credentials_missing(self) -> None:
         """Test Telegram credentials check with missing credentials"""
         with patch("scripts.health_check.settings") as mock_settings:
             mock_settings.TELEGRAM_API_ID = None
@@ -71,7 +71,7 @@ class TestHealthCheck:
             assert result.status == "❌"
             assert "credentials" in result.message.lower()
 
-    def test_check_telegram_credentials_complete(self):
+    def test_check_telegram_credentials_complete(self) -> None:
         """Test Telegram credentials check with complete credentials"""
         with patch("scripts.health_check.settings") as mock_settings:
             mock_settings.TELEGRAM_API_ID = 12345678
@@ -86,7 +86,7 @@ class TestHealthCheck:
             assert "configured" in result.message.lower()
 
     @pytest.mark.asyncio
-    async def test_check_mongodb_connection_success(self):
+    async def test_check_mongodb_connection_success(self) -> None:
         """Test MongoDB connection check success"""
         with patch("scripts.health_check.AsyncIOMotorClient") as mock_client:
             mock_instance = AsyncMock()
@@ -101,7 +101,7 @@ class TestHealthCheck:
             assert "mongodb" in result.message.lower()
 
     @pytest.mark.asyncio
-    async def test_check_mongodb_connection_failure(self):
+    async def test_check_mongodb_connection_failure(self) -> None:
         """Test MongoDB connection check failure"""
         with patch("scripts.health_check.AsyncIOMotorClient") as mock_client:
             mock_instance = AsyncMock()
@@ -115,7 +115,7 @@ class TestHealthCheck:
             assert "failed" in result.message.lower()
 
     @pytest.mark.asyncio
-    async def test_run_health_check(self):
+    async def test_run_health_check(self) -> None:
         """Test complete health check run"""
         with patch("scripts.health_check.check_mongodb_connection") as mock_mongo:
             mock_result = HealthCheckResult(status="✅", message="MongoDB OK")

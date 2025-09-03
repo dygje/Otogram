@@ -15,7 +15,7 @@ from src.models.message import Message, MessageCreate, MessageUpdate
 class TestBaseDocument:
     """Test BaseDocument class"""
 
-    def test_base_document_creation(self):
+    def test_base_document_creation(self) -> None:
         """Test base document creation with default values"""
         doc = BaseDocument()
 
@@ -26,7 +26,7 @@ class TestBaseDocument:
         assert isinstance(doc.created_at, datetime)
         assert isinstance(doc.updated_at, datetime)
 
-    def test_update_timestamp(self):
+    def test_update_timestamp(self) -> None:
         """Test timestamp update"""
         doc = BaseDocument()
         original_updated = doc.updated_at
@@ -43,7 +43,7 @@ class TestBaseDocument:
 class TestMessage:
     """Test Message model"""
 
-    def test_message_creation(self):
+    def test_message_creation(self) -> None:
         """Test message creation with required fields"""
         message = Message(content="Test message")
 
@@ -53,7 +53,7 @@ class TestMessage:
         assert message.id is not None
         assert message.created_at is not None
 
-    def test_message_create_validation(self):
+    def test_message_create_validation(self) -> None:
         """Test MessageCreate validation"""
         # Valid message
         msg_create = MessageCreate(content="Valid message")
@@ -68,7 +68,7 @@ class TestMessage:
         with pytest.raises(ValidationError):
             MessageCreate(content=long_content)
 
-    def test_message_update_validation(self):
+    def test_message_update_validation(self) -> None:
         """Test MessageUpdate validation"""
         # Valid updates
         msg_update = MessageUpdate(content="Updated content")
@@ -86,7 +86,7 @@ class TestMessage:
 class TestGroup:
     """Test Group model"""
 
-    def test_group_creation(self):
+    def test_group_creation(self) -> None:
         """Test group creation"""
         group = Group(
             group_id="-1001234567890", group_username="@testgroup", group_title="Test Group"
@@ -98,7 +98,7 @@ class TestGroup:
         assert group.is_active is True
         assert group.message_count == 0
 
-    def test_username_validation(self):
+    def test_username_validation(self) -> None:
         """Test username auto-correction"""
         # Username without @
         group = Group(group_username="testgroup")
@@ -112,7 +112,7 @@ class TestGroup:
         group = Group(group_username=None)
         assert group.group_username is None
 
-    def test_group_create_validation(self):
+    def test_group_create_validation(self) -> None:
         """Test GroupCreate identifier validation"""
         # Group ID
         group_create = GroupCreate(group_identifier="-1001234567890")
@@ -130,7 +130,7 @@ class TestGroup:
         group_create = GroupCreate(group_identifier="https://t.me/testgroup")
         assert group_create.group_identifier == "https://t.me/testgroup"
 
-    def test_group_bulk_create(self):
+    def test_group_bulk_create(self) -> None:
         """Test bulk group creation"""
         identifiers_text = """
         -1001234567890
@@ -154,7 +154,7 @@ class TestGroup:
 
         assert identifiers_list == expected
 
-    def test_empty_bulk_create(self):
+    def test_empty_bulk_create(self) -> None:
         """Test bulk create with empty/whitespace input"""
         bulk_create = GroupBulkCreate(identifiers="   \n  \n  ")
         identifiers_list = bulk_create.get_identifiers_list()

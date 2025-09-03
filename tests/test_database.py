@@ -13,7 +13,7 @@ class TestDatabase:
     """Test Database class"""
 
     @pytest.mark.asyncio
-    async def test_database_connection(self):
+    async def test_database_connection(self) -> None:
         """Test database connection and disconnection"""
         db = Database()
 
@@ -31,7 +31,7 @@ class TestDatabase:
         await db.disconnect()
 
     @pytest.mark.asyncio
-    async def test_get_collection(self, test_database):
+    async def test_get_collection(self, test_database) -> None:
         """Test getting collections"""
         db = test_database
 
@@ -41,7 +41,7 @@ class TestDatabase:
         assert collection.name == "test_collection"
 
     @pytest.mark.asyncio
-    async def test_get_collection_without_connection(self):
+    async def test_get_collection_without_connection(self) -> None:
         """Test getting collection without connection raises error"""
         db = Database()
 
@@ -49,7 +49,7 @@ class TestDatabase:
             db.get_collection("test_collection")
 
     @pytest.mark.asyncio
-    async def test_indexes_creation(self, test_database):
+    async def test_indexes_creation(self, test_database) -> None:
         """Test that indexes are created properly"""
         db = test_database
 
@@ -71,7 +71,7 @@ class TestDatabase:
                 pass  # Skip detailed index validation for now
 
     @pytest.mark.asyncio
-    async def test_basic_crud_operations(self, test_database):
+    async def test_basic_crud_operations(self, test_database) -> None:
         """Test basic CRUD operations"""
         db = test_database
         collection = db.get_collection("test_crud")

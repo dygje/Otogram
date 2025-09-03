@@ -19,7 +19,7 @@ from src.core.constants import (
 class TestSettings:
     """Test Settings class"""
 
-    def test_default_settings(self):
+    def test_default_settings(self) -> None:
         """Test default settings initialization"""
         settings = Settings()
 
@@ -30,7 +30,7 @@ class TestSettings:
         assert settings.MAX_MESSAGE_DELAY == DEFAULT_MAX_MESSAGE_DELAY
         assert settings.MAX_GROUPS_PER_CYCLE == DEFAULT_MAX_GROUPS_PER_CYCLE
 
-    def test_api_id_parsing(self):
+    def test_api_id_parsing(self) -> None:
         """Test API ID parsing from different formats"""
         # String number
         settings = Settings(TELEGRAM_API_ID=str(TEST_API_ID))
@@ -48,7 +48,7 @@ class TestSettings:
         settings = Settings(TELEGRAM_API_ID=None)
         assert settings.TELEGRAM_API_ID is None
 
-    def test_phone_number_validation(self):
+    def test_phone_number_validation(self) -> None:
         """Test phone number validation"""
         # Valid international format
         settings = Settings(TELEGRAM_PHONE_NUMBER="+1234567890")
@@ -60,7 +60,7 @@ class TestSettings:
 
         assert "Phone number must start with +" in str(exc_info.value)
 
-    def test_delay_validation(self):
+    def test_delay_validation(self) -> None:
         """Test message delay validation"""
         # Valid delays
         settings = Settings(
@@ -75,7 +75,7 @@ class TestSettings:
 
         assert "MAX_MESSAGE_DELAY must be greater than MIN_MESSAGE_DELAY" in str(exc_info.value)
 
-    def test_cycle_delay_validation(self):
+    def test_cycle_delay_validation(self) -> None:
         """Test cycle delay validation"""
         # Valid cycle delays
         settings = Settings(
@@ -95,7 +95,7 @@ class TestSettings:
             exc_info.value
         )
 
-    def test_is_configured(self, mock_telegram_credentials):
+    def test_is_configured(self, mock_telegram_credentials) -> None:
         """Test configuration status check"""
         settings = Settings()
 
@@ -111,7 +111,7 @@ class TestSettings:
         settings.TELEGRAM_API_ID = None
         assert settings.is_configured() is False
 
-    def test_get_credentials_status(self):
+    def test_get_credentials_status(self) -> None:
         """Test credentials status report"""
         # Test with no credentials
         settings = Settings(
