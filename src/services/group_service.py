@@ -21,33 +21,30 @@ class GroupService:
         """Create a new group"""
         identifier = group_data.group_identifier
 
-        # Parse identifier
-        group_dict = {"group_identifier": identifier}
+        # Parse identifier and build group data
+        group_kwargs: dict[str, Any] = {
+            "group_id": None,
+            "group_username": None,
+            "group_link": None,
+            "group_title": None,
+            "is_active": True,
+            "message_count": 0
+        }
 
         if identifier.startswith("-") and identifier[1:].isdigit():
-            group_dict["group_id"] = identifier
+            group_kwargs["group_id"] = identifier
         elif identifier.startswith("@"):
-            group_dict["group_username"] = identifier
+            group_kwargs["group_username"] = identifier
         elif "t.me/" in identifier:
-            group_dict["group_link"] = identifier
+            group_kwargs["group_link"] = identifier
             # Extract username from link
             if "/" in identifier:
                 username = identifier.split("/")[-1]
                 if not username.startswith("@"):
                     username = f"@{username}"
-                group_dict["group_username"] = username
-
-        # Add required fields with defaults
-        group_dict.update({
-            "group_id": group_dict.get("group_id"),
-            "group_username": group_dict.get("group_username"), 
-            "group_link": group_dict.get("group_link"),
-            "group_title": None,
-            "is_active": True,
-            "message_count": 0
-        })
+                group_kwargs["group_username"] = username
         
-        group = Group(**group_dict)
+        group = Group(**group_kwargs)
 
         # Check if group already exists
         existing = await self.get_group_by_identifier(identifier)
