@@ -1,16 +1,18 @@
 # 🤖 Telegram Automation System
 
-> **Sistema otomatisasi pengiriman pesan massal ke grup Telegram dengan manajemen lengkap melalui Telegram Bot.**
+> **Professional Telegram mass messaging automation system with comprehensive management through Telegram Bot interface.**
 
 [![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Health Check](https://img.shields.io/badge/health-pass-brightgreen.svg)](#health-check)
+[![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-blue.svg)](https://github.com/dygje/Otogram/actions)
+[![Documentation](https://img.shields.io/badge/docs-mkdocs-blue.svg)](https://dygje.github.io/Otogram)
 
 ## 🚀 Quick Start
 
 ```bash
 # 1. Install dependencies
-pip install -r requirements.txt
+pip install -e ".[dev]"
 
 # 2. Setup credentials (interactive wizard)
 python scripts/setup.py
