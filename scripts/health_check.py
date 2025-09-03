@@ -267,36 +267,9 @@ def main():
     """Run comprehensive health check"""
     print("🩺 TELEGRAM AUTOMATION SYSTEM - HEALTH CHECK")
     print("=" * 55)
-
-    checks = [
-        ("Python Version", check_python_version),
-        ("Dependencies", check_dependencies),
-        ("File Structure", check_file_structure),
-        ("Project Imports", check_imports),
-        ("Configuration", check_configuration),
-    ]
-
-    passed = 0
-    total = len(checks)
-
-    for name, check_func in checks:
-        print(f"\n🔍 Checking {name}...")
-        if check_func():
-            passed += 1
-        else:
-            print(f"⚠️ {name} check failed")
-
-    print(f"\n📊 HEALTH CHECK SUMMARY")
-    print(f"{'=' * 30}")
-    print(f"Passed: {passed}/{total} checks")
-
-    if passed == total:
-        print("🎉 System is HEALTHY and ready to run!")
-        print("🚀 Next: Configure .env and run 'python main.py'")
-        return 0
-    else:
-        print("⚠️ Some issues found. Please fix before running.")
-        return 1
+    
+    # Run async health check
+    return asyncio.run(run_health_check())
 
 
 if __name__ == "__main__":
