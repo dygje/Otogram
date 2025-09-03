@@ -44,7 +44,7 @@ async def test_database() -> AsyncGenerator[Database, None]:
 
 
 @pytest.fixture(autouse=True)
-def set_test_mode():
+def set_test_mode() -> Generator[None, None, None]:
     """Set test mode environment variable"""
     os.environ["TEST_MODE"] = "true"
     yield
