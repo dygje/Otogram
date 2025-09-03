@@ -172,8 +172,8 @@ class ComprehensiveMigrationTest:
             
             # Check for pyrogram imports in the source
             pyrogram_imports = [
-                'pyrogram import Client',
-                'pyrogram.errors import'
+                'from pyrogram import Client',
+                'from pyrogram.errors import'
             ]
             
             for import_stmt in pyrogram_imports:
