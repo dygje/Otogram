@@ -73,6 +73,7 @@ jobs:
         name: security-report
         path: bandit-report.json
         retention-days: 30
+        if-no-files-found: 'ignore'
 
   # 🧪 Health Check & Tests
   test:
