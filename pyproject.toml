@@ -195,10 +195,14 @@ pretty = true
 [[tool.mypy.overrides]]
 module = [
     "pyrofork.*",
+    "pyrogram.*",
     "telegram.*", 
     "motor.*",
     "apscheduler.*",
     "TgCrypto.*",
+    "loguru.*",
+    "pydantic_settings.*",
+    "pytest_asyncio.*",
 ]
 ignore_missing_imports = true
 
