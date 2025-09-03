@@ -60,7 +60,7 @@ class MessageService:
         if not update_dict:
             return await self.get_message_by_id(message_id)
 
-        update_dict["updated_at"] = Message().updated_at
+        update_dict["updated_at"] = datetime.utcnow()
 
         result = await self.collection.update_one({"id": message_id}, {"$set": update_dict})
 
