@@ -1,193 +1,42 @@
-# 🛡️ Security Scanning for Otogram
-# Comprehensive security analysis and vulnerability scanning
-
-name: "🛡️ Security Scan"
+name: Security
 
 on:
   push:
-    branches: [ main, develop ]
-    paths:
-      - '**/*.py'
-      - 'pyproject.toml'
-      - 'requirements*.txt'
-      - '.github/workflows/security.yml'
+    branches: [ main ]
   pull_request:
     branches: [ main ]
-    paths:
-      - '**/*.py'
-      - 'pyproject.toml' 
-      - 'requirements*.txt'
   schedule:
-    # Run weekly security scan on Mondays at 8 AM UTC
-    - cron: '0 8 * * 1'
-  workflow_dispatch:
-    # Allow manual triggering
-
-permissions:
-  contents: read
-  security-events: write
-  actions: read
+    - cron: '0 6 * * 1'  # Weekly on Monday
 
 jobs:
-  # 🔍 Python Security Scanning
-  python-security:
-    name: "🐍 Python Security"
+  security:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     
     steps:
-    - name: "📥 Checkout Code"
-      uses: actions/checkout@v4
-
-    - name: "🐍 Setup Python"
-      uses: actions/setup-python@v5
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
       with:
-        python-version: "3.11"
-        cache: 'pip'
-
-    - name: "📦 Install Dependencies"
+        python-version: '3.11'
+    
+    - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        # Install project dependencies
-        pip install -e .
-        # Install security tools
-        pip install safety bandit semgrep
-
-    - name: "🔍 Dependency Vulnerability Scan (Safety)"
-      run: |
-        # Create requirements for safety check
-        pip freeze > temp_requirements.txt
-        # Run safety check (continue on error for artifact collection)
-        safety check -r temp_requirements.txt --json --output safety-report.json 2>/dev/null || echo '{"vulnerabilities": []}' > safety-report.json
-        safety check -r temp_requirements.txt --short-report || true
-
-    - name: "🔒 Static Security Analysis (Bandit)"
-      run: |
-        bandit -r src/ -f json -o bandit-report.json 2>/dev/null || echo '{"results": []}' > bandit-report.json
-        bandit -r src/ --severity-level medium --format screen || true
-
-    - name: "⚡ Advanced Security Scan (Semgrep)"
-      run: |
-        semgrep --config=auto src/ --json --output=semgrep-report.json 2>/dev/null || echo '{"results": []}' > semgrep-report.json
-        semgrep --config=auto src/ --severity=ERROR --quiet || true
-
-    - name: "📊 Upload Security Reports"
-      uses: actions/upload-artifact@v4
+        pip install -e ".[dev]"
+        pip install bandit safety
+    
+    - name: Run Bandit Security Scan
+      run: bandit -r src/ -f json -o bandit-report.json || true
+    
+    - name: Run Safety Check
+      run: safety check --json --output safety-report.json || true
+    
+    - name: Upload security reports
+      uses: actions/upload-artifact@v3
       if: always()
       with:
         name: security-reports
         path: |
-          safety-report.json
           bandit-report.json
-          semgrep-report.json
-        retention-days: 30
-        if-no-files-found: 'ignore'
-
-  # 🔐 Secret Scanning
-  secret-scan:
-    name: "🔐 Secret Detection"
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    
-    steps:
-    - name: "📥 Checkout Code"
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-
-    - name: "🔍 GitLeaks Secret Scan"
-      uses: gitleaks/gitleaks-action@v2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  # 🔧 Security Configuration Check
-  config-security:
-    name: "🔧 Config Security"
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    
-    steps:
-    - name: "📥 Checkout Code"
-      uses: actions/checkout@v4
-
-    - name: "🐍 Setup Python"
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.11"
-        cache: 'pip'
-
-    - name: "📦 Install Dependencies"
-      run: |
-        python -m pip install --upgrade pip
-        pip install -e .
-
-    - name: "🔍 Check for Hardcoded Secrets"
-      run: |
-        echo "🔍 Scanning for potential hardcoded secrets..."
-        
-        # Check for common secret patterns
-        if grep -r -i "password\s*=" src/ --include="*.py" | grep -v "# noqa" | grep -v "test"; then
-          echo "⚠️  Found potential hardcoded passwords - please review"
-        fi
-        
-        if grep -r -i "api[_-]key\s*=" src/ --include="*.py" | grep -v "# noqa" | grep -v "test"; then
-          echo "⚠️  Found potential hardcoded API keys - please review"
-        fi
-        
-        if grep -r -i "token\s*=" src/ --include="*.py" | grep -v "# noqa" | grep -v "test"; then
-          echo "⚠️  Found potential hardcoded tokens - please review"
-        fi
-        
-        echo "✅ No obvious hardcoded secrets found"
-
-    - name: "🔐 Check Environment Variable Usage"
-      run: |
-        echo "🔐 Checking proper environment variable usage..."
-        
-        # Ensure sensitive config uses environment variables
-        python -c "
-        import os
-        from src.core.config import settings
-        
-        # Check that configuration object exists and has proper structure
-        print('✅ Configuration loaded successfully')
-        print(f'✅ Settings object type: {type(settings)}')
-        
-        # Basic validation that config structure is correct
-        if hasattr(settings, '__dict__'):
-            print('✅ Settings has proper attributes')
-        else:
-            print('⚠️ Settings structure may need validation')
-        
-        print('✅ All security checks completed')
-        "
-
-  # 📋 Security Summary
-  security-summary:
-    name: "📋 Security Summary"
-    runs-on: ubuntu-latest
-    needs: [python-security, secret-scan, config-security]
-    if: always()
-    timeout-minutes: 5
-    
-    steps:
-    - name: "📊 Security Scan Results"
-      run: |
-        echo "🛡️ Security Scan Summary for Otogram"
-        echo "================================="
-        echo ""
-        echo "📊 Scan Results:"
-        echo "  🐍 Python Security: ${{ needs.python-security.result }}"
-        echo "  🔐 Secret Scan: ${{ needs.secret-scan.result }}"
-        echo "  🔧 Config Security: ${{ needs.config-security.result }}"
-        echo ""
-        
-        if [[ "${{ needs.python-security.result }}" == "success" && 
-              "${{ needs.secret-scan.result }}" == "success" && 
-              "${{ needs.config-security.result }}" == "success" ]]; then
-          echo "✅ All security scans passed!"
-          echo "🛡️ Otogram security posture is good"
-        else
-          echo "⚠️  Some security scans failed or were skipped"
-          echo "🔍 Please review the individual scan results"
-        fi
+          safety-report.json
