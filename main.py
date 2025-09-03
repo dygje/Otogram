@@ -117,7 +117,7 @@ class TelegramAutomationApp:
         # We don't await here as this is a signal handler
 
 
-async def main():
+async def main() -> None:
     """Main entry point"""
     app = TelegramAutomationApp()
 
