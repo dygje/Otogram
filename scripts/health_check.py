@@ -249,7 +249,7 @@ def check_file_structure() -> bool:
     return len(missing) == 0
 
 
-def main():
+def main() -> int:
     """Run comprehensive health check"""
     print("🩺 TELEGRAM AUTOMATION SYSTEM - HEALTH CHECK")
     print("=" * 55)
