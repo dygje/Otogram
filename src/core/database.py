@@ -68,7 +68,7 @@ class Database:
 
     def get_collection(self, name: str):
         """Get a collection"""
-        if not self.db:
+        if self.db is None:
             raise RuntimeError("Database not connected")
         return self.db[name]
 
