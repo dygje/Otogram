@@ -6,30 +6,30 @@ This directory contains modern GitHub configuration optimized for the Otogram Te
 
 ```
 .github/
-├── workflows/           # GitHub Actions workflows
-│   ├── ci.yml          # Main CI/CD pipeline
-│   ├── codeql.yml      # Security scanning with CodeQL
-│   ├── security.yml    # Comprehensive security analysis
-│   ├── release.yml     # Automated release management
-│   ├── labeler.yml     # Automatic PR labeling
-│   ├── auto-merge.yml  # Auto-merge for dependabot PRs
+├── workflows/              # GitHub Actions workflows (10 workflows)
+│   ├── ci.yml             # Main CI/CD pipeline
+│   ├── codeql.yml         # Security scanning with CodeQL
+│   ├── security.yml       # Comprehensive security analysis
+│   ├── release.yml        # Automated release management
+│   ├── labeler.yml        # Automatic PR labeling
+│   ├── auto-merge.yml     # Auto-merge for dependabot PRs
 │   ├── dependency-review.yml # Dependency security review
-│   ├── stale.yml       # Stale issue/PR management
-│   ├── check-links.yml # Documentation link checking
-│   └── cleanup.yml     # Repository maintenance
-├── ISSUE_TEMPLATE/     # Issue templates
-│   ├── bug_report.md   # Bug report template
+│   ├── stale.yml          # Stale issue/PR management
+│   ├── check-links.yml    # Documentation link checking
+│   └── maintenance.yml    # Repository maintenance
+├── ISSUE_TEMPLATE/        # Issue templates
+│   ├── bug_report.md      # Bug report template
 │   ├── feature_request.md # Feature request template
-│   ├── question.md     # Question template
-│   └── config.yml      # Issue template configuration
-├── CODEOWNERS          # Code ownership definitions
-├── FUNDING.yml         # Sponsorship/funding information
-├── dependabot.yml      # Automated dependency updates
-├── labeler.yml         # Auto-labeling configuration
+│   ├── question.md        # Question template
+│   └── config.yml         # Issue template configuration
+├── CODEOWNERS             # Code ownership definitions
+├── FUNDING.yml            # Sponsorship/funding information
+├── dependabot.yml         # Automated dependency updates
+├── labeler.yml            # Auto-labeling configuration
 └── pull_request_template.md # PR template
 ```
 
-## ✨ Features
+## ✨ Key Features
 
 ### 🔄 **Modern CI/CD Pipeline**
 - **Parallel execution** for faster builds
@@ -41,8 +41,8 @@ This directory contains modern GitHub configuration optimized for the Otogram Te
 ### 🛡️ **Security-First Approach**
 - **CodeQL analysis** for vulnerability detection
 - **Dependency scanning** with Safety and Bandit
-- **Secret detection** with GitLeaks and TruffleHog
-- **OSSF Scorecard** for security posture assessment
+- **Secret detection** with GitLeaks
+- **Configuration security validation**
 - **Automated security updates** via Dependabot
 
 ### 🏷️ **Intelligent Automation**
@@ -50,7 +50,7 @@ This directory contains modern GitHub configuration optimized for the Otogram Te
 - **Auto-merge** for trusted dependency updates
 - **Stale issue management** to keep repository clean
 - **Link checking** for documentation health
-- **Repository cleanup** for maintenance
+- **Repository maintenance** for cleanup
 
 ### 📝 **Enhanced Templates**
 - **Comprehensive issue templates** with context
@@ -65,7 +65,7 @@ This configuration is optimized for **single-maintainer workflow**:
 - ✅ Simplified approval processes
 - ✅ Focus on automation over collaboration features
 - ✅ Efficient resource usage
-- ✅ Clear ownership model
+- ✅ Clear ownership model (@dygje)
 - ✅ Automated maintenance tasks
 
 ## 🔧 Configuration Highlights
@@ -111,6 +111,17 @@ The workflows will automatically:
 4. **Manage stale issues** - Keep repository clean
 5. **Create releases** - When tags are pushed
 
+## 🔧 Fixed Issues (September 2025)
+
+**Recently resolved:**
+- ✅ Fixed CodeQL SARIF path issues
+- ✅ Resolved dependency installation in security workflows
+- ✅ Fixed TruffleHog configuration for push events
+- ✅ Excluded problematic links from link checker
+- ✅ Simplified complex workflows for reliability
+- ✅ Added missing documentation files
+- ✅ Updated all Actions to latest versions (v4+)
+
 ## 📚 Additional Resources
 
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
@@ -121,4 +132,4 @@ The workflows will automatically:
 
 **Configuration Status: ✅ Production Ready**
 
-*Last updated: January 2025 - Following 2025 best practices*
+*Last updated: January 2025 - Following 2025 best practices with fixes applied*
