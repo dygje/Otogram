@@ -98,9 +98,15 @@ class TestSettings:
 
     def test_get_credentials_status(self):
         """Test credentials status report"""
-        settings = Settings()
-
-        # No credentials
+        # Test with no credentials
+        settings = Settings(
+            TELEGRAM_API_ID=None,
+            TELEGRAM_API_HASH=None,
+            TELEGRAM_BOT_TOKEN=None,
+            TELEGRAM_PHONE_NUMBER=None,
+            _env_file=None  # Don't load from .env file
+        )
+        
         status = settings.get_credentials_status()
         assert status["all_configured"] is False
         assert status["api_id"] is False
@@ -108,7 +114,7 @@ class TestSettings:
         assert status["bot_token"] is False
         assert status["phone_number"] is False
 
-        # Partial credentials
+        # Test with all credentials
         settings.TELEGRAM_API_ID = 12345678
         settings.TELEGRAM_API_HASH = "test_hash"
 
