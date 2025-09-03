@@ -11,7 +11,7 @@ license = {text = "MIT"}
 authors = [
     {name = "Telegram Automation System Contributors"}
 ]
-keywords = ["telegram", "automation", "bot", "mass-messaging", "pyrogram"]
+keywords = ["telegram", "automation", "bot", "mass-messaging", "pyrofork"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
