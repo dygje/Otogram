@@ -124,11 +124,16 @@ async def run_health_check() -> int:
 
 def check_python_version():
     """Check Python version compatibility"""
+    # Constants for Python version requirements
+    PYTHON_MAJOR_REQUIRED = 3
+    PYTHON_MINOR_RECOMMENDED = 11
+    PYTHON_MINOR_MINIMUM = 8
+    
     version = sys.version_info
-    if version.major >= 3 and version.minor >= 11:
+    if version.major >= PYTHON_MAJOR_REQUIRED and version.minor >= PYTHON_MINOR_RECOMMENDED:
         print(f"✅ Python {version.major}.{version.minor}.{version.micro} - OK")
         return True
-    elif version.major >= 3 and version.minor >= 8:
+    elif version.major >= PYTHON_MAJOR_REQUIRED and version.minor >= PYTHON_MINOR_MINIMUM:
         print(
             f"⚠️ Python {version.major}.{version.minor}.{version.micro} - Works but 3.11+ recommended"
         )
