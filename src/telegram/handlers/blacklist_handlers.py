@@ -82,8 +82,8 @@ class BlacklistHandlers:
                             ]
                         )
 
-                if len(blacklists) > 10:
-                    text += f"... dan {len(blacklists) - 10} entry lainnya\n\n"
+                if len(blacklists) > MAX_GROUPS_DISPLAY:
+                    text += f"... dan {len(blacklists) - MAX_GROUPS_DISPLAY} entry lainnya\n\n"
 
                 # Add cleanup button if there are expired entries
                 if stats["expired"] > 0:
