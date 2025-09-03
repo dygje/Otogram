@@ -84,7 +84,7 @@ class MessageService:
         """Increment usage count for a message"""
         await self.collection.update_one({"id": message_id}, {"$inc": {"usage_count": 1}})
 
-    async def get_message_count(self) -> dict:
+    async def get_message_count(self) -> dict[str, int]:
         """Get message statistics"""
         total = await self.collection.count_documents({})
         active = await self.collection.count_documents({"is_active": True})
