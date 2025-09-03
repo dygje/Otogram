@@ -25,7 +25,7 @@ class GroupService:
         group_data = {
             "group_identifier": identifier
         }
-        
+
         if identifier.startswith("-") and identifier[1:].isdigit():
             group_data["group_id"] = identifier
         elif identifier.startswith("@"):
@@ -38,7 +38,7 @@ class GroupService:
                 if not username.startswith("@"):
                     username = f"@{username}"
                 group_data["group_username"] = username
-        
+
         group = Group(**group_data)
 
         # Check if group already exists
