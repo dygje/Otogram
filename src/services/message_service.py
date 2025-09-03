@@ -3,6 +3,7 @@ Message Service - Handles message CRUD operations
 """
 
 from datetime import datetime
+from typing import Any
 
 from loguru import logger
 
