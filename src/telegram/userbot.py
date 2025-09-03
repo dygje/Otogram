@@ -277,7 +277,7 @@ class UserBot:
         min_delay = await self.config_service.get_config_value("min_message_delay", 5)
         max_delay = await self.config_service.get_config_value("max_message_delay", 10)
 
-        return random.randint(min_delay, max_delay)
+        return SecureRandom.randint(min_delay, max_delay)
 
     async def _wait_for_next_cycle(self):
         """Wait for the next broadcasting cycle"""
