@@ -409,7 +409,7 @@ class ManagementBot:
             if update.callback_query:
                 await update.callback_query.edit_message_text("❌ Error loading groups dashboard")
 
-    async def _show_blacklist_dashboard(self, update: Update, _context: ContextTypes.DEFAULT_TYPE):
+    async def _show_blacklist_dashboard(self, update: Update, _context: ContextTypes.DEFAULT_TYPE) -> None:
         """Show blacklist dashboard"""
         try:
             stats = await self.blacklist_handlers.blacklist_service.get_blacklist_stats()
