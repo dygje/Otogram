@@ -1,0 +1,161 @@
+# 🔗 Link Checker for Otogram Documentation
+# Verify all links in documentation are working
+
+name: "🔗 Check Links"
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '**/*.md'
+      - 'docs/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '**/*.md'
+      - 'docs/**'
+  schedule:
+    # Check links weekly on Sunday at 3 AM UTC
+    - cron: '0 3 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check-links:
+    name: "🔗 Check Documentation Links"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    steps:
+    - name: "📥 Checkout Code"
+      uses: actions/checkout@v4
+
+    - name: "🔗 Check Links in Documentation"
+      uses: lycheeverse/lychee-action@v1.8.0
+      with:
+        # Check all markdown files
+        args: --verbose --no-progress --accept 200,201,202,204,300,301,302,303,304,307,308 --exclude-mail '**/*.md'
+        
+        # Configuration
+        fail: true
+        
+        # Output format
+        format: markdown
+        
+        # Custom configuration
+        jobSummary: true
+        
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+    - name: "📊 Create Link Check Report"
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: link-check-report
+        path: lychee/out.md
+        retention-days: 7
+
+    - name: "📝 Comment on PR with Broken Links"
+      if: failure() && github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          
+          try {
+            const report = fs.readFileSync('lychee/out.md', 'utf8');
+            
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🔗 Link Check Report
+              
+              ❌ **Broken links found in documentation!**
+              
+              ${report}
+              
+              **Please fix these broken links before merging.**
+              
+              ---
+              
+              📚 **Tips for fixing links:**
+              - Verify URLs are correct and accessible
+              - Check for typos in link syntax
+              - Ensure internal links point to existing files
+              - Update outdated external links
+              `
+            });
+          } catch (error) {
+            console.log('No detailed report available');
+          }
+
+    - name: "🚨 Create Issue for Broken Links"
+      if: failure() && github.event_name == 'schedule'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          
+          try {
+            const report = fs.readFileSync('lychee/out.md', 'utf8');
+            
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🔗 Broken Links Detected in Documentation',
+              labels: ['documentation', 'maintenance', 'automated'],
+              assignees: ['dygje'],
+              body: `## 🔗 Weekly Link Check Report
+              
+              ❌ **Broken links detected during scheduled check**
+              
+              **Date:** ${new Date().toISOString().split('T')[0]}
+              **Triggered by:** Scheduled weekly check
+              
+              ### Broken Links Report:
+              
+              ${report}
+              
+              ---
+              
+              ### 🔧 Action Required:
+              
+              - [ ] Review and fix broken external links
+              - [ ] Update or remove outdated references  
+              - [ ] Verify internal links point to correct files
+              - [ ] Test fixes and close this issue
+              
+              ### 📚 Resources:
+              
+              - [Documentation Guidelines](docs/CONTRIBUTING.md#documentation)
+              - [Link Checker Workflow](.github/workflows/check-links.yml)
+              
+              This issue was automatically created by the link checker workflow.
+              `
+            });
+          } catch (error) {
+            console.log('Could not create detailed issue:', error);
+            
+            // Create basic issue without detailed report
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🔗 Link Check Failed',
+              labels: ['documentation', 'maintenance', 'automated'],
+              assignees: ['dygje'],
+              body: `## 🔗 Link Check Failed
+              
+              The weekly link check detected broken links in the documentation.
+              
+              **Please check the workflow logs for details:**
+              ${context.payload.repository.html_url}/actions/runs/${context.runId}
+              
+              This issue was automatically created by the link checker workflow.
+              `
+            });
+          }
