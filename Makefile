@@ -168,7 +168,13 @@ ci-test: ## Run CI tests
 # Utility
 check-deps: ## Check for dependency updates
 	@echo "🔍 Checking for dependency updates..."
-	pip list --outdated
+	python scripts/update_deps.py
+
+update-deps: ## Update dependencies (interactive)
+	@echo "📦 Updating dependencies..."
+	pip install --upgrade pip
+	pip install --upgrade -e ".[dev]"
+	@echo "✅ Dependencies updated. Run 'make test' to verify."
 
 version: ## Show version information
 	@echo "Telegram Automation System"
