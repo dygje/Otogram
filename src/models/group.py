@@ -70,8 +70,8 @@ class GroupBulkCreate(BaseModel):
     def get_identifiers_list(self) -> list:
         """Parse identifiers into list"""
         result = []
-        for line in self.identifiers.strip().split("\n"):
-            line = line.strip()
+        for raw_line in self.identifiers.strip().split("\n"):
+            line = raw_line.strip()
             if line:
                 # Process each identifier
                 if (
