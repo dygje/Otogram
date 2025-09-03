@@ -254,110 +254,58 @@ docker-compose down         # Stop services
 ```
 ```
 
-## 📊 Monitoring & Safety
+## 📊 Features
 
-### Performance Metrics
-- **Throughput**: ~100-200 messages per hour (safe rate)
-- **Groups**: Supports 1000+ groups efficiently  
-- **Memory**: ~50MB RAM usage
-- **Database**: Optimized MongoDB queries with indexes
+### 🎯 **Core Features**
+- **MTProto Integration** - Direct Telegram API via Pyrofork for reliability
+- **Smart Blacklist Management** - Automatic handling of SlowMode, FloodWait, and errors  
+- **Intelligent Scheduling** - Random delays for natural behavior
+- **Management Dashboard** - Complete control through Telegram bot interface
 
-### Safety Limits
-- **Message Delays**: 5-10 seconds between messages
-- **Cycle Delays**: 1-2 hours between broadcast cycles
-- **Group Limits**: Max 50 groups per cycle (configurable)
-- **Daily Limits**: Max 1000 messages per day (configurable)
-
-### Error Handling
-- **Permanent Errors** → Auto-blacklist forever
-- **Temporary Errors** → Auto-blacklist with recovery timer
-- **Unknown Errors** → Log and continue with next group
+### 🛡️ **Safety Features**
+- **Error Classification** - Smart handling of permanent vs temporary errors
+- **Automatic Cleanup** - Expired blacklists removed automatically
+- **Rate Limiting** - Configurable delays and limits
+- **Recovery System** - Auto-retry after wait periods expire
 
 ## 🔍 Troubleshooting
 
-### Health Check
+### Quick Fixes
 ```bash
+# Health check
 make health
+
+# Clean sessions and restart
+make clean-sessions
+python main.py
+
+# Check MongoDB
+sudo systemctl status mongod
+# Or use Docker: docker run -d -p 27017:27017 mongo:7.0
 ```
 
 ### Common Issues
-
-**Authentication Failed**
-```bash
-make clean-sessions
-python main.py
-```
-
-**Database Connection Error** 
-```bash
-# Check MongoDB status
-sudo systemctl status mongod
-
-# Or use Docker
-docker run -d -p 27017:27017 mongo:4.4
-```
-
-**Bot Not Responding**
-1. Verify bot token with [@BotFather](https://t.me/BotFather)
-2. Check network: `ping api.telegram.org`
-3. Test credentials in health check
-
-### Getting Help
-
-1. **Documentation**: [Full docs](https://dygje.github.io/Otogram)
-2. **Health Check**: `make health`
-3. **Logs**: `tail -f logs/app.log`
-4. **Issues**: [GitHub Issues](https://github.com/dygje/Otogram/issues)
+- **Authentication Failed**: Clean sessions with `make clean-sessions`
+- **Database Error**: Ensure MongoDB is running
+- **Bot Not Responding**: Verify bot token with @BotFather
 
 ## 📚 Documentation
 
-### 🚀 Quick Start
-- **[Getting Started](docs/GETTING_STARTED.md)** - 5-minute setup guide
-- **[Setup Guide](docs/SETUP_GUIDE.md)** - Detailed installation & configuration
-
-### 📖 Complete Documentation
-- **[📚 Documentation Hub](docs/README.md)** - Complete documentation index
-- **[🏗️ API Reference](docs/API.md)** - Complete API documentation  
-- **[🏛️ Architecture](docs/ARCHITECTURE.md)** - System design and patterns
-- **[🚀 Deployment](docs/DEPLOYMENT.md)** - Production deployment guide
-- **[💻 Development](docs/DEVELOPMENT.md)** - Contributing and development
-
-### 📋 Project Information
-- **[🔒 Security Policy](docs/SECURITY.md)** - Security guidelines
-- **[🤝 Contributing](docs/CONTRIBUTING.md)** - How to contribute
-- **[📝 Changelog](docs/CHANGELOG.md)** - Version history
-
-## 🤝 Contributing
-
-We welcome contributions! See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for guidelines.
-
-```bash
-# Quick start for contributors
-git clone https://github.com/dygje/Otogram.git
-cd Otogram
-make setup
-make pre-commit
-```
+For detailed information, see the `docs/` folder:
+- **[Setup Guide](docs/SETUP_GUIDE.md)** - Complete installation guide
+- **[Architecture](docs/ARCHITECTURE.md)** - System design overview
+- **[Contributing](docs/CONTRIBUTING.md)** - Development guidelines
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - see [LICENSE](LICENSE) file for details.
 
-## ⚡ Recent Updates & Status
+## 🤖 About
 
-- ✅ **v2.0.2 (August 2025)**: Production-ready release with comprehensive verification
-- ✅ **System Health**: All 7/7 health checks passing  
-- ✅ **Architecture**: Clean architecture with SOLID principles implemented
-- ✅ **Dependencies**: Latest Pyrofork 2.3.68 + python-telegram-bot 20.8
-- ✅ **Testing**: Complete system verification and specification compliance
-- ✅ **Documentation**: Comprehensive guides with verified examples
-- ✅ **Database**: MongoDB 7.0.23 with optimized indexes
-- ✅ **Error Handling**: Intelligent blacklist management for all Telegram API errors
+Otogram is developed as a personal project using modern Python practices and clean architecture principles. Built with AI assistance from emergent.sh.
 
-**Current Status: 🟢 PRODUCTION READY**
-
-See [CHANGELOG.md](docs/CHANGELOG.md) for detailed version history and [SETUP_GUIDE.md](docs/SETUP_GUIDE.md) for complete installation instructions.
+**Status**: Active Development | **Version**: 2.0.2
 
 ---
 
-**Built with modern Python best practices & production-ready architecture** 🚀
+**⚠️ Disclaimer**: Use responsibly and in compliance with Telegram's Terms of Service.
