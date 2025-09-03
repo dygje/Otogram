@@ -589,9 +589,10 @@ class ManagementBot:
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
 
-        await update.callback_query.edit_message_text(
-            text, parse_mode="Markdown", reply_markup=reply_markup
-        )
+        if update.callback_query:
+            await update.callback_query.edit_message_text(
+                text, parse_mode="Markdown", reply_markup=reply_markup
+            )
 
     async def _show_help_center(self, update: Update, _context: ContextTypes.DEFAULT_TYPE):
         """Show help center with FAQ and troubleshooting"""
