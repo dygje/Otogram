@@ -64,6 +64,32 @@ quality: ## Run all quality checks
 	$(MAKE) test-fast
 	@echo "✅ Quality checks complete"
 
+# Security & Quality
+security: ## Run security checks
+	@echo "🔐 Running security checks..."
+	@if command -v bandit >/dev/null 2>&1; then \
+		bandit -r src/ -f json -o bandit-report.json; \
+		echo "✅ Bandit security scan complete"; \
+	else \
+		echo "⚠️ Install bandit: pip install bandit"; \
+	fi
+	@if command -v safety >/dev/null 2>&1; then \
+		safety check --json --output safety-report.json; \
+		echo "✅ Safety dependency scan complete"; \
+	else \
+		echo "⚠️ Install safety: pip install safety"; \
+	fi
+
+pre-commit: ## Install pre-commit hooks
+	@echo "🪝 Installing pre-commit hooks..."
+	pip install pre-commit
+	pre-commit install
+	@echo "✅ Pre-commit hooks installed"
+
+pre-commit-run: ## Run pre-commit on all files
+	@echo "🪝 Running pre-commit on all files..."
+	pre-commit run --all-files
+
 # Git hooks
 pre-commit: ## Install pre-commit hooks
 	@echo "🪝 Installing pre-commit hooks..."
