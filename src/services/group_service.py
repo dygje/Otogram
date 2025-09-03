@@ -84,7 +84,7 @@ class GroupService:
 
     async def get_active_groups(self) -> list[Group]:
         """Get only active groups"""
-        cursor = self.collection.find({"is_active": True})
+        cursor = self.collection.find({"is_active": True})  # type: ignore[attr-defined]
         groups = []
 
         async for doc in cursor:
