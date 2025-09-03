@@ -80,7 +80,7 @@ class MessageService:
 
         return False
 
-    async def increment_usage_count(self, message_id: str):
+    async def increment_usage_count(self, message_id: str) -> None:
         """Increment usage count for a message"""
         await self.collection.update_one({"id": message_id}, {"$inc": {"usage_count": 1}})
 
