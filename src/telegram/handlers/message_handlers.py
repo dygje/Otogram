@@ -39,7 +39,9 @@ class MessageHandlers:
                 for i, msg in enumerate(messages[:MAX_MESSAGES_DISPLAY], 1):  # Show first 10
                     status = "✅" if msg.is_active else "❌"
                     content_preview = (
-                        msg.content[:PREVIEW_MESSAGE_LENGTH] + "..." if len(msg.content) > PREVIEW_MESSAGE_LENGTH else msg.content
+                        msg.content[:PREVIEW_MESSAGE_LENGTH] + "..."
+                        if len(msg.content) > PREVIEW_MESSAGE_LENGTH
+                        else msg.content
                     )
                     text += f"{i}. {status} {content_preview}\n   📊 Terpakai: {msg.usage_count} kali\n\n"
 
@@ -193,7 +195,9 @@ class MessageHandlers:
 
             status_text = "Aktif ✅" if message.is_active else "Nonaktif ❌"
             content_preview = (
-                message.content[:PREVIEW_MESSAGE_LENGTH_LONG] + "..." if len(message.content) > PREVIEW_MESSAGE_LENGTH_LONG else message.content
+                message.content[:PREVIEW_MESSAGE_LENGTH_LONG] + "..."
+                if len(message.content) > PREVIEW_MESSAGE_LENGTH_LONG
+                else message.content
             )
 
             text = (

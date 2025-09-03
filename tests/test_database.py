@@ -88,7 +88,9 @@ class TestDatabase:
         assert found_doc["value"] == TEST_VALUE_INITIAL
 
         # Update
-        update_result = await collection.update_one({"name": "test"}, {"$set": {"value": TEST_VALUE_UPDATED}})
+        update_result = await collection.update_one(
+            {"name": "test"}, {"$set": {"value": TEST_VALUE_UPDATED}}
+        )
         assert update_result.modified_count == 1
 
         # Verify update

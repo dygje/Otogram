@@ -317,7 +317,11 @@ class ManagementBot:
                 text += "*📋 Recent Messages:*\n"
                 for i, msg in enumerate(messages[:MAX_RECENT_ITEMS_DISPLAY], 1):
                     status = "🟢" if msg.is_active else "🔴"
-                    preview = msg.content[:PREVIEW_MESSAGE_LENGTH] + "..." if len(msg.content) > PREVIEW_MESSAGE_LENGTH else msg.content
+                    preview = (
+                        msg.content[:PREVIEW_MESSAGE_LENGTH] + "..."
+                        if len(msg.content) > PREVIEW_MESSAGE_LENGTH
+                        else msg.content
+                    )
                     text += f"{i}. {status} {preview}\n"
 
                 if len(messages) > MAX_RECENT_ITEMS_DISPLAY:

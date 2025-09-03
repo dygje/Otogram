@@ -54,7 +54,8 @@ def main():
     print("\n3. Checking for remaining issues...")
     result = subprocess.run(
         ["ruff", "check", "src/", "scripts/", "tests/", "--config", "pyproject.toml"],
-        check=False, capture_output=True,
+        check=False,
+        capture_output=True,
         text=True,
     )
 

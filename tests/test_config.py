@@ -63,7 +63,9 @@ class TestSettings:
     def test_delay_validation(self):
         """Test message delay validation"""
         # Valid delays
-        settings = Settings(MIN_MESSAGE_DELAY=DEFAULT_MIN_MESSAGE_DELAY, MAX_MESSAGE_DELAY=DEFAULT_MAX_MESSAGE_DELAY)
+        settings = Settings(
+            MIN_MESSAGE_DELAY=DEFAULT_MIN_MESSAGE_DELAY, MAX_MESSAGE_DELAY=DEFAULT_MAX_MESSAGE_DELAY
+        )
         assert settings.MIN_MESSAGE_DELAY == DEFAULT_MIN_MESSAGE_DELAY
         assert settings.MAX_MESSAGE_DELAY == DEFAULT_MAX_MESSAGE_DELAY
 
@@ -76,13 +78,18 @@ class TestSettings:
     def test_cycle_delay_validation(self):
         """Test cycle delay validation"""
         # Valid cycle delays
-        settings = Settings(MIN_CYCLE_DELAY_HOURS=TEST_CYCLE_DELAY_MIN, MAX_CYCLE_DELAY_HOURS=TEST_CYCLE_DELAY_MAX)
+        settings = Settings(
+            MIN_CYCLE_DELAY_HOURS=TEST_CYCLE_DELAY_MIN, MAX_CYCLE_DELAY_HOURS=TEST_CYCLE_DELAY_MAX
+        )
         assert settings.MIN_CYCLE_DELAY_HOURS == TEST_CYCLE_DELAY_MIN
         assert settings.MAX_CYCLE_DELAY_HOURS == TEST_CYCLE_DELAY_MAX
 
         # Invalid cycle delays
         with pytest.raises(ValidationError) as exc_info:
-            Settings(MIN_CYCLE_DELAY_HOURS=TEST_CYCLE_DELAY_MAX, MAX_CYCLE_DELAY_HOURS=TEST_CYCLE_DELAY_MIN)
+            Settings(
+                MIN_CYCLE_DELAY_HOURS=TEST_CYCLE_DELAY_MAX,
+                MAX_CYCLE_DELAY_HOURS=TEST_CYCLE_DELAY_MIN,
+            )
 
         assert "MAX_CYCLE_DELAY_HOURS must be greater than MIN_CYCLE_DELAY_HOURS" in str(
             exc_info.value
