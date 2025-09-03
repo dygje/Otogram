@@ -26,7 +26,7 @@ class GroupHandlers:
             if not groups:
                 text = "👥 *Daftar Grup*\n\n❌ Belum ada grup yang tersimpan.\n\nGunakan /addgroup untuk menambah grup."
                 keyboard = [
-                    [InlineKeyboardButton("➕ Tambah Grup", callback_data="groups_add")],
+                    [InlineKeyboardButton("+ Tambah Grup", callback_data="groups_add")],
                     [InlineKeyboardButton("📋 Tambah Massal", callback_data="groups_bulk")],
                 ]
             else:
