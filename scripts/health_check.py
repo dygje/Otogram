@@ -172,7 +172,7 @@ def check_dependencies() -> bool:
     return len(missing) == 0
 
 
-def check_imports():
+def check_imports() -> bool:
     """Check if all project modules can be imported"""
     try:
         print("\n📦 Testing project imports...")
