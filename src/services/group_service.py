@@ -1,6 +1,7 @@
 """
 Group Service - Handles group CRUD operations
 """
+
 from typing import List, Optional
 from loguru import logger
 from src.core.database import database
@@ -9,46 +10,46 @@ from src.models.group import Group, GroupCreate, GroupBulkCreate
 
 class GroupService:
     """Service for managing groups"""
-    
+
     def __init__(self):
         self.collection = database.get_collection("groups")
-    
+
     async def create_group(self, group_data: GroupCreate) -> Group:
         """Create a new group"""
         identifier = group_data.group_identifier
-        
+
         # Parse identifier
         group = Group()
-        
-        if identifier.startswith('-') and identifier[1:].isdigit():
+
+        if identifier.startswith("-") and identifier[1:].isdigit():
             group.group_id = identifier
-        elif identifier.startswith('@'):
+        elif identifier.startswith("@"):
             group.group_username = identifier
-        elif 't.me/' in identifier:
+        elif "t.me/" in identifier:
             group.group_link = identifier
             # Extract username from link
-            if '/' in identifier:
-                username = identifier.split('/')[-1]
-                if not username.startswith('@'):
-                    username = f'@{username}'
+            if "/" in identifier:
+                username = identifier.split("/")[-1]
+                if not username.startswith("@"):
+                    username = f"@{username}"
                 group.group_username = username
-        
+
         # Check if group already exists
         existing = await self.get_group_by_identifier(identifier)
         if existing:
             logger.warning(f"Group already exists: {identifier}")
             return existing
-        
+
         await self.collection.insert_one(group.dict())
         logger.info(f"Created group: {identifier}")
-        
+
         return group
-    
+
     async def create_groups_bulk(self, bulk_data: GroupBulkCreate) -> List[Group]:
         """Create multiple groups"""
         identifiers = bulk_data.get_identifiers_list()
         created_groups = []
-        
+
         for identifier in identifiers:
             try:
                 group_data = GroupCreate(group_identifier=identifier)
@@ -56,37 +57,37 @@ class GroupService:
                 created_groups.append(group)
             except Exception as e:
                 logger.error(f"Failed to create group {identifier}: {e}")
-        
+
         return created_groups
-    
+
     async def get_all_groups(self) -> List[Group]:
         """Get all groups"""
         cursor = self.collection.find()
         groups = []
-        
+
         async for doc in cursor:
             groups.append(Group(**doc))
-        
+
         return groups
-    
+
     async def get_active_groups(self) -> List[Group]:
         """Get only active groups"""
         cursor = self.collection.find({"is_active": True})
         groups = []
-        
+
         async for doc in cursor:
             groups.append(Group(**doc))
-        
+
         return groups
-    
+
     async def get_group_by_id(self, group_id: str) -> Optional[Group]:
         """Get group by ID"""
         doc = await self.collection.find_one({"id": group_id})
-        
+
         if doc:
             return Group(**doc)
         return None
-    
+
     async def get_group_by_identifier(self, identifier: str) -> Optional[Group]:
         """Get group by telegram identifier"""
         # Try different fields
@@ -94,66 +95,60 @@ class GroupService:
             "$or": [
                 {"group_id": identifier},
                 {"group_username": identifier},
-                {"group_link": {"$regex": identifier}}
+                {"group_link": {"$regex": identifier}},
             ]
         }
-        
+
         doc = await self.collection.find_one(query)
-        
+
         if doc:
             return Group(**doc)
         return None
-    
-    async def update_group_info(self, group_id: str, title: str = None, is_active: bool = None) -> Optional[Group]:
+
+    async def update_group_info(
+        self, group_id: str, title: str = None, is_active: bool = None
+    ) -> Optional[Group]:
         """Update group information"""
         update_dict = {}
-        
+
         if title is not None:
             update_dict["group_title"] = title
-        
+
         if is_active is not None:
             update_dict["is_active"] = is_active
-        
+
         if not update_dict:
             return await self.get_group_by_id(group_id)
-        
+
         update_dict["updated_at"] = Group().updated_at
-        
-        result = await self.collection.update_one(
-            {"id": group_id},
-            {"$set": update_dict}
-        )
-        
+
+        result = await self.collection.update_one({"id": group_id}, {"$set": update_dict})
+
         if result.modified_count > 0:
             logger.info(f"Updated group: {group_id}")
             return await self.get_group_by_id(group_id)
-        
+
         return None
-    
+
     async def delete_group(self, group_id: str) -> bool:
         """Delete a group"""
         result = await self.collection.delete_one({"id": group_id})
-        
+
         if result.deleted_count > 0:
             logger.info(f"Deleted group: {group_id}")
             return True
-        
+
         return False
-    
+
     async def increment_message_count(self, group_telegram_id: str):
         """Increment message count for a group"""
         await self.collection.update_one(
-            {"group_id": group_telegram_id},
-            {"$inc": {"message_count": 1}}
+            {"group_id": group_telegram_id}, {"$inc": {"message_count": 1}}
         )
-    
+
     async def get_group_stats(self) -> dict:
         """Get group statistics"""
         total = await self.collection.count_documents({})
         active = await self.collection.count_documents({"is_active": True})
-        
-        return {
-            "total": total,
-            "active": active,
-            "inactive": total - active
-        }
+
+        return {"total": total, "active": active, "inactive": total - active}
