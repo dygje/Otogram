@@ -56,7 +56,7 @@ class MessageService:
 
     async def update_message(self, message_id: str, update_data: MessageUpdate) -> Message | None:
         """Update a message"""
-        update_dict = {k: v for k, v in update_data.dict().items() if v is not None}
+        update_dict: dict[str, Any] = {k: v for k, v in update_data.dict().items() if v is not None}
 
         if not update_dict:
             return await self.get_message_by_id(message_id)
