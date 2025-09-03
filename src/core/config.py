@@ -80,7 +80,7 @@ class Settings(BaseSettings):
 
     @field_validator("MAX_MESSAGE_DELAY")
     @classmethod
-    def validate_message_delays(cls, v, info):
+    def validate_message_delays(cls, v: int, info: Any) -> int:
         """Ensure max delay is greater than min delay"""
         if hasattr(info, "data"):
             min_delay = info.data.get("MIN_MESSAGE_DELAY", 5)
