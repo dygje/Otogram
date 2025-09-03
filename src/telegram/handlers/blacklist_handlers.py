@@ -4,6 +4,7 @@ Blacklist Handlers - Handle blacklist management through bot
 
 from loguru import logger
 
+from src.core.constants import MAX_GROUPS_DISPLAY
 from src.services.blacklist_service import BlacklistService
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import ContextTypes
