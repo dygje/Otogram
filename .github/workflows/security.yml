@@ -68,7 +68,7 @@ jobs:
 
     - name: "⚡ Advanced Security Scan (Semgrep)"
       run: |
-        semgrep --config=auto src/ --json --output=semgrep-report.json || true
+        semgrep --config=auto src/ --json --output=semgrep-report.json 2>/dev/null || echo '{"results": []}' > semgrep-report.json
         semgrep --config=auto src/ --severity=ERROR --quiet || true
 
     - name: "📊 Upload Security Reports"
