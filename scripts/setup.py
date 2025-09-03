@@ -69,29 +69,40 @@ def validate_credentials(
     api_id: str, api_hash: str, bot_token: str, phone_number: str
 ) -> tuple[bool, str]:
     """Validate credential formats"""
+    
+    # Constants for validation
+    API_ID_LENGTH = 8
+    API_HASH_LENGTH = 32
+    BOT_TOKEN_MIN_LENGTH = 8
+    PHONE_NUMBER_MIN_LENGTH = 10
+
+    # Collect all validation errors
+    errors = []
 
     # Validate API ID
     if not api_id.isdigit():
-        return False, "API ID harus berupa angka (8 digit)"
-
-    if len(api_id) != 8:
-        return False, "API ID harus 8 digit"
+        errors.append("API ID harus berupa angka (8 digit)")
+    elif len(api_id) != API_ID_LENGTH:
+        errors.append("API ID harus 8 digit")
 
     # Validate API Hash
-    if len(api_hash) != 32:
-        return False, "API Hash harus 32 karakter"
+    if len(api_hash) != API_HASH_LENGTH:
+        errors.append("API Hash harus 32 karakter")
 
     # Validate Bot Token format
-    if ":" not in bot_token or len(bot_token.split(":")[0]) < 8:
-        return False, "Format Bot Token tidak valid (harus seperti: 123456789:ABC-DEF...)"
+    if ":" not in bot_token or len(bot_token.split(":")[0]) < BOT_TOKEN_MIN_LENGTH:
+        errors.append("Format Bot Token tidak valid (harus seperti: 123456789:ABC-DEF...)")
 
     # Validate Phone Number
     if not phone_number.startswith("+"):
-        return False, "Nomor telepon harus dimulai dengan + (format internasional)"
+        errors.append("Nomor telepon harus dimulai dengan + (format internasional)")
+    elif len(phone_number) < PHONE_NUMBER_MIN_LENGTH:
+        errors.append("Nomor telepon terlalu pendek")
 
-    if len(phone_number) < 10:
-        return False, "Nomor telepon terlalu pendek"
-
+    # Return result
+    if errors:
+        return False, "; ".join(errors)
+    
     return True, "Valid"
 
 
