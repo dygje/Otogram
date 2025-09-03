@@ -266,7 +266,7 @@ class ManagementBot:
         elif data == "emergency_stop":
             await self._show_emergency_stop(update, context)
 
-        # Legacy routing for existing handlers  
+        # Legacy routing for existing handlers
         elif data.startswith("messages_"):
             await self.message_handlers.handle_callback(update, context, str(data))
         elif data.startswith("groups_"):
