@@ -43,7 +43,7 @@ class BlacklistHandlers:
                 permanent_count = 0
                 temporary_count = 0
 
-                for blacklist in blacklists[:10]:  # Show first 10
+                for blacklist in blacklists[:MAX_GROUPS_DISPLAY]:  # Show first 10
                     identifier = blacklist.group_identifier or blacklist.group_id
 
                     if blacklist.blacklist_type.value == "permanent":
