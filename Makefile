@@ -1,7 +1,7 @@
 # Makefile for Otogram - Telegram Automation System
 # Provides convenient commands for development and maintenance
 
-.PHONY: help setup install test lint format health clean build docs pre-commit
+.PHONY: help setup install install-dev test lint format health clean build docs pre-commit ruff
 
 # Default target
 help: ## Show this help message
