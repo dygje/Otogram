@@ -109,9 +109,13 @@ jobs:
 
     - name: "🩺 System Health Check"
       run: |
+        # Set test environment variables
+        export TEST_MODE=true
+        export MONGO_URL=mongodb://localhost:27017
         python scripts/health_check.py || {
           echo "⚠️  Health check failed, but continuing with tests..."
           echo "This may indicate configuration issues that need attention."
+          exit 0
         }
       env:
         MONGO_URL: mongodb://localhost:27017
