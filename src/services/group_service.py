@@ -160,7 +160,7 @@ class GroupService:
 
     async def get_group_stats(self) -> dict[str, int]:
         """Get group statistics"""
-        total = await self.collection.count_documents({})
-        active = await self.collection.count_documents({"is_active": True})
+        total = await self.collection.count_documents({})  # type: ignore[attr-defined]
+        active = await self.collection.count_documents({"is_active": True})  # type: ignore[attr-defined]
 
         return {"total": total, "active": active, "inactive": total - active}
