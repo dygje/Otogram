@@ -33,7 +33,7 @@ class GroupHandlers:
                 text = f"👥 *Daftar Grup* ({stats['active']}/{stats['total']} aktif)\n\n"
 
                 keyboard = []
-                for i, group in enumerate(groups[:10], 1):  # Show first 10
+                for i, group in enumerate(groups[:MAX_GROUPS_DISPLAY], 1):  # Show first 10
                     status = "✅" if group.is_active else "❌"
 
                     # Display identifier
