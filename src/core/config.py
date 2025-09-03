@@ -16,7 +16,7 @@ class Settings(BaseSettings):
 
     # Database Configuration
     MONGO_URL: str = Field(default="mongodb://localhost:27017")
-    DB_NAME: str = Field(default="telegram_automation")
+    DB_NAME: str = Field(default="otogram")
 
     # Telegram Credentials (Required)
     TELEGRAM_API_ID: Optional[int] = Field(default=None)
