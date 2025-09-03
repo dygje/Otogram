@@ -31,22 +31,38 @@ health: ## Run system health check
 	@echo "🩺 Running health check..."
 	python scripts/health_check.py
 
-test: ## Run tests (when available)
+test: ## Run tests with coverage
 	@echo "🧪 Running tests..."
-	python -m pytest tests/ -v || echo "⚠️ No tests directory found"
+	pytest tests/ -v --cov=src --cov-report=term-missing --cov-report=html
 
-lint: ## Run linting tools
+test-fast: ## Run tests without coverage
+	@echo "⚡ Running fast tests..."
+	pytest tests/ -v
+
+ruff: ## Run ruff linting and formatting
+	@echo "🦀 Running ruff..."
+	ruff check src/ scripts/ tests/ --fix
+	ruff format src/ scripts/ tests/
+
+lint: ## Run all linting tools
 	@echo "🔍 Running linting..."
-	black --check --diff src/ scripts/
-	isort --check-only --diff src/ scripts/
-	flake8 src/ scripts/
+	ruff check src/ scripts/ tests/
+	black --check --diff src/ scripts/ tests/
+	isort --check-only --diff src/ scripts/ tests/
 	mypy src/
 
-format: ## Format code with black and isort
+format: ## Format code with ruff, black and isort
 	@echo "🎨 Formatting code..."
-	black src/ scripts/
-	isort src/ scripts/
+	ruff format src/ scripts/ tests/
+	black src/ scripts/ tests/
+	isort src/ scripts/ tests/
 	@echo "✅ Code formatted"
+
+quality: ## Run all quality checks
+	@echo "🔍 Running quality checks..."
+	$(MAKE) lint
+	$(MAKE) test-fast
+	@echo "✅ Quality checks complete"
 
 # Git hooks
 pre-commit: ## Install pre-commit hooks
