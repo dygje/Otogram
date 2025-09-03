@@ -107,7 +107,7 @@ We regularly audit dependencies using:
 - CVE tracking for critical components
 
 Critical dependencies monitored:
-- `pyrogram`: Telegram MTProto client
+- `pyrofork`: Telegram MTProto client
 - `python-telegram-bot`: Bot API client
 - `motor`/`pymongo`: Database drivers
 - `pydantic`: Data validation
