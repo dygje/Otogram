@@ -5,6 +5,7 @@ Tests for database functionality
 import pytest
 
 from src.core.config import settings
+from src.core.constants import DB_PING_OK_VALUE, TEST_VALUE_INITIAL, TEST_VALUE_UPDATED
 from src.core.database import Database
 
 
