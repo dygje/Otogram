@@ -2,123 +2,115 @@
 
 ## Supported Versions
 
-We support security updates for the following versions:
+We actively support the following versions of Otogram:
 
 | Version | Supported          |
 | ------- | ------------------ |
 | 2.0.x   | :white_check_mark: |
-| < 2.0   | :x:                |
+| 1.x.x   | :x:                |
 
 ## Reporting a Vulnerability
 
-**Please do not report security vulnerabilities through public GitHub issues.**
+The Otogram team takes security bugs seriously. We appreciate your efforts to responsibly disclose your findings, and will make every effort to acknowledge your contributions.
 
-Instead, please report them via:
+### How to Report a Security Vulnerability?
 
-1. **GitHub Security Advisories** (preferred)
-   - Go to the repository's Security tab
-   - Click "Report a vulnerability"
-   - Fill out the form with details
+If you believe you have found a security vulnerability in Otogram, please report it to us through coordinated disclosure.
 
-2. **Private Communication**
-   - Create a private issue if Security Advisories are not available
-   - Contact maintainers directly if needed
+**Please do not report security vulnerabilities through public GitHub issues, discussions, or pull requests.**
 
-## What to Report
+Instead, please send an email to: **security@otogram.project** (or create a private security advisory on GitHub)
 
-Please report any security concerns including:
+Please include as much of the information listed below as you can to help us better understand and resolve the issue:
 
-### High Priority
-- **Credential exposure**: API keys, tokens, passwords in logs or code
-- **Authentication bypass**: Ways to bypass bot authentication
-- **Privilege escalation**: Unauthorized access to admin functions  
-- **Data injection**: SQL injection, command injection, etc.
-- **Unauthorized access**: Access to restricted Telegram groups/data
+* Type of issue (e.g. buffer overflow, SQL injection, cross-site scripting, etc.)
+* Full paths of source file(s) related to the manifestation of the issue
+* The location of the affected source code (tag/branch/commit or direct URL)
+* Any special configuration required to reproduce the issue
+* Step-by-step instructions to reproduce the issue
+* Proof-of-concept or exploit code (if possible)
+* Impact of the issue, including how an attacker might exploit the issue
 
-### Medium Priority
-- **Information disclosure**: Exposure of sensitive system information
-- **Denial of service**: Ways to crash or overwhelm the system
-- **Configuration issues**: Insecure default settings
-- **Dependency vulnerabilities**: Known CVEs in dependencies
+This information will help us triage your report more quickly.
 
-### What We Handle
-- Security issues in the core application
-- Configuration and deployment guidance
-- Dependency security updates
-- Authentication and authorization flaws
+### What to Expect
 
-### What We Don't Handle
-- Issues in third-party dependencies (report to upstream)
-- Telegram platform security (report to Telegram)
-- MongoDB security (report to MongoDB)
-- Infrastructure security (AWS, VPS, etc.)
+After you submit a report, we will:
+
+1. **Acknowledge** receipt of your vulnerability report within 48 hours
+2. **Confirm** the problem and determine the affected versions within 5 business days  
+3. **Audit** code to find any potential similar problems
+4. **Prepare** fixes for all supported releases
+5. **Release** new versions and publish security advisories
 
 ## Security Best Practices
 
-### For Users
-- **Credentials**: Store API keys and tokens securely in `.env` file
-- **Permissions**: Use dedicated Telegram account with minimal permissions
-- **Network**: Run behind firewall, restrict database access
-- **Updates**: Keep dependencies updated for security patches
-- **Monitoring**: Monitor logs for suspicious activity
+When using Otogram, please follow these security best practices:
 
-### For Developers
-- **Environment**: Never commit secrets to version control
-- **Input validation**: Validate all user inputs
-- **Error handling**: Don't expose sensitive data in error messages
-- **Logging**: Don't log credentials or sensitive data
-- **Dependencies**: Use exact versions, audit regularly
+### Environment Security
+* **Never commit credentials** to version control
+* **Use strong passwords** for Telegram accounts
+* **Enable 2FA** on your Telegram account
+* **Keep dependencies updated** using dependabot alerts
+* **Run in isolated environments** (Docker/containers)
 
-## Response Process
+### Telegram Security
+* **Use Bot tokens securely** - never share or expose them
+* **Validate all inputs** from Telegram messages
+* **Implement rate limiting** to prevent abuse
+* **Monitor for suspicious activity** in logs
+* **Use webhook URLs with SSL** if using webhooks
 
-1. **Acknowledgment**: We'll acknowledge receipt within 24 hours
-2. **Assessment**: Initial assessment within 72 hours
-3. **Investigation**: Detailed investigation and impact analysis
-4. **Fix Development**: Develop and test security fixes
-5. **Disclosure**: Coordinate disclosure timeline with reporter
-6. **Release**: Release security update with advisory
+### Database Security
+* **Secure MongoDB instance** with authentication
+* **Use connection strings** with credentials in environment variables
+* **Keep MongoDB updated** to latest stable version
+* **Enable MongoDB logging** for audit trails
+* **Backup data regularly** and test restore procedures
 
-## Security Updates
+### Deployment Security
+* **Use HTTPS/TLS** for all communications
+* **Keep system updated** with security patches
+* **Use firewall rules** to restrict network access
+* **Monitor system logs** for security events
+* **Use secrets management** for production deployments
 
-Security updates will be:
-- Released as patch versions (e.g., 2.0.1 → 2.0.2)
-- Documented in `CHANGELOG.md` with security note
-- Announced in repository releases
-- Tagged with security advisory if applicable
+## Security Features
 
-## Recognition
+Otogram includes several built-in security features:
 
-We appreciate security researchers who:
-- Follow responsible disclosure
-- Provide clear reproduction steps
-- Work with us on fix timeline
-- Allow us to properly test fixes
+* **Input validation** using Pydantic models
+* **Error handling** to prevent information disclosure  
+* **Rate limiting** and blacklist management
+* **Secure credential handling** through environment variables
+* **Logging and monitoring** capabilities
+* **Database connection security** with MongoDB authentication
 
-We may recognize contributors in:
-- Security advisory acknowledgments
-- Repository contributors list
-- Project documentation (with permission)
+## Vulnerability Disclosure Timeline
 
-## Dependencies Security
+* **Day 0**: Security report received
+* **Day 1-2**: Initial response and acknowledgment
+* **Day 3-7**: Vulnerability confirmed and assessed
+* **Day 8-21**: Fix developed and tested
+* **Day 22-30**: Coordinated release and disclosure
 
-We regularly audit dependencies using:
-- Automated security scanning
-- Dependency update monitoring
-- CVE tracking for critical components
+We aim to resolve critical vulnerabilities within 30 days of initial report.
 
-Critical dependencies monitored:
-- `pyrofork`: Telegram MTProto client
-- `python-telegram-bot`: Bot API client
-- `motor`/`pymongo`: Database drivers
-- `pydantic`: Data validation
-- `aiofiles`: File operations
+## Security Hall of Fame
+
+We recognize security researchers who help improve Otogram's security:
+
+<!-- Contributors who responsibly disclosed security issues will be listed here -->
+
+*No security issues have been reported yet.*
 
 ## Contact
 
-For urgent security matters, use GitHub Security Advisories or create a private issue.
-
-For general security questions, use GitHub Discussions with `security` label.
+For questions about this security policy, please contact:
+* **GitHub Issues**: For general security discussions (non-sensitive)
+* **Email**: security@otogram.project (for sensitive security matters)
+* **GitHub Security Advisories**: For private vulnerability reporting
 
 ---
 
-**Remember**: Security is everyone's responsibility. Thank you for helping keep this project secure!
+Thank you for helping keep Otogram and our users safe! 🔒
