@@ -3,7 +3,7 @@ Log Models
 """
 
 from enum import Enum
-from typing import Any
+from typing import Any, ClassVar
 
 from pydantic import BaseModel, Field
 
