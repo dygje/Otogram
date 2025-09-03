@@ -1,0 +1,124 @@
+# 🏷️ Automatic Labeling Configuration for Otogram
+# Automatically assign labels to PRs based on file changes
+
+# Core Components
+'core: config':
+  - 'src/core/**'
+  - 'pyproject.toml'
+  - '.env.example'
+
+'core: database':
+  - 'src/models/**'
+  - 'src/core/database.py'
+
+'core: services':
+  - 'src/services/**'
+
+# Telegram Components  
+'telegram: bot':
+  - 'src/telegram/management_bot.py'
+  - 'src/telegram/handlers/**'
+
+'telegram: userbot':
+  - 'src/telegram/userbot.py'
+
+'telegram: integration':
+  - 'src/telegram/bot_manager.py'
+
+# Feature Areas
+'area: messaging':
+  - 'src/services/message_service.py'
+  - 'src/models/message.py'
+  - 'src/telegram/handlers/message_handlers.py'
+
+'area: groups':
+  - 'src/services/group_service.py'
+  - 'src/models/group.py'
+  - 'src/telegram/handlers/group_handlers.py'
+
+'area: blacklist':
+  - 'src/services/blacklist_service.py'
+  - 'src/models/blacklist.py'
+  - 'src/telegram/handlers/blacklist_handlers.py'
+
+# Infrastructure
+'infra: ci/cd':
+  - '.github/workflows/**'
+  - '.github/dependabot.yml'
+
+'infra: build':
+  - 'pyproject.toml'
+  - 'Makefile'
+  - 'scripts/**'
+
+'infra: docker':
+  - 'Dockerfile*'
+  - 'docker-compose*.yml'
+  - '.dockerignore'
+
+# Documentation
+'docs: readme':
+  - 'README.md'
+  - 'docs/GETTING_STARTED.md'
+
+'docs: api':
+  - 'docs/API.md'
+
+'docs: setup':
+  - 'docs/SETUP_GUIDE.md'
+  - 'docs/CONTRIBUTING.md'
+
+'docs: other':
+  - 'docs/**'
+  - '**/*.md'
+
+# Testing
+'tests: unit':
+  - 'tests/test_*.py'
+  - 'tests/**/test_*.py'
+
+'tests: integration':
+  - 'tests/integration/**'
+
+'tests: health':
+  - 'scripts/health_check.py'
+  - 'tests/test_health_check.py'
+
+# Security
+'security':
+  - '.github/workflows/security.yml'
+  - '.github/workflows/codeql.yml'
+  - 'src/core/config.py'
+  - '.env.example'
+
+# Dependencies
+'dependencies':
+  - 'pyproject.toml'
+  - 'requirements*.txt'
+
+# Size labels based on lines changed
+'size: xs':
+  - '**'
+'size: s':
+  - '**'
+'size: m':
+  - '**'
+'size: l':
+  - '**'
+'size: xl':
+  - '**'
+
+# Priority labels (manual assignment usually, but can be automated based on files)
+'priority: critical':
+  - 'src/core/**'
+  - 'main.py'
+  - '.github/workflows/**'
+
+'priority: high':
+  - 'src/telegram/**'
+  - 'src/services/**'
+
+'priority: normal':
+  - 'src/models/**'
+  - 'docs/**'
+  - 'tests/**'

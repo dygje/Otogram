@@ -1,0 +1,30 @@
+# 👨‍💻 Code Owners for Otogram
+# This file defines who should review code changes in different parts of the repository
+# Learn more: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Global ownership - dygje owns everything by default
+* @dygje
+
+# Core system components require extra attention
+/src/core/ @dygje
+/src/models/ @dygje
+
+# Telegram integration is critical - requires maintainer review
+/src/telegram/ @dygje
+
+# Configuration and deployment files
+/.github/ @dygje
+/pyproject.toml @dygje
+/Makefile @dygje
+/main.py @dygje
+
+# Documentation changes
+/docs/ @dygje
+/README.md @dygje
+
+# Security-sensitive files
+/.env.example @dygje
+/scripts/ @dygje
+
+# Test files - ensure quality
+/tests/ @dygje

@@ -1,0 +1,22 @@
+# 💖 Funding Information for Otogram
+# Support the development of this Telegram automation system
+
+# GitHub Sponsors (if you set up GitHub Sponsors)
+github: [dygje]
+
+# Other funding platforms (uncomment and modify as needed)
+# patreon: your-patreon-username  
+# open_collective: your-collective-name
+# ko_fi: your-kofi-username
+# tidelift: pypi/your-package-name
+# community_bridge: your-project-name
+# liberapay: your-liberapay-username
+# issuehunt: your-issuehunt-username
+# buy_me_a_coffee: your-buymeacoffee-username
+# custom: ['https://your-custom-funding-url.com']
+
+# Custom funding URLs (example)
+custom: [
+  'https://github.com/sponsors/dygje',
+  'https://paypal.me/dygje'  # Replace with your actual PayPal link
+]
