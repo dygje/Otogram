@@ -14,11 +14,11 @@ setup: install-dev pre-commit ## Complete development setup
 	@echo "✅ Development environment setup complete!"
 	@echo "Run 'make health' to verify installation"
 
-install: ## Install all dependencies
-	@echo "📦 Installing dependencies..."
-	pip install --upgrade pip
-	pip install -r requirements.txt
-	@echo "✅ Dependencies installed"
+install: ## Install production dependencies
+	@echo "📦 Installing production dependencies..."
+	python -m pip install --upgrade pip
+	pip install -e .
+	@echo "✅ Production dependencies installed"
 
 install-dev: ## Install development dependencies
 	@echo "📦 Installing development dependencies..."
