@@ -12,9 +12,9 @@ from src.core.config import settings
 class Database:
     """Database connection manager"""
 
-    def __init__(self):
-        self.client: AsyncIOMotorClient = None
-        self.db: AsyncIOMotorDatabase = None
+    def __init__(self) -> None:
+        self.client: Optional[AsyncIOMotorClient] = None
+        self.db: Optional[AsyncIOMotorDatabase] = None
 
     async def connect(self):
         """Connect to MongoDB"""
