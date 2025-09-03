@@ -60,11 +60,11 @@ docs = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/your-org/telegram-automation-system"
-Documentation = "https://github.com/your-org/telegram-automation-system/tree/main/docs"
-Repository = "https://github.com/your-org/telegram-automation-system"
-Issues = "https://github.com/your-org/telegram-automation-system/issues"
-Changelog = "https://github.com/your-org/telegram-automation-system/blob/main/docs/CHANGELOG.md"
+Homepage = "https://github.com/dygje/Otogram"
+Documentation = "https://dygje.github.io/Otogram"
+Repository = "https://github.com/dygje/Otogram"
+Issues = "https://github.com/dygje/Otogram/issues"
+Changelog = "https://github.com/dygje/Otogram/blob/main/docs/CHANGELOG.md"
 
 [project.scripts]
 telegram-automation = "main:main"
