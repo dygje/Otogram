@@ -23,13 +23,13 @@ from src.telegram.bot_manager import BotManager
 class TelegramAutomationApp:
     """Main Application Class"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.bot_manager = None
         self.database = None
         self.running = False
         self._setup_logging()
 
-    def _setup_logging(self):
+    def _setup_logging(self) -> None:
         """Configure logging system"""
         logger.remove()  # Remove default handler
 
