@@ -64,7 +64,7 @@ class GroupHandlers:
 
                 keyboard.extend(
                     [
-                        [InlineKeyboardButton("➕ Tambah Grup", callback_data="groups_add")],
+                        [InlineKeyboardButton("+ Tambah Grup", callback_data="groups_add")],
                         [InlineKeyboardButton("📋 Tambah Massal", callback_data="groups_bulk")],
                     ]
                 )
