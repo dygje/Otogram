@@ -3,14 +3,15 @@ Application Configuration
 Enhanced with additional safety settings and validation
 """
 
-from pydantic import ConfigDict, Field, field_validator
-from pydantic_settings import BaseSettings
+from pydantic import Field, field_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
+from typing import Any
 
 
 class Settings(BaseSettings):
     """Application settings from environment variables"""
 
-    model_config = ConfigDict(env_file=".env", case_sensitive=True, validate_assignment=True)
+    model_config = SettingsConfigDict(env_file=".env", case_sensitive=True, validate_assignment=True)
 
     # Database Configuration
     MONGO_URL: str = Field(default="mongodb://localhost:27017")
