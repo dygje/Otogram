@@ -127,7 +127,7 @@ jobs:
 
     - name: "📊 Upload Coverage Reports"
       uses: codecov/codecov-action@v4
-      if: success()
+      if: always()
       with:
         file: ./coverage.xml
         flags: unittests
