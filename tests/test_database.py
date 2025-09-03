@@ -77,7 +77,7 @@ class TestDatabase:
         collection = db.get_collection("test_crud")
 
         # Create
-        test_doc = {"name": "test", "value": 123}
+        test_doc = {"name": "test", "value": TEST_VALUE_INITIAL}
         insert_result = await collection.insert_one(test_doc)
         assert insert_result.inserted_id is not None
 
@@ -85,15 +85,15 @@ class TestDatabase:
         found_doc = await collection.find_one({"name": "test"})
         assert found_doc is not None
         assert found_doc["name"] == "test"
-        assert found_doc["value"] == 123
+        assert found_doc["value"] == TEST_VALUE_INITIAL
 
         # Update
-        update_result = await collection.update_one({"name": "test"}, {"$set": {"value": 456}})
+        update_result = await collection.update_one({"name": "test"}, {"$set": {"value": TEST_VALUE_UPDATED}})
         assert update_result.modified_count == 1
 
         # Verify update
         updated_doc = await collection.find_one({"name": "test"})
-        assert updated_doc["value"] == 456
+        assert updated_doc["value"] == TEST_VALUE_UPDATED
 
         # Delete
         delete_result = await collection.delete_one({"name": "test"})
