@@ -4,6 +4,7 @@ Group Handlers - Handle group management through bot
 
 from loguru import logger
 
+from src.core.constants import MAX_GROUPS_DISPLAY, MAX_BULK_SUCCESS_DISPLAY
 from src.models.group import GroupBulkCreate, GroupCreate
 from src.services.group_service import GroupService
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
