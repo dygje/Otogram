@@ -344,7 +344,7 @@ class ManagementBot:
         except Exception:
             await update.callback_query.edit_message_text("❌ Error loading messages dashboard")
 
-    async def _show_groups_dashboard(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+    async def _show_groups_dashboard(self, update: Update, _context: ContextTypes.DEFAULT_TYPE):
         """Show groups dashboard with modern layout"""
         try:
             groups = await self.group_handlers.group_service.get_all_groups()
