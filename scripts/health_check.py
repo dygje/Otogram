@@ -135,12 +135,14 @@ def check_python_version():
         return True
     elif version.major >= PYTHON_MAJOR_REQUIRED and version.minor >= PYTHON_MINOR_MINIMUM:
         print(
-            f"⚠️ Python {version.major}.{version.minor}.{version.micro} - Works but 3.11+ recommended"
+            f"⚠️ Python {version.major}.{version.minor}.{version.micro} - "
+            f"Works but 3.11+ recommended"
         )
         return True
     else:
         print(
-            f"❌ Python {version.major}.{version.minor}.{version.micro} - Requires 3.11+ (minimum 3.8)"
+            f"❌ Python {version.major}.{version.minor}.{version.micro} - "
+            f"Requires 3.11+ (minimum 3.8)"
         )
         return False
 
