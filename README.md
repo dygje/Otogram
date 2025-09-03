@@ -21,81 +21,80 @@ python scripts/setup.py
 python main.py
 ```
 
-## 🏗️ Architecture
+## ✨ Key Features
 
-- **Language**: Python 3.11+
+### 🎯 **Core Automation**
+- **Mass Broadcasting** - Send messages to multiple groups automatically
+- **Smart Scheduling** - Intelligent delay and timing management  
+- **Real-time Monitoring** - Dashboard and analytics through Telegram bot
+
+### 🛡️ **Safety & Reliability**
+- **Smart Blacklist** - Auto-blacklist problematic groups (temporary/permanent)
+- **Flood Protection** - Anti-flood with dynamic delays
+- **Error Recovery** - Auto-recovery from Telegram errors
+- **Rate Limiting** - Smart retry with exponential backoff
+
+### 🎛️ **Management Interface**
+- **Telegram Bot** - Complete system control through Telegram
+- **Message Management** - CRUD operations for broadcast messages
+- **Group Management** - Bulk import and organize target groups
+- **Configuration** - Flexible system settings and monitoring
+
+## 🏗️ Modern Architecture
+
+- **Language**: Python 3.11+ with type hints
 - **Framework**: Pyrogram (MTProto) + python-telegram-bot
-- **Database**: MongoDB 
-- **Pattern**: Clean Architecture
+- **Database**: MongoDB with optimized indexes
+- **Pattern**: Clean Architecture with separation of concerns
 
 ```
 src/
 ├── core/           # Infrastructure (config, database)
-├── models/         # Domain entities  
-├── services/       # Business logic
-└── telegram/       # Interface layer
+├── models/         # Domain entities with Pydantic
+├── services/       # Business logic layer
+└── telegram/       # Interface layer (bot + userbot)
 ```
-
-## ✨ Features
-
-### 🎯 **Core Features**
-- **Mass Broadcasting** - Kirim pesan ke multiple grup secara otomatis
-- **Smart Blacklist** - Auto-blacklist grup bermasalah (temporary/permanent)
-- **Telegram Bot Interface** - Kelola sistem melalui Telegram bot
-- **Real-time Monitoring** - Dashboard dan analytics lengkap
-
-### 🛡️ **Safety Features**
-- **Flood Protection** - Anti-flood dengan delay dinamis
-- **Error Recovery** - Auto-recovery dari error Telegram
-- **Rate Limiting** - Kontrol rate sesuai limit Telegram
-- **Smart Retry** - Retry dengan exponential backoff
-
-### 🔧 **Management Features**
-- **Message Management** - CRUD pesan broadcast
-- **Group Management** - Kelola grup target (bulk import)
-- **Configuration** - Setting sistem yang fleksibel
-- **Logs & Analytics** - Tracking performance dan errors
 
 ## 📋 Requirements
 
 ### System Requirements
-- **Python**: 3.11+ (recommended), minimum 3.8
-- **MongoDB**: 4.4+
+- **Python**: 3.11+ (with type checking)
+- **MongoDB**: 4.4+ (local or cloud)
 - **RAM**: 1GB minimum, 2GB recommended
 - **OS**: Ubuntu 20.04+, macOS 12+, Windows 10+
 
 ### Telegram Requirements
-- **API Credentials** dari [my.telegram.org](https://my.telegram.org)
-- **Bot Token** dari [@BotFather](https://t.me/BotFather)
-- **Phone Number** untuk userbot (same account as API)
+- **API Credentials** from [my.telegram.org](https://my.telegram.org)
+- **Bot Token** from [@BotFather](https://t.me/BotFather)
+- **Phone Number** for userbot authentication
 
-## 🛠️ Installation
+## 🛠️ Installation & Setup
 
-### 1. Clone & Dependencies
+### 1. Clone & Install
 
 ```bash
-git clone <repository>
-cd telegram-automation-system
-pip install -r requirements.txt
+git clone https://github.com/dygje/Otogram.git
+cd Otogram
+pip install -e ".[dev]"
 ```
 
-### 2. Setup Environment
+### 2. Environment Setup
 
-**Option A: Interactive Setup (Recommended)**
+**Interactive Setup (Recommended)**
 ```bash
-python scripts/setup.py
+make setup-wizard
 ```
 
-**Option B: Manual Setup**
+**Manual Setup**
 ```bash
 cp .env.example .env
-# Edit .env dengan credentials Anda
+# Edit .env with your credentials
 ```
 
 ### 3. Verify Installation
 
 ```bash
-python scripts/health_check.py
+make health
 ```
 
 Expected output:
