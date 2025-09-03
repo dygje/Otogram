@@ -1,448 +1,594 @@
-# 📡 API Reference - Otogram System
+# 📚 Otogram API Documentation
 
-Complete technical reference for core components, verified through testing and analysis.
+> **Comprehensive API reference for Otogram - Advanced Telegram Automation System**
 
-## ✅ Verified System Architecture
+## 🏗️ Architecture Overview
 
-### Configuration Management (`src/core/config.py`)
+Otogram follows **Clean Architecture** principles with clear separation of concerns:
 
-**Settings Class - Production Ready**
+```
+src/
+├── core/           # Infrastructure & Configuration
+├── models/         # Domain Entities (Pydantic Models)
+├── services/       # Business Logic Layer
+└── telegram/       # Interface Layer (Bot + UserBot)
+```
+
+## 🔧 Core Configuration
+
+### Settings Class
+
+**Location**: `src/core/config.py`
+
 ```python
 from src.core.config import settings
 
-# Database Configuration ✅
-settings.MONGO_URL              # mongodb://localhost:27017
-settings.DB_NAME               # telegram_automation
+# Database Configuration
+settings.MONGO_URL          # MongoDB connection string
+settings.DB_NAME            # Database name (default: "otogram")
 
-# Telegram Credentials ✅  
-settings.TELEGRAM_API_ID       # 21507942 (8-digit API ID)
-settings.TELEGRAM_API_HASH     # 399fae... (32-char hash)
-settings.TELEGRAM_BOT_TOKEN    # 8118820592:AAFX... (bot token)
-settings.TELEGRAM_PHONE_NUMBER # +6282298147520 (international format)
+# Telegram Credentials
+settings.TELEGRAM_API_ID    # API ID from my.telegram.org
+settings.TELEGRAM_API_HASH  # API Hash from my.telegram.org
+settings.TELEGRAM_BOT_TOKEN # Bot token from @BotFather
+settings.TELEGRAM_PHONE_NUMBER # Phone number for userbot
 
-# Timing Configuration ✅
-settings.MIN_MESSAGE_DELAY     # 5 seconds (between messages)
-settings.MAX_MESSAGE_DELAY     # 10 seconds (between messages)  
-settings.MIN_CYCLE_DELAY_HOURS # 1.1 hours (between cycles)
-settings.MAX_CYCLE_DELAY_HOURS # 1.3 hours (between cycles)
+# System Settings
+settings.LOG_LEVEL          # Logging level (default: "INFO")
+settings.ENABLE_DEBUG       # Debug mode (default: False)
 
-# Safety Limits ✅
-settings.MAX_GROUPS_PER_CYCLE  # 50 groups per cycle
-settings.MAX_MESSAGES_PER_DAY  # 1000 messages per day
-settings.AUTO_CLEANUP_BLACKLIST # True (auto cleanup enabled)
+# Message Timing
+settings.MIN_MESSAGE_DELAY  # Min delay between messages (default: 5s)
+settings.MAX_MESSAGE_DELAY  # Max delay between messages (default: 10s)
+settings.MIN_CYCLE_DELAY_HOURS # Min delay between cycles (default: 1.1h)
+settings.MAX_CYCLE_DELAY_HOURS # Max delay between cycles (default: 1.3h)
 
-# System Settings ✅
-settings.LOG_LEVEL             # INFO, DEBUG, WARNING, ERROR
-settings.SESSION_DIR           # sessions/ (Pyrofork sessions)
-settings.LOG_DIR              # logs/ (application logs)
+# Safety Limits
+settings.MAX_GROUPS_PER_CYCLE    # Max groups per cycle (default: 50)
+settings.MAX_MESSAGES_PER_DAY    # Daily message limit (default: 1000)
+settings.AUTO_CLEANUP_BLACKLIST  # Auto cleanup blacklist (default: True)
 ```
 
-### Database Management (`src/core/database.py`)
+### Database Connection
 
-**Global Database Instance - Thread Safe**
+**Location**: `src/core/database.py`
+
 ```python
 from src.core.database import database
 
-# Connection Management ✅
-await database.connect()       # Connect to MongoDB with indexes
-await database.disconnect()    # Clean disconnect
-collection = database.get_collection("messages")  # Get collection
+# Connect to database
+await database.connect()
 
-# Verified Collections:
-# - messages (broadcast messages)
-# - groups (target groups) 
-# - blacklists (temporary/permanent)
-# - logs (system logs)
-# - configurations (runtime config)
+# Get collection
+collection = database.get_collection("messages")
+
+# Disconnect
+await database.disconnect()
 ```
 
-### Intelligent Services Layer
+## 📊 Data Models
 
-#### Message Service (`src/services/message_service.py`) ✅
+### Base Document
+
+**Location**: `src/models/base.py`
+
+```python
+from src.models.base import BaseDocument
+
+class BaseDocument(BaseModel):
+    id: str                    # UUID4 string
+    created_at: datetime       # Creation timestamp
+    updated_at: datetime       # Last update timestamp
+    
+    def update_timestamp(self): # Update timestamp method
+```
+
+### Message Model
+
+**Location**: `src/models/message.py`
+
+```python
+from src.models.message import Message
+
+class Message(BaseDocument):
+    content: str               # Message content
+    is_active: bool = True     # Active status
+    usage_count: int = 0       # Usage counter
+    
+    def toggle_active(self):   # Toggle active status
+    def increment_usage(self): # Increment usage count
+```
+
+**Example Usage**:
+```python
+# Create message
+message = Message(content="Hello World!")
+
+# Toggle active status
+message.toggle_active()
+
+# Increment usage
+message.increment_usage()
+```
+
+### Group Model
+
+**Location**: `src/models/group.py`
+
+```python
+from src.models.group import Group
+
+class Group(BaseDocument):
+    group_id: str              # Telegram group ID
+    title: str = "Unknown"     # Group title
+    username: str = None       # Group username (@username)
+    is_active: bool = True     # Active status
+    member_count: int = 0      # Member count
+    last_message_at: datetime = None # Last message timestamp
+    
+    @classmethod
+    def create_bulk(cls, identifiers: str) # Create multiple groups
+```
+
+**Example Usage**:
+```python
+# Single group
+group = Group(
+    group_id="-1001234567890",
+    title="My Group",
+    username="mygroup"
+)
+
+# Bulk creation
+groups_text = """
+-1001234567890
+@mygroup
+https://t.me/anothergroup
+"""
+groups = Group.create_bulk(groups_text)
+```
+
+### Blacklist Model
+
+**Location**: `src/models/blacklist.py`
+
+```python
+from src.models.blacklist import Blacklist, BlacklistType
+
+class Blacklist(BaseDocument):
+    group_id: str              # Group ID
+    blacklist_type: BlacklistType # permanent/temporary/slowmode
+    reason: str                # Blacklist reason
+    duration_seconds: int = None # Duration for temporary
+    expires_at: datetime = None  # Expiration time
+    group_identifier: str = None # Original identifier
+    
+    def is_expired(self) -> bool # Check if expired
+```
+
+**Blacklist Types**:
+```python
+class BlacklistType(str, Enum):
+    PERMANENT = "permanent"    # Permanent blacklist
+    TEMPORARY = "temporary"    # Temporary blacklist
+    SLOWMODE = "slowmode"      # SlowMode restriction
+```
+
+**Example Usage**:
+```python
+# Permanent blacklist
+blacklist = Blacklist(
+    group_id="-1001234567890",
+    blacklist_type=BlacklistType.PERMANENT,
+    reason="UserDeactivated"
+)
+
+# Temporary blacklist (1 hour)
+temp_blacklist = Blacklist(
+    group_id="-1001234567890",
+    blacklist_type=BlacklistType.TEMPORARY,
+    reason="FloodWait",
+    duration_seconds=3600
+)
+
+# Check if expired
+if temp_blacklist.is_expired():
+    print("Blacklist has expired")
+```
+
+### Log Model
+
+**Location**: `src/models/log.py`
+
+```python
+from src.models.log import LogEntry, LogType, LogLevel
+
+class LogEntry(BaseDocument):
+    log_type: LogType          # Log type
+    level: LogLevel            # Log level
+    message: str               # Log message
+    group_id: str = None       # Related group ID
+    details: dict = {}         # Additional details
+```
+
+## 🔄 Business Logic Services
+
+### Message Service
+
+**Location**: `src/services/message_service.py`
 
 ```python
 from src.services.message_service import MessageService
-from src.models.message import MessageCreate, MessageUpdate
 
 service = MessageService()
 
-# CRUD Operations - Fully Tested
-message = await service.create_message(
-    MessageCreate(content="Hello World!")
-)
-messages = await service.get_active_messages()    # Only active messages
-all_messages = await service.get_all_messages()   # All messages
-await service.update_message(message.id, MessageUpdate(is_active=False))
-await service.delete_message(message.id)
+# CRUD Operations
+message = await service.create_message("Hello World!")
+messages = await service.get_all_messages()
+active_messages = await service.get_active_messages()
+message = await service.get_message_by_id("message_id")
+updated = await service.update_message("message_id", content="New content")
+deleted = await service.delete_message("message_id")
 
-# Statistics & Analytics
-stats = await service.get_message_count()
-# Returns: {"total": 5, "active": 3, "inactive": 2}
-
-# Usage Tracking
-await service.increment_usage_count(message.id)
-```
-
-#### Group Service (`src/services/group_service.py`) ✅
-
-```python  
-from src.services.group_service import GroupService
-from src.models.group import GroupCreate, GroupBulkCreate
-
-service = GroupService()
-
-# Single Group Management
-group = await service.create_group(
-    GroupCreate(group_identifier="-1001234567890")  # ID format
-)
-group = await service.create_group(
-    GroupCreate(group_identifier="@groupname")      # Username format  
-)
-group = await service.create_group(
-    GroupCreate(group_identifier="https://t.me/groupname")  # Link format
-)
-
-# Bulk Group Operations
-bulk_data = GroupBulkCreate(identifiers="""
--1001111111111
-@group2
-https://t.me/group3
-""")
-groups = await service.create_groups_bulk(bulk_data)
-
-# Group Management
-active_groups = await service.get_active_groups()
-await service.update_group_info(group.id, title="New Title", is_active=False)
-await service.increment_message_count(group.group_id)
+# Status Operations
+toggled = await service.toggle_message_status("message_id")
+incremented = await service.increment_usage("message_id")
 
 # Statistics
-stats = await service.get_group_stats()
+stats = await service.get_message_stats()
 # Returns: {"total": 10, "active": 8, "inactive": 2}
 ```
 
-#### Blacklist Service (`src/services/blacklist_service.py`) ✅
+### Group Service
 
-**Advanced Error Classification System**
+**Location**: `src/services/group_service.py`
+
+```python
+from src.services.group_service import GroupService
+
+service = GroupService()
+
+# CRUD Operations
+group = await service.create_group("-1001234567890", "Group Title")
+groups = await service.get_all_groups()
+active_groups = await service.get_active_groups()
+group = await service.get_group_by_id("group_id")
+updated = await service.update_group_info("group_id", title="New Title")
+deleted = await service.delete_group("group_id")
+
+# Bulk Operations
+results = await service.create_groups_bulk("group1\ngroup2\ngroup3")
+# Returns: {"success": [...], "failed": [...], "duplicates": [...]}
+
+# Status Operations
+toggled = await service.toggle_group_status("group_id")
+updated = await service.update_last_message_time("group_id")
+
+# Statistics
+stats = await service.get_group_stats()
+# Returns: {"total": 15, "active": 12, "inactive": 3}
+```
+
+### Blacklist Service
+
+**Location**: `src/services/blacklist_service.py`
+
 ```python
 from src.services.blacklist_service import BlacklistService
-from src.models.blacklist import BlacklistCreate, BlacklistType, BlacklistReason
 
 service = BlacklistService()
 
-# Automatic Error-Based Blacklisting  
-await service.add_from_error(
+# CRUD Operations
+blacklist = await service.add_to_blacklist(
     group_id="-1001234567890",
-    error_msg="ChatForbidden: Chat not found",
-    group_identifier="@group"
+    blacklist_type="permanent",
+    reason="UserDeactivated"
 )
 
-# Manual Blacklist Management
-permanent_blacklist = await service.add_to_blacklist(
-    BlacklistCreate(
-        group_id="-1001234567890",
-        blacklist_type=BlacklistType.PERMANENT,
-        reason=BlacklistReason.CHAT_FORBIDDEN,
-        error_message="Group banned bot"
-    )
+blacklists = await service.get_all_blacklists()
+active_blacklists = await service.get_active_blacklists()
+blacklist = await service.get_blacklist_by_group("group_id")
+removed = await service.remove_from_blacklist("group_id")
+
+# Cleanup Operations
+count = await service.cleanup_expired_blacklists()
+
+# Error-based Blacklisting
+blacklist = await service.add_from_error(
+    group_id="-1001234567890",
+    error_msg="FloodWait: retry after 3600 seconds",
+    group_identifier="@mygroup"
 )
 
-temporary_blacklist = await service.add_to_blacklist(
-    BlacklistCreate(
-        group_id="-1001234567890", 
-        blacklist_type=BlacklistType.TEMPORARY,
-        reason=BlacklistReason.SLOW_MODE_WAIT,
-        duration_seconds=300,
-        error_message="SlowModeWait 300"
-    )
-)
-
-# Blacklist Operations
-is_blocked = await service.is_blacklisted("-1001234567890")
-cleaned = await service.cleanup_expired()  # Returns count of cleaned entries
-await service.remove_from_blacklist("-1001234567890")
-
-# Statistics & Analytics
-stats = await service.get_blacklist_stats()
-# Returns: {"total": 15, "permanent": 5, "temporary": 8, "expired": 2}
+# Check Operations
+is_blacklisted = await service.is_blacklisted("group_id")
+# Returns: (True/False, reason_or_none)
 ```
 
-### Telegram Integration Layer
+### Configuration Service
 
-#### Bot Manager (`src/telegram/bot_manager.py`) ✅
+**Location**: `src/services/config_service.py`
 
-**Orchestration of Management Bot + UserBot**
+```python
+from src.services.config_service import ConfigService
+
+service = ConfigService()
+
+# Configuration Management
+config = await service.get_config("min_message_delay")
+updated = await service.set_config("min_message_delay", 7)
+all_configs = await service.get_all_configs()
+
+# System Information
+system_info = await service.get_system_info()
+# Returns detailed system information dict
+```
+
+## 🤖 Telegram Integration
+
+### Bot Manager
+
+**Location**: `src/telegram/bot_manager.py`
+
 ```python
 from src.telegram.bot_manager import BotManager
 
-manager = BotManager()
+bot_manager = BotManager()
 
-# Service Management - Tested Working
-await manager.start()          # Starts management bot + userbot
-await manager.stop()           # Graceful shutdown both bots
-manager.is_running()          # Returns boolean status
+# Lifecycle Management
+await bot_manager.start()    # Start both bots
+await bot_manager.stop()     # Stop both bots
+is_running = bot_manager.is_running()
 
-# Components:  
-# - manager.management_bot (Telegram bot interface)
-# - manager.userbot (MTProto broadcasting client)
-# - manager.config_service (Runtime configuration)
+# Component Access
+management_bot = bot_manager.management_bot
+userbot = bot_manager.userbot
 ```
 
-#### Management Bot (`src/telegram/management_bot.py`) ✅
+### Management Bot
 
-**Modern Telegram Interface - Fully Functional**
+**Location**: `src/telegram/management_bot.py`
 
-```python
-# Available Commands (All Implemented):
-/start    - 🤖 Initialize bot with welcome screen
-/help     - 📚 Comprehensive help system  
-/menu     - 📊 Main dashboard with statistics
-/status   - ⚙️ Real-time system status
-/messages - 📝 Message CRUD management
-/addmessage - ➕ Quick add single message
-/groups   - 👥 Group CRUD management  
-/addgroup - ➕ Quick add single group
-/addgroups - 📋 Bulk group import
-/config   - ⚙️ System configuration
-/blacklist - 🚫 Blacklist monitoring
+The management bot provides a modern Telegram interface for system control.
 
-# Modern Interface Features:
-# ✅ Inline keyboard navigation
-# ✅ Contextual callback handling  
-# ✅ Input state management
-# ✅ Real-time statistics display
-# ✅ Error handling with user feedback
-```
+**Key Features**:
+- Modern dashboard with inline keyboards
+- Message CRUD operations
+- Group management (single and bulk)
+- Blacklist management
+- System configuration
+- Real-time status monitoring
+- Interactive tutorials
 
-#### UserBot (`src/telegram/userbot.py`) ✅
+**Main Commands**:
+- `/start` - Initialize bot interface
+- `/menu` - Main dashboard
+- `/status` - System status
+- `/help` - Help center
 
-**MTProto Broadcasting Engine - Specification Perfect**
+### UserBot (Broadcasting Engine)
+
+**Location**: `src/telegram/userbot.py`
 
 ```python
 from src.telegram.userbot import UserBot
 
 userbot = UserBot()
 
-# Authentication & Connection  
-await userbot.start()          # MTProto auth with phone + OTP
-await userbot.stop()           # Clean disconnection
+# Lifecycle
+await userbot.start()
+await userbot.stop()
 
-# Core Broadcasting Features (All Verified):
-# ✅ Automatic blacklist cleanup at cycle start (line 95-100)
-# ✅ SlowModeWait: Skip + continue to next group (line 195-216)  
-# ✅ FloodWait: Record duration + skip appropriately (line 195-216)
-# ✅ Random message delays: 5-10 seconds (line 275-280)
-# ✅ Random cycle delays: 1.1-1.3 hours (line 282-300)
-# ✅ Error classification: Permanent vs temporary (line 218-246)
-# ✅ Group shuffling for natural behavior (line 131-132)
-# ✅ Comprehensive error mapping (line 230-241)
+# Broadcasting Operations
+await userbot.start_broadcasting()  # Start broadcast cycle
+await userbot.stop_broadcasting()   # Stop broadcasting
+is_broadcasting = userbot.is_broadcasting()
 
-# Broadcasting Loop Logic:
-async def _broadcasting_loop(self):
-    """
-    1. Cleanup expired blacklist entries ✅
-    2. Get active messages and groups ✅  
-    3. Skip blacklisted groups ✅
-    4. Send random message to each group ✅
-    5. Handle errors with appropriate blacklisting ✅
-    6. Random delays between messages ✅
-    7. Wait for next cycle with random delay ✅
-    """
+# Manual Operations
+success = await userbot.send_message_to_group("group_id", "message")
 ```
 
-## 🔧 Error Handling System
+## 🎛️ Handler Classes
 
-### Telegram Error Classification ✅
+### Message Handlers
 
-**Permanent Errors → Permanent Blacklist**
+**Location**: `src/telegram/handlers/message_handlers.py`
+
+- `list_messages()` - Show all messages
+- `add_message_prompt()` - Add new message
+- `handle_new_message()` - Process new message
+- `show_message_detail()` - Show message details
+- `delete_message_confirm()` - Delete confirmation
+
+### Group Handlers
+
+**Location**: `src/telegram/handlers/group_handlers.py`
+
+- `list_groups()` - Show all groups
+- `add_group_prompt()` - Add new group
+- `handle_new_group()` - Process new group
+- `add_groups_bulk_prompt()` - Bulk add groups
+- `show_group_detail()` - Show group details
+
+### Blacklist Handlers
+
+**Location**: `src/telegram/handlers/blacklist_handlers.py`
+
+- `show_blacklist()` - Show blacklist entries
+- `cleanup_blacklist()` - Clean expired entries
+- `remove_from_blacklist()` - Remove specific entry
+
+### Configuration Handlers
+
+**Location**: `src/telegram/handlers/config_handlers.py`
+
+- `show_config()` - Show system configuration
+- `update_config()` - Update configuration values
+
+## 🔍 Error Handling
+
+### Telegram Error Mapping
+
+The system automatically handles Telegram API errors:
+
 ```python
-# Automatically handled errors:
-ChatForbidden         → BlacklistReason.CHAT_FORBIDDEN  
-ChatIdInvalid        → BlacklistReason.CHAT_ID_INVALID
-UserBlocked          → BlacklistReason.USER_BLOCKED
-PeerIdInvalid        → BlacklistReason.PEER_ID_INVALID
-ChannelInvalid       → BlacklistReason.CHANNEL_INVALID
-UserBannedInChannel  → BlacklistReason.USER_BANNED_IN_CHANNEL
-ChatWriteForbidden   → BlacklistReason.CHAT_WRITE_FORBIDDEN
-ChatRestricted       → BlacklistReason.CHAT_RESTRICTED
+# Permanent Errors (auto-blacklist forever)
+- "UserDeactivated" - User deleted account
+- "ChatDeactivated" - Chat was deleted
+- "UserBlocked" - User blocked the bot
+- "ChatAdminRequired" - Need admin rights
+
+# Temporary Errors (auto-blacklist with timer)
+- "FloodWait" - Rate limiting (respects wait time)
+- "SlowMode" - Chat has slow mode enabled
+- "ChatWriteForbidden" - Temporarily can't write
+
+# Recoverable Errors (retry)
+- "NetworkError" - Connection issues
+- "ServerError" - Telegram server issues
 ```
 
-**Temporary Errors → Temporary Blacklist + Skip**
+## 📈 Statistics and Monitoring
+
+### Message Statistics
 ```python
-# Smart duration extraction:
-SlowmodeWait(300)    → 300 seconds temporary blacklist
-FloodWait(3600)      → 3600 seconds temporary blacklist
-
-# Behavior: Skip group immediately, continue to next group, 
-# auto-cleanup when duration expires
+stats = await message_service.get_message_stats()
+# {
+#   "total": 25,
+#   "active": 20,
+#   "inactive": 5,
+#   "total_usage": 150
+# }
 ```
 
-### Advanced Models (Pydantic Validation)
-
-#### Message Model (`src/models/message.py`) ✅
+### Group Statistics
 ```python
-from src.models.message import Message, MessageCreate, MessageUpdate
-
-# Message Entity
-message = Message(
-    id="uuid4-string",           # Auto-generated UUID
-    content="Broadcast message", # 1-4096 characters
-    is_active=True,             # Active/inactive status
-    usage_count=0,              # Times used in broadcasts  
-    created_at=datetime.utcnow(), # Auto timestamp
-    updated_at=datetime.utcnow()  # Auto timestamp
-)
-
-# Creation/Update DTOs with validation
-create_data = MessageCreate(content="Hello World!")
-update_data = MessageUpdate(is_active=False)
+stats = await group_service.get_group_stats()
+# {
+#   "total": 100,
+#   "active": 85,
+#   "inactive": 15,
+#   "avg_members": 250
+# }
 ```
 
-#### Group Model (`src/models/group.py`) ✅  
+### System Health
 ```python
-from src.models.group import Group, GroupCreate, GroupBulkCreate
-
-# Group Entity  
-group = Group(
-    id="uuid4-string",                    # Auto-generated UUID
-    group_id="-1001234567890",           # Telegram group ID
-    group_username="@groupname",          # Username (optional)
-    group_link="https://t.me/groupname", # Invite link (optional) 
-    group_title="Group Title",           # Title (optional)
-    is_active=True,                      # Active status
-    message_count=0                      # Messages sent counter
-)
-
-# Flexible group creation with smart parsing
-create_data = GroupCreate(group_identifier="-1001234567890")  # ID
-create_data = GroupCreate(group_identifier="@groupname")      # Username  
-create_data = GroupCreate(group_identifier="t.me/groupname") # Link
-
-# Bulk operations
-bulk_data = GroupBulkCreate(identifiers="@group1\n-1001111\nt.me/group3")
+health = await config_service.get_system_info()
+# {
+#   "database_status": "connected",
+#   "userbot_status": "running",
+#   "management_bot_status": "running",
+#   "last_broadcast_cycle": "2025-01-20T10:30:00",
+#   "messages_sent_today": 45,
+#   "uptime": "2 days, 5 hours"
+# }
 ```
 
-#### Blacklist Model (`src/models/blacklist.py`) ✅
-```python
-from src.models.blacklist import (
-    Blacklist, BlacklistCreate, BlacklistType, BlacklistReason
-)
+## 🔐 Security Features
 
-# Blacklist Entity with smart expiration
-blacklist = Blacklist(
-    id="uuid4-string",
-    group_id="-1001234567890",
-    group_identifier="@groupname",
-    blacklist_type=BlacklistType.TEMPORARY,  # PERMANENT or TEMPORARY
-    reason=BlacklistReason.SLOW_MODE_WAIT,   # Specific error reason
-    expires_at=datetime.utcnow() + timedelta(seconds=300),
-    duration_seconds=300,
-    error_message="SlowModeWait 300"
-)
+### Rate Limiting
+- Message delays: 5-10 seconds between messages
+- Cycle delays: 1.1-1.3 hours between broadcast cycles
+- Daily limits: Maximum 1000 messages per day
 
-# Smart properties
-blacklist.is_expired          # Boolean check
-blacklist.time_remaining      # Timedelta or None
-```
+### Automatic Blacklist Management
+- **Permanent**: UserDeactivated, ChatDeactivated, UserBlocked
+- **Temporary**: FloodWait (respects Telegram's wait time)
+- **SlowMode**: Automatic detection and skip
 
-## 🛠️ Production Configuration
-
-### Environment Variables (.env) ✅
-```bash
-# Telegram Configuration (All Required)
-TELEGRAM_API_ID=21507942
-TELEGRAM_API_HASH=399fae9734796b25b068050f5f03b698  
-TELEGRAM_BOT_TOKEN=8118820592:AAFX05zaXmmW3nWY2pM7s90Pbqn8f1ptc0M
-TELEGRAM_PHONE_NUMBER=+6282298147520
-
-# Database Configuration  
-MONGO_URL=mongodb://localhost:27017  
-DB_NAME=telegram_automation
-
-# Broadcasting Timing (Optimized for Safety)
-MIN_MESSAGE_DELAY=5           # Seconds between messages
-MAX_MESSAGE_DELAY=10          # Seconds between messages
-MIN_CYCLE_DELAY_HOURS=1.1     # Hours between cycles  
-MAX_CYCLE_DELAY_HOURS=1.3     # Hours between cycles
-
-# Safety Limits
-MAX_GROUPS_PER_CYCLE=50       # Groups per broadcast cycle
-MAX_MESSAGES_PER_DAY=1000     # Daily message limit
-AUTO_CLEANUP_BLACKLIST=true   # Enable auto blacklist cleanup
-
-# System Configuration
-LOG_LEVEL=INFO                # DEBUG, INFO, WARNING, ERROR
-SESSION_DIR=sessions          # Pyrofork session directory
-LOG_DIR=logs                 # Application logs directory
-```
-
-### MongoDB Indexes (Auto-Created) ✅
-```javascript
-// Automatically created by database.py _create_indexes()
-
-// Messages collection
-db.messages.createIndex({ "is_active": 1 })
-db.messages.createIndex({ "created_at": 1 })
-
-// Groups collection  
-db.groups.createIndex({ "group_id": 1 }, { unique: true })
-db.groups.createIndex({ "is_active": 1 })
-
-// Blacklists collection
-db.blacklists.createIndex({ "group_id": 1 })
-db.blacklists.createIndex({ "blacklist_type": 1 })
-db.blacklists.createIndex({ "expires_at": 1 })
-
-// Logs collection
-db.logs.createIndex({ "timestamp": 1 })
-db.logs.createIndex({ "log_type": 1 })
-
-// Configurations collection
-db.configurations.createIndex({ "key": 1 }, { unique: true })
-```
+### Error Recovery
+- Automatic retry for network errors
+- Graceful degradation on API limits
+- Complete error logging for debugging
 
 ## 🚀 Usage Examples
 
-### Complete Integration Example
+### Complete Broadcasting Workflow
 ```python
-import asyncio
-from src.core.database import database
 from src.telegram.bot_manager import BotManager
 from src.services.message_service import MessageService
 from src.services.group_service import GroupService
 
-async def main():
-    # Initialize system
-    await database.connect()
-    
-    # Setup data
-    message_service = MessageService()
-    group_service = GroupService()
-    
-    # Add broadcast content
-    message = await message_service.create_message(
-        MessageCreate(content="🎉 Hello from Otogram!")
-    )
-    
-    # Add target groups  
-    groups = await group_service.create_groups_bulk(
-        GroupBulkCreate(identifiers="""
-        @testgroup1
-        -1001234567890
-        https://t.me/testgroup3
-        """)
-    )
-    
-    # Start automation system
-    bot_manager = BotManager()
-    await bot_manager.start()
-    
-    # System will now:
-    # 1. Clean expired blacklists
-    # 2. Send messages to active groups
-    # 3. Handle errors intelligently  
-    # 4. Wait 1.1-1.3 hours for next cycle
-    # 5. Repeat automatically
+# Initialize services
+bot_manager = BotManager()
+message_service = MessageService()
+group_service = GroupService()
 
-if __name__ == "__main__":
-    asyncio.run(main())
+# Start system
+await bot_manager.start()
+
+# Add messages
+msg1 = await message_service.create_message("Hello from Otogram!")
+msg2 = await message_service.create_message("Check out our updates!")
+
+# Add groups
+groups_text = """
+-1001234567890
+@publicgroup
+https://t.me/anothergroup
+"""
+result = await group_service.create_groups_bulk(groups_text)
+print(f"Added {len(result['success'])} groups successfully")
+
+# Start broadcasting
+await bot_manager.userbot.start_broadcasting()
 ```
+
+### Manual Message Sending
+```python
+from src.telegram.userbot import UserBot
+
+userbot = UserBot()
+await userbot.start()
+
+# Send to specific group
+success = await userbot.send_message_to_group(
+    group_id="-1001234567890",
+    message="Test message"
+)
+
+if success:
+    print("Message sent successfully!")
+else:
+    print("Failed to send message")
+```
+
+## 🐛 Debugging
+
+### Enable Debug Mode
+```bash
+# In .env file
+LOG_LEVEL=DEBUG
+ENABLE_DEBUG=true
+```
+
+### Check Logs
+```bash
+# Application logs
+tail -f logs/app.log
+
+# Or use make command
+make clean-logs  # Clean old logs
+```
+
+### Health Check
+```bash
+# Full system health check
+make health
+
+# Or run directly
+python scripts/health_check.py
+```
+
+## 📚 Additional Resources
+
+- **Setup Guide**: [docs/SETUP_GUIDE.md](SETUP_GUIDE.md)
+- **Contributing**: [docs/CONTRIBUTING.md](CONTRIBUTING.md) 
+- **Security**: [docs/SECURITY.md](SECURITY.md)
+- **Changelog**: [docs/CHANGELOG.md](CHANGELOG.md)
+
+---
+
+**Last Updated**: January 2025 | **Version**: 2.0.3  
+**Status**: 🟢 Production Ready with Modern Standards
