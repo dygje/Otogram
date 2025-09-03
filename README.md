@@ -241,24 +241,20 @@ make ci-test       # Full CI pipeline
 # Security scanning
 make security      # Bandit + Safety checks
 ```
-# Format code
-make format
-
-# Run all quality checks
-make lint
-
-# Run tests with coverage
-make test
-```
-
-### Pre-commit Hooks
+### Pre-commit Hooks & Docker
 
 ```bash
-# Install hooks (runs automatically on commit)
+# Install pre-commit hooks (runs automatically on commit)
 make pre-commit
 
 # Run manually on all files
-pre-commit run --all-files
+make pre-commit-run
+
+# Docker development
+docker-compose up -d        # Run with Docker
+docker-compose logs -f      # View logs
+docker-compose down         # Stop services
+```
 ```
 
 ## 📊 Monitoring & Safety
