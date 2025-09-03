@@ -80,16 +80,6 @@ security: ## Run security checks
 		echo "⚠️ Install safety: pip install safety"; \
 	fi
 
-pre-commit: ## Install pre-commit hooks
-	@echo "🪝 Installing pre-commit hooks..."
-	pip install pre-commit
-	pre-commit install
-	@echo "✅ Pre-commit hooks installed"
-
-pre-commit-run: ## Run pre-commit on all files
-	@echo "🪝 Running pre-commit on all files..."
-	pre-commit run --all-files
-
 # Git hooks
 pre-commit: ## Install pre-commit hooks
 	@echo "🪝 Installing pre-commit hooks..."
