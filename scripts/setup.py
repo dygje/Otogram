@@ -269,7 +269,7 @@ def run_system() -> None:
         print("- Jalankan health check: python scripts/health_check.py")
 
 
-def main():
+def main() -> None:
     """Main setup function"""
     print_banner()
 
