@@ -106,141 +106,99 @@ Expected output:
 
 ### Start System
 ```bash
-python main.py
+make run
+# or directly: python main.py
 ```
 
-### First Time Setup
-1. System akan prompt untuk **OTP code** dari Telegram
-2. Jika ada 2FA, masukkan **password**
-3. Bot akan ready di Telegram
-
-### Bot Commands
+### Bot Commands Overview
 | Command | Description |
 |---------|-------------|
 | `/start` | Initialize bot interface |
-| `/menu` | Main dashboard |
+| `/menu` | Main dashboard with quick actions |
 | `/messages` | Manage broadcast messages |
 | `/groups` | Manage target groups |
 | `/config` | System configuration |
-| `/status` | System status & stats |
-| `/blacklist` | View blacklist entries |
+| `/status` | Real-time system status & statistics |
 
 ### Basic Workflow
 
-1. **Add Messages**: `/messages` → Add broadcast content
-2. **Add Groups**: `/groups` → Add target groups
-3. **Configure**: `/config` → Adjust delays & settings
-4. **Monitor**: `/status` → Check system performance
+1. **Setup Messages**: `/messages` → Add your broadcast content
+2. **Add Groups**: `/groups` → Import target groups (ID/username/links)  
+3. **Configure**: `/config` → Set delays and safety limits
+4. **Monitor**: `/status` → Track system performance and health
 
-## 📊 Dashboard Features
+## 🔧 Development
 
-### 🎛️ Main Dashboard
-- **System Statistics** - Real-time metrics
-- **Quick Actions** - Fast access to common tasks
-- **Status Overview** - Health monitoring
+### Development Commands
 
-### 📝 Message Management
-- **Add/Edit Messages** - Rich text support
-- **Bulk Operations** - Multiple message management
-- **Usage Analytics** - Message performance tracking
-
-### 👥 Group Management
-- **Multiple Formats** - ID, username, links
-- **Bulk Import** - Import many groups at once
-- **Group Analytics** - Performance per group
-
-### 🚫 Smart Blacklist
-- **Auto-Detection** - Error-based blacklisting
-- **Temporary Blocks** - Time-based recovery
-- **Manual Control** - Override auto-decisions
-
-## 🔧 Configuration
-
-### Environment Variables
 ```bash
-# Required Credentials
-TELEGRAM_API_ID=12345678
-TELEGRAM_API_HASH=abcdef1234567890abcdef1234567890
-TELEGRAM_BOT_TOKEN=123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11
-TELEGRAM_PHONE_NUMBER=+628123456789
-
-# System Settings
-LOG_LEVEL=INFO
-MIN_MESSAGE_DELAY=5
-MAX_MESSAGE_DELAY=10
-MIN_CYCLE_DELAY_HOURS=1.1
-MAX_CYCLE_DELAY_HOURS=1.3
-
-# Safety Limits
-MAX_GROUPS_PER_CYCLE=50
-MAX_MESSAGES_PER_DAY=1000
-```
-
-### Advanced Configuration
-Access via `/config` in bot or edit configurations in database.
-
-## 🛡️ Safety & Best Practices
-
-### Rate Limiting
-- **Message Delays**: 5-10 seconds between messages
-- **Cycle Delays**: 1-2 hours between broadcast cycles
-- **Group Limits**: Max 50 groups per cycle (configurable)
-
-### Error Handling
-- **Permanent Errors** → Auto-blacklist forever
-- **Temporary Errors** → Auto-blacklist with timer
-- **Unknown Errors** → Log and continue
-
-### Monitoring
-- **Real-time Dashboard** via Telegram bot
-- **File Logs** in `logs/` directory
-- **Database Logs** untuk detailed tracking
-
-## 📖 Development
-
-### Health Check
-```bash
-python scripts/health_check.py
-```
-
-### Run Tests
-```bash
-python -m pytest tests/ -v
+make help          # Show all available commands
+make setup         # Complete development setup
+make health        # Run health check
+make test          # Run test suite
+make lint          # Run code linting
+make format        # Format code with black
+make clean         # Clean temporary files
 ```
 
 ### Code Quality
+
 ```bash
 # Format code
 make format
 
-# Run linting
+# Run all quality checks
 make lint
 
-# Full development setup
-make dev
+# Run tests with coverage
+make test
 ```
 
-### Using Makefile
+### Pre-commit Hooks
+
 ```bash
-make help          # Show all available commands
-make setup         # Complete development setup
-make run           # Run the application
-make health        # Run health check
-make clean         # Clean up temporary files
+# Install hooks (runs automatically on commit)
+make pre-commit
+
+# Run manually on all files
+pre-commit run --all-files
 ```
+
+## 📊 Monitoring & Safety
+
+### Performance Metrics
+- **Throughput**: ~100-200 messages per hour (safe rate)
+- **Groups**: Supports 1000+ groups efficiently  
+- **Memory**: ~50MB RAM usage
+- **Database**: Optimized MongoDB queries with indexes
+
+### Safety Limits
+- **Message Delays**: 5-10 seconds between messages
+- **Cycle Delays**: 1-2 hours between broadcast cycles
+- **Group Limits**: Max 50 groups per cycle (configurable)
+- **Daily Limits**: Max 1000 messages per day (configurable)
+
+### Error Handling
+- **Permanent Errors** → Auto-blacklist forever
+- **Temporary Errors** → Auto-blacklist with recovery timer
+- **Unknown Errors** → Log and continue with next group
 
 ## 🔍 Troubleshooting
+
+### Health Check
+```bash
+make health
+```
 
 ### Common Issues
 
 **Authentication Failed**
 ```bash
-# Clear sessions and retry
-rm -rf sessions/
+make clean-sessions
 python main.py
 ```
 
-**Database Connection Error**
+**Database Connection Error** 
 ```bash
 # Check MongoDB status
 sudo systemctl status mongod
@@ -250,63 +208,52 @@ docker run -d -p 27017:27017 mongo:4.4
 ```
 
 **Bot Not Responding**
-1. Verify bot token dengan [@BotFather](https://t.me/BotFather)
+1. Verify bot token with [@BotFather](https://t.me/BotFather)
 2. Check network: `ping api.telegram.org`
-3. Test token:
-```bash
-curl "https://api.telegram.org/bot<TOKEN>/getMe"
-```
-
-**Import Errors**
-```bash
-# Reinstall dependencies
-pip install -r requirements.txt --upgrade
-
-# Check Python version
-python --version  # Should be 3.11+
-```
+3. Test credentials in health check
 
 ### Getting Help
 
-1. **Check Logs**: `tail -f logs/app.log`
-2. **Run Health Check**: `python scripts/health_check.py`
-3. **Bot Help**: Send `/help` to your bot
-4. **Documentation**: Check `docs/` directory
+1. **Documentation**: [Full docs](https://dygje.github.io/Otogram)
+2. **Health Check**: `make health`
+3. **Logs**: `tail -f logs/app.log`
+4. **Issues**: [GitHub Issues](https://github.com/dygje/Otogram/issues)
 
 ## 📚 Documentation
 
-| Document | Purpose | Audience |
-|----------|---------|----------|
-| [Getting Started](docs/GETTING_STARTED.md) | Setup & basic usage | New users |
-| [API Reference](docs/API.md) | Code interfaces | Developers |
-| [Contributing](CONTRIBUTING.md) | Development guide | Contributors |
+| Resource | Description |
+|----------|-------------|
+| [**Full Documentation**](https://dygje.github.io/Otogram) | Complete user and API docs |
+| [Getting Started](docs/GETTING_STARTED.md) | Setup and basic usage |
+| [API Reference](docs/API.md) | Code interfaces |
+| [Contributing](docs/CONTRIBUTING.md) | Development guide |
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/amazing-feature`)
-3. Run health check (`python scripts/health_check.py`)
-4. Commit changes (`git commit -m 'Add amazing feature'`)
-5. Push to branch (`git push origin feature/amazing-feature`)
-6. Open Pull Request
+We welcome contributions! See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for guidelines.
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
+```bash
+# Quick start for contributors
+git clone https://github.com/dygje/Otogram.git
+cd Otogram
+make setup
+make pre-commit
+```
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## ⚡ Performance
+## ⚡ Recent Updates
 
-- **Throughput**: ~100 messages per hour (safe rate)
-- **Groups**: Supports 1000+ groups efficiently
-- **Memory**: ~50MB RAM usage
-- **Database**: Optimized MongoDB queries with indexes
+- ✅ **v2.0.0**: Complete rewrite with clean architecture
+- ✅ **Professional Setup**: Modern Python tooling (black, mypy, pytest)
+- ✅ **CI/CD Pipeline**: Automated testing and quality checks
+- ✅ **Type Safety**: Full type hints and validation
+- ✅ **Documentation**: Comprehensive docs with MkDocs
 
-## 🔄 Updates
-
-Check [CHANGELOG.md](docs/CHANGELOG.md) for version history and updates.
+See [CHANGELOG.md](docs/CHANGELOG.md) for detailed version history.
 
 ---
 
-**Built with modern Python best practices & clean architecture** 🚀
+**Built with modern Python best practices & production-ready architecture** 🚀
