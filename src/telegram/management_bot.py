@@ -49,14 +49,14 @@ class ManagementBot:
 
         logger.info("🤖 Management bot is running")
 
-    async def stop(self):
+    async def stop(self) -> None:
         """Stop the management bot"""
         if self.app:
             await self.app.updater.stop()
             await self.app.stop()
             await self.app.shutdown()
 
-    def _add_handlers(self):
+    def _add_handlers(self) -> None:
         """Add command and callback handlers"""
 
         # Main commands
