@@ -270,7 +270,7 @@ sudo systemctl status mongod
 
 ## 📚 Documentation
 
-For detailed information, see the `docs/` folder:
+For detailed information:
 - **[Setup Guide](docs/SETUP_GUIDE.md)** - Complete installation guide
 - **[Architecture](docs/ARCHITECTURE.md)** - System design overview
 - **[Contributing](docs/CONTRIBUTING.md)** - Development guidelines
