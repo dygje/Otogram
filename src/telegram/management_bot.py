@@ -363,13 +363,13 @@ class ManagementBot:
 
             if groups:
                 text += "*📋 Recent Groups:*\n"
-                for i, group in enumerate(groups[:3], 1):
+                for i, group in enumerate(groups[:MAX_RECENT_ITEMS_DISPLAY], 1):
                     status = "🟢" if group.is_active else "🔴"
                     name = group.group_title or group.group_username or group.group_id or "Unknown"
                     text += f"{i}. {status} {name}\n"
 
-                if len(groups) > 3:
-                    text += f"... and {len(groups) - 3} more\n"
+                if len(groups) > MAX_RECENT_ITEMS_DISPLAY:
+                    text += f"... and {len(groups) - MAX_RECENT_ITEMS_DISPLAY} more\n"
             else:
                 text += "❌ *No groups found*\n"
 
