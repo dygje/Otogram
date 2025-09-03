@@ -2,6 +2,8 @@
 Message Models
 """
 
+from typing import ClassVar
+
 from pydantic import BaseModel, Field
 
 from src.models.base import BaseDocument
