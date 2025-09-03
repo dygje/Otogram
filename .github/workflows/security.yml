@@ -81,6 +81,7 @@ jobs:
           bandit-report.json
           semgrep-report.json
         retention-days: 30
+        if-no-files-found: 'ignore'
 
   # 🔐 Secret Scanning
   secret-scan:
