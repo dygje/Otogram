@@ -90,7 +90,7 @@ class Settings(BaseSettings):
 
     @field_validator("MAX_CYCLE_DELAY_HOURS")
     @classmethod
-    def validate_cycle_delays(cls, v, info):
+    def validate_cycle_delays(cls, v: float, info: Any) -> float:
         """Ensure max cycle delay is greater than min cycle delay"""
         if hasattr(info, "data"):
             min_delay = info.data.get("MIN_CYCLE_DELAY_HOURS", 1.0)
