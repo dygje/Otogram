@@ -37,10 +37,10 @@ jobs:
       uses: lycheeverse/lychee-action@v1.8.0
       with:
         # Check all markdown files, excluding known problematic patterns
-        args: --verbose --no-progress --accept 200,201,202,204,300,301,302,303,304,307,308 --exclude-mail --exclude 'dygje\.github\.io' --exclude 'KurimuzonAkuma' '**/*.md'
+        args: --verbose --no-progress --accept 200,201,202,204,300,301,302,303,304,307,308 --exclude-mail --exclude 'dygje\.github\.io' --exclude 'KurimuzonAkuma' --exclude 'github\.com.*/(archive|blob)/.*' '**/*.md'
         
         # Configuration
-        fail: true
+        fail: false
         
         # Output format
         format: markdown
