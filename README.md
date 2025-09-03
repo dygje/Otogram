@@ -36,28 +36,50 @@ python main.py
 - **Intelligent Scheduling** - Random delays (5-10s messages, 1.1-1.3h cycles) for natural behavior
 - **Real-time Dashboard** - Complete system control through Telegram bot interface
 
-### 🛡️ **Safety & Reliability**
-- **Smart Blacklist** - Auto-blacklist problematic groups (temporary/permanent)
-- **Flood Protection** - Anti-flood with dynamic delays
-- **Error Recovery** - Auto-recovery from Telegram errors
-- **Rate Limiting** - Smart retry with exponential backoff
+### 🛡️ **Intelligent Blacklist Management**
+- **Automatic Cleanup** - Expired temporary blacklists removed at cycle start
+- **Error Classification** - Smart handling of permanent vs temporary errors
+- **SlowMode Detection** - Automatic skip and retry after duration expires  
+- **FloodWait Handling** - Records Telegram-specified wait times and respects them
+- **Comprehensive Error Mapping** - Handles all Telegram API error types
 
-### 🎛️ **Management Interface**
-- **Telegram Bot** - Complete system control through Telegram
-- **Message Management** - CRUD operations for broadcast messages
-- **Group Management** - Bulk import and organize target groups
-- **Configuration** - Flexible system settings and monitoring
+### 🎛️ **Advanced Management Interface**
+- **Modern Telegram Bot** - Intuitive dashboard with keyboard navigation
+- **Message CRUD** - Add, edit, delete, and manage broadcast messages
+- **Group Management** - Single and bulk group operations (ID/username/link support)
+- **Real-time Configuration** - Modify delays, limits, and settings without restart
+- **Analytics Dashboard** - Broadcasting stats, success rates, and system health
 
-## 🏗️ Modern Architecture
+## 🏗️ Production-Ready Architecture
 
-- **Language**: Python 3.11+ with type hints
-- **Framework**: Pyrofork (MTProto) + python-telegram-bot
-- **Database**: MongoDB with optimized indexes
-- **Pattern**: Clean Architecture with separation of concerns
+- **Language**: Python 3.11+ with comprehensive type hints
+- **MTProto Client**: Pyrofork 2.3.68 (latest Pyrogram fork)
+- **Bot Framework**: python-telegram-bot 20.8 for management interface
+- **Database**: MongoDB 4.4+ with optimized indexes and aggregation
+- **Design Pattern**: Clean Architecture with SOLID principles
 
 ```
 src/
-├── core/           # Infrastructure (config, database)
+├── core/           # Infrastructure (config, database, logging)
+├── models/         # Domain entities with Pydantic validation  
+├── services/       # Business logic layer (messages, groups, blacklist)
+└── telegram/       # Interface layer (management bot + userbot)
+    ├── bot_manager.py     # Orchestrates both bots
+    ├── management_bot.py  # Modern dashboard interface
+    ├── userbot.py         # MTProto broadcasting engine
+    └── handlers/          # Command and callback handlers
+```
+
+## 🎯 **System Specifications Match**
+
+✅ **Authentication**: MTProto with phone number + OTP + 2FA support  
+✅ **Blacklist Cleanup**: Automatic cleanup at start of each cycle  
+✅ **Error Handling**: SlowMode skip + continue, FloodWait duration respect  
+✅ **Message Delays**: Random 5-10 seconds between messages  
+✅ **Cycle Delays**: Random 1.1-1.3 hours between broadcast cycles  
+✅ **Management**: Complete CRUD operations via Telegram bot  
+✅ **Group Support**: ID (-100xxx), username (@group), and t.me links  
+✅ **Clean Architecture**: Modern Python with maintainable code structure
 ├── models/         # Domain entities with Pydantic
 ├── services/       # Business logic layer
 └── telegram/       # Interface layer (bot + userbot)
