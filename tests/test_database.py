@@ -63,7 +63,7 @@ class TestDatabase:
             assert len(indexes) >= 1
 
             # Check for specific indexes based on collection
-            index_names = [idx["name"] for idx in indexes]
+            [idx["name"] for idx in indexes]
 
             if collection_name == "messages":
                 # These might not exist if no documents, but structure should support them

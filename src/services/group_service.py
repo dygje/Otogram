@@ -106,7 +106,7 @@ class GroupService:
         return None
 
     async def update_group_info(
-        self, group_id: str, title: str = None, is_active: bool = None
+        self, group_id: str, title: str | None = None, is_active: bool | None = None
     ) -> Group | None:
         """Update group information"""
         update_dict = {}

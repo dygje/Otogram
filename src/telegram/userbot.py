@@ -3,6 +3,7 @@ Userbot - Handles mass messaging using MTProto
 """
 
 import asyncio
+import contextlib
 import random
 from datetime import datetime
 
@@ -76,10 +77,8 @@ class UserBot:
 
         if self.current_cycle_task:
             self.current_cycle_task.cancel()
-            try:
+            with contextlib.suppress(asyncio.CancelledError):
                 await self.current_cycle_task
-            except asyncio.CancelledError:
-                pass
 
         if self.client:
             await self.client.stop()

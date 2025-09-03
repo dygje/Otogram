@@ -374,10 +374,7 @@ class GroupHandlers:
         try:
             success = await self.group_service.delete_group(group_id)
 
-            if success:
-                text = "✅ Grup berhasil dihapus!"
-            else:
-                text = "❌ Gagal menghapus grup."
+            text = "✅ Grup berhasil dihapus!" if success else "❌ Gagal menghapus grup."
 
             keyboard = [[InlineKeyboardButton("👥 Lihat Grup", callback_data="groups_menu")]]
             reply_markup = InlineKeyboardMarkup(keyboard)

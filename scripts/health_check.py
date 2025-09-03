@@ -31,7 +31,7 @@ async def check_mongodb_connection() -> HealthCheckResult:
 
         client = AsyncIOMotorClient(settings.MONGO_URL)
         # Test connection
-        result = await client.admin.command("ping")
+        await client.admin.command("ping")
         client.close()  # Note: close() is not async in motor
 
         return HealthCheckResult(

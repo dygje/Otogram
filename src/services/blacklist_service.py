@@ -55,7 +55,7 @@ class BlacklistService:
         return blacklist
 
     async def add_from_error(
-        self, group_id: str, error_msg: str, group_identifier: str = None
+        self, group_id: str, error_msg: str, group_identifier: str | None = None
     ) -> Blacklist:
         """Add to blacklist based on error message"""
 

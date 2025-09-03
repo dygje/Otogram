@@ -245,10 +245,7 @@ class MessageHandlers:
         try:
             success = await self.message_service.delete_message(message_id)
 
-            if success:
-                text = "✅ Pesan berhasil dihapus!"
-            else:
-                text = "❌ Gagal menghapus pesan."
+            text = "✅ Pesan berhasil dihapus!" if success else "❌ Gagal menghapus pesan."
 
             keyboard = [[InlineKeyboardButton("📝 Lihat Pesan", callback_data="messages_menu")]]
             reply_markup = InlineKeyboardMarkup(keyboard)
