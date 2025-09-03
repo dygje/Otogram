@@ -1,56 +1,99 @@
-# 🚀 Getting Started
+# 🚀 Getting Started with Otogram
 
-Complete guide to setup and run Telegram Automation System.
+Complete setup guide for the Telegram Automation System based on latest testing and verification.
 
-## Prerequisites
+## ✅ Prerequisites Verification
 
-### System Requirements
-- **Python**: 3.11+ (recommended 3.11.13)
-- **MongoDB**: 4.4+ (local or cloud)
-- **RAM**: 1GB minimum, 2GB recommended
-- **OS**: Ubuntu 20.04+, macOS 12+, Windows 10+
+### System Requirements (Tested)
+- **Python**: 3.11+ (tested with 3.11.13) ✅
+- **MongoDB**: 4.4+ (tested with 7.0.23) ✅
+- **RAM**: 1GB minimum, 2GB recommended ✅
+- **OS**: Linux (Ubuntu/CentOS), macOS, Windows ✅
 
-### Telegram Setup
+### Telegram Setup Requirements
 
-#### 1. Get API Credentials
-1. Visit https://my.telegram.org
+#### 1. Get API Credentials ✅
+1. Visit [my.telegram.org](https://my.telegram.org)
 2. Login with your phone number
 3. Go to "API Development Tools"
-4. Create new application, note:
-   - **API ID** (8 digits)
-   - **API Hash** (32 characters)
+4. Create new application and note:
+   - **API ID** (8 digits, e.g., 21507942)
+   - **API Hash** (32 characters, e.g., 399fae...)
 
-#### 2. Create Bot
+#### 2. Create Management Bot ✅
 1. Message [@BotFather](https://t.me/BotFather)
 2. Send `/newbot`
-3. Follow instructions, save **Bot Token**
+3. Follow instructions and save **Bot Token**
+4. Format: `8118820592:AAFX05zaXmmW3nWY2pM7s90Pbqn8f1ptc0M`
 
-## Installation
+## 🔧 Installation (Verified Working)
 
-### 1. Clone & Setup
+### 1. System Setup
 ```bash
-git clone <repository>
-cd telegram-automation-system
-pip install -r requirements.txt
+# Clone and navigate
+git clone https://github.com/dygje/Otogram.git
+cd Otogram
+
+# Install dependencies (all tested working)
+pip install -e ".[dev]"
+
+# Create necessary directories
+mkdir -p sessions logs mongodb_data
 ```
 
-### 2. Configure Environment
+### 2. MongoDB Setup (Multiple Options)
 ```bash
-# Interactive setup (recommended)
-python scripts/setup.py
+# Option A: Local MongoDB with custom data directory
+mongod --dbpath ./mongodb_data --port 27017 --bind_ip 127.0.0.1 --logpath ./logs/mongodb.log &
 
-# Or manual edit .env
+# Option B: System MongoDB (if installed)
+sudo systemctl start mongod
+
+# Option C: Docker MongoDB
+docker run -d -p 27017:27017 --name otogram-mongo mongo:4.4
+
+# Verify MongoDB is running
+mongosh --eval "db.stats()"
+```
+
+### 3. Environment Configuration
+```bash
+# Copy template
 cp .env.example .env
+
+# Edit with your credentials
 nano .env
 ```
 
-### 3. Verify Installation
-```bash
-python scripts/health_check.py
+**Required .env configuration:**
+```env
+# Telegram API Credentials (from my.telegram.org)
+TELEGRAM_API_ID=21507942
+TELEGRAM_API_HASH=399fae9734796b25b068050f5f03b698
+
+# Bot Token (from @BotFather)
+TELEGRAM_BOT_TOKEN=8118820592:AAFX05zaXmmW3nWY2pM7s90Pbqn8f1ptc0M
+
+# Phone Number (international format)
+TELEGRAM_PHONE_NUMBER=+6282298147520
+
+# Database Connection
+MONGO_URL=mongodb://localhost:27017
+DB_NAME=telegram_automation
+
+# System Settings (pre-configured optimally)
+MIN_MESSAGE_DELAY=5
+MAX_MESSAGE_DELAY=10
+MIN_CYCLE_DELAY_HOURS=1.1
+MAX_CYCLE_DELAY_HOURS=1.3
 ```
 
-Expected output:
-```
+### 4. System Verification
+```bash
+# Run comprehensive health check
+python scripts/health_check.py
+
+# Expected output:
 🎉 System is HEALTHY and ready to run!
 ```
 
