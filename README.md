@@ -151,14 +151,14 @@ cp .env.example .env
 **Step 2: Configure credentials in .env**
 ```env
 # Telegram API (from my.telegram.org)
-TELEGRAM_API_ID=21507942
-TELEGRAM_API_HASH=399fae9734796b25b068050f5f03b698
+TELEGRAM_API_ID=12345678
+TELEGRAM_API_HASH=abcdef1234567890abcdef1234567890
 
 # Bot token (from @BotFather)  
-TELEGRAM_BOT_TOKEN=8118820592:AAFX05zaXmmW3nWY2pM7s90Pbqn8f1ptc0M
+TELEGRAM_BOT_TOKEN=123456789:ABC-DEF1234ghIkl-zyx57W2v1u123ew11
 
 # Phone number (international format)
-TELEGRAM_PHONE_NUMBER=+6282298147520
+TELEGRAM_PHONE_NUMBER=+1234567890
 
 # Database (adjust if needed)
 MONGO_URL=mongodb://localhost:27017
