@@ -100,9 +100,9 @@ class BlacklistService:
 
         # Default durations
         if "slowmode" in error_msg.lower():
-            return 60  # 1 minute default
+            return DEFAULT_SLOWMODE_DURATION
         elif "flood" in error_msg.lower():
-            return 3600  # 1 hour default
+            return DEFAULT_FLOOD_DURATION
 
         return None
 
