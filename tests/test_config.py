@@ -7,12 +7,12 @@ from pydantic import ValidationError
 
 from src.core.config import Settings
 from src.core.constants import (
-    DEFAULT_MIN_MESSAGE_DELAY,
-    DEFAULT_MAX_MESSAGE_DELAY,
     DEFAULT_MAX_GROUPS_PER_CYCLE,
+    DEFAULT_MAX_MESSAGE_DELAY,
+    DEFAULT_MIN_MESSAGE_DELAY,
     TEST_API_ID,
-    DEFAULT_MIN_CYCLE_DELAY_HOURS,
-    DEFAULT_MAX_CYCLE_DELAY_HOURS,
+    TEST_CYCLE_DELAY_MAX,
+    TEST_CYCLE_DELAY_MIN,
 )
 
 
