@@ -175,6 +175,32 @@ class ManagementBot:
 
         await update.message.reply_text(status_text, parse_mode="Markdown")
 
+    async def help_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Handle /help command"""
+        help_text = (
+            "🤖 *OTOGRAM AUTOMATION SYSTEM*\n\n"
+            "📋 *Available Commands:*\n\n"
+            "/start - Initialize bot interface\n"
+            "/menu - Main dashboard with quick actions\n"
+            "/status - Real-time system status & statistics\n"
+            "/messages - Manage broadcast messages\n"
+            "/addmessage - Add new broadcast message\n"
+            "/groups - Manage target groups\n"
+            "/addgroup - Add single group\n"
+            "/addgroups - Add multiple groups (bulk)\n"
+            "/config - System configuration\n"
+            "/blacklist - View blacklist management\n"
+            "/help - Show this help message\n\n"
+            "🎯 *Quick Start:*\n"
+            "1. Add messages: /addmessage\n"
+            "2. Add groups: /addgroup or /addgroups\n"
+            "3. Configure: /config\n"
+            "4. Monitor: /status\n\n"
+            "📚 For detailed help, use /menu and explore!"
+        )
+
+        await update.message.reply_text(help_text, parse_mode="Markdown")
+
     async def _get_system_stats(self) -> str:
         """Get system statistics for dashboard"""
         try:
