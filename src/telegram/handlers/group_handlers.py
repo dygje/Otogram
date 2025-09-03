@@ -17,7 +17,7 @@ class GroupHandlers:
     def __init__(self):
         self.group_service = GroupService()
 
-    async def list_groups(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+    async def list_groups(self, update: Update, _context: ContextTypes.DEFAULT_TYPE):
         """List all groups"""
         try:
             groups = await self.group_service.get_all_groups()
