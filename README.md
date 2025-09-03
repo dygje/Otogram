@@ -169,8 +169,7 @@ MONGO_URL=mongodb://localhost:27017
 python scripts/health_check.py
 # Expected: "🎉 System is HEALTHY and ready to run!"
 ```
-# Edit .env with your credentials
-```
+
 
 ### 3. Verify Installation
 
