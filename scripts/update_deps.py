@@ -49,7 +49,7 @@ def check_outdated_packages() -> bool:
         return False
 
 
-def check_security_vulnerabilities():
+def check_security_vulnerabilities() -> bool:
     """Check for security vulnerabilities in dependencies"""
     print("\n🔒 Checking for security vulnerabilities...")
 
