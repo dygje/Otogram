@@ -15,7 +15,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from loguru import logger
 from src.core.config import settings
-from src.core.database import Database
+from src.core.database import database
 from src.telegram.bot_manager import BotManager
 
 
@@ -65,7 +65,7 @@ class TelegramAutomationApp:
                 return
             
             # Initialize database
-            self.database = Database()
+            self.database = database
             await self.database.connect()
             logger.info("✅ Database connected")
             
