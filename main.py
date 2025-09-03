@@ -109,7 +109,7 @@ class TelegramAutomationApp:
         ]
         return all(cred for cred in required)
 
-    def signal_handler(self, signum, frame):
+    def signal_handler(self, signum, _frame):
         """Handle shutdown signals"""
         logger.info(f"📡 Received signal {signum}")
         asyncio.create_task(self.stop())
