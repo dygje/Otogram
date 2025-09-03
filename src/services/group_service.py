@@ -15,7 +15,7 @@ class GroupService:
     """Service for managing groups"""
 
     def __init__(self) -> None:
-        self.collection = database.get_collection("groups")
+        self.collection = database.get_collection("groups")  # type: ignore[attr-defined]
 
     async def create_group(self, group_data: GroupCreate) -> Group:
         """Create a new group"""
