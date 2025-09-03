@@ -4,7 +4,7 @@ Group Models
 
 from typing import Optional
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from src.models.base import BaseDocument
 
@@ -19,14 +19,15 @@ class Group(BaseDocument):
     is_active: bool = Field(default=True, description="Whether group is active")
     message_count: int = Field(default=0, description="Messages sent to this group")
 
-    @validator("group_username")
+    @field_validator("group_username")
+    @classmethod
     def validate_username(cls, v):
         if v and not v.startswith("@"):
             return f"@{v}"
         return v
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "group_id": "-1001234567890",
                 "group_username": "@example_group",
@@ -34,6 +35,7 @@ class Group(BaseDocument):
                 "is_active": True,
             }
         }
+    )
 
 
 class GroupCreate(BaseModel):
@@ -41,7 +43,8 @@ class GroupCreate(BaseModel):
 
     group_identifier: str = Field(..., description="Group ID, username, or link")
 
-    @validator("group_identifier")
+    @field_validator("group_identifier")
+    @classmethod
     def validate_identifier(cls, v):
         v = v.strip()
 
