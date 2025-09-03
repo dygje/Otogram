@@ -28,6 +28,7 @@ async def check_mongodb_connection() -> HealthCheckResult:
     """Check MongoDB connection"""
     try:
         from motor.motor_asyncio import AsyncIOMotorClient
+
         from src.core.config import settings
 
         client = AsyncIOMotorClient(settings.MONGO_URL)

@@ -4,6 +4,7 @@ Enhanced with additional safety settings and validation
 """
 
 from typing import Optional
+
 from pydantic import ConfigDict, Field, field_validator
 from pydantic_settings import BaseSettings
 
