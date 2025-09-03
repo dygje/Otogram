@@ -193,7 +193,7 @@ class MessageHandlers:
 
             status_text = "Aktif ✅" if message.is_active else "Nonaktif ❌"
             content_preview = (
-                message.content[:200] + "..." if len(message.content) > 200 else message.content
+                message.content[:PREVIEW_MESSAGE_LENGTH_LONG] + "..." if len(message.content) > PREVIEW_MESSAGE_LENGTH_LONG else message.content
             )
 
             text = (
