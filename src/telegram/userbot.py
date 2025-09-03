@@ -8,8 +8,8 @@ from datetime import datetime, timedelta
 from typing import List, Optional
 
 from loguru import logger
-from pyrogram import Client
-from pyrogram.errors import (
+from pyrofork import Client
+from pyrofork.errors import (
     ChannelInvalid,
     ChatForbidden,
     ChatIdInvalid,
