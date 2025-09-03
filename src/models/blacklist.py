@@ -74,7 +74,7 @@ class Blacklist(BaseDocument):
         return self.expires_at - now
 
     class Config:
-        json_schema_extra = {
+        json_schema_extra: ClassVar = {
             "example": {
                 "group_id": "-1001234567890",
                 "blacklist_type": "temporary",
