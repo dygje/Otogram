@@ -52,7 +52,7 @@ def set_test_mode() -> Generator[None, None, None]:
 
 
 @pytest.fixture
-def mock_telegram_credentials(monkeypatch):
+def mock_telegram_credentials(monkeypatch: pytest.MonkeyPatch) -> None:
     """Mock Telegram credentials for testing"""
     monkeypatch.setattr(settings, "TELEGRAM_API_ID", 12345678)
     monkeypatch.setattr(settings, "TELEGRAM_API_HASH", "test_api_hash")
