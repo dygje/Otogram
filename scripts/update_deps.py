@@ -75,7 +75,7 @@ def check_security_vulnerabilities() -> bool:
         return True
 
 
-def suggest_updates():
+def suggest_updates() -> None:
     """Suggest dependency updates"""
     print("\n💡 Dependency Update Suggestions:")
     print("=" * 50)
