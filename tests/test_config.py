@@ -76,9 +76,9 @@ class TestSettings:
     def test_cycle_delay_validation(self):
         """Test cycle delay validation"""
         # Valid cycle delays
-        settings = Settings(MIN_CYCLE_DELAY_HOURS=1.0, MAX_CYCLE_DELAY_HOURS=2.0)
-        assert settings.MIN_CYCLE_DELAY_HOURS == 1.0
-        assert settings.MAX_CYCLE_DELAY_HOURS == 2.0
+        settings = Settings(MIN_CYCLE_DELAY_HOURS=TEST_CYCLE_DELAY_MIN, MAX_CYCLE_DELAY_HOURS=TEST_CYCLE_DELAY_MAX)
+        assert settings.MIN_CYCLE_DELAY_HOURS == TEST_CYCLE_DELAY_MIN
+        assert settings.MAX_CYCLE_DELAY_HOURS == TEST_CYCLE_DELAY_MAX
 
         # Invalid cycle delays
         with pytest.raises(ValidationError) as exc_info:
