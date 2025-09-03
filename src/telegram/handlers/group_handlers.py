@@ -194,7 +194,7 @@ class GroupHandlers:
 
             if success_count > 0:
                 text += "**Grup yang berhasil ditambahkan:**\n"
-                for i, group in enumerate(groups[:5], 1):  # Show first 5
+                for i, group in enumerate(groups[:MAX_BULK_SUCCESS_DISPLAY], 1):  # Show first 5
                     identifier = (
                         group.group_username or group.group_id or group.group_link or "Unknown"
                     )
