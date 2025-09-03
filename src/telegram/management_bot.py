@@ -229,12 +229,16 @@ class ManagementBot:
         except Exception:
             return "📊 *Status:* ⚠️ Loading stats..."
 
-    async def handle_callback(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+    async def handle_callback(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         """Handle callback queries with modern routing"""
         query = update.callback_query
+        if not query:
+            return
         await query.answer()
 
         data = query.data
+        if not data:
+            return
 
         # Main navigation
         if data == "dashboard":
