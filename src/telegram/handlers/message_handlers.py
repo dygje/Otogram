@@ -122,7 +122,7 @@ class MessageHandlers:
 
             text = (
                 f"✅ *Pesan Berhasil Ditambahkan*\n\n"
-                f"📝 **Konten:** {content[:100]}{'...' if len(content) > 100 else ''}\n"
+                f"📝 **Konten:** {content[:PREVIEW_MESSAGE_LENGTH_SHORT]}{'...' if len(content) > PREVIEW_MESSAGE_LENGTH_SHORT else ''}\n"
                 f"🆔 **ID:** `{message.id}`\n"
                 f"📅 **Dibuat:** {message.created_at.strftime('%d/%m/%Y %H:%M')}\n"
                 f"✅ **Status:** Aktif\n\n"
