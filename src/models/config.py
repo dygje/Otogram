@@ -17,7 +17,7 @@ class Configuration(BaseDocument):
     category: str = Field(default="general", description="Category")
     is_editable: bool = Field(default=True, description="Can be edited")
 
-    def get_typed_value(self):
+    def get_typed_value(self) -> str | int | float | bool:
         """Get value with proper type"""
         if self.value_type == "int":
             return int(self.value)
