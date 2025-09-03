@@ -122,7 +122,7 @@ async def run_health_check() -> int:
         return 1
 
 
-def check_python_version():
+def check_python_version() -> bool:
     """Check Python version compatibility"""
     # Constants for Python version requirements
     PYTHON_MAJOR_REQUIRED = 3
