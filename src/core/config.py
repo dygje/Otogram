@@ -12,7 +12,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     """Application settings from environment variables"""
 
-    model_config = SettingsConfigDict(env_file=".env", case_sensitive=True, validate_assignment=True)
+    model_config = SettingsConfigDict(
+        env_file=".env", case_sensitive=True, validate_assignment=True
+    )
 
     # Database Configuration
     MONGO_URL: str = Field(default="mongodb://localhost:27017")

@@ -2,7 +2,6 @@
 Database Management
 """
 
-
 from loguru import logger
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection, AsyncIOMotorDatabase
 

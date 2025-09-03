@@ -305,7 +305,9 @@ class ManagementBot:
                 text, parse_mode="Markdown", reply_markup=reply_markup
             )
 
-    async def _show_messages_dashboard(self, update: Update, _context: ContextTypes.DEFAULT_TYPE) -> None:
+    async def _show_messages_dashboard(
+        self, update: Update, _context: ContextTypes.DEFAULT_TYPE
+    ) -> None:
         """Show messages dashboard with modern layout"""
         try:
             messages = await self.message_handlers.message_service.get_all_messages()
@@ -359,7 +361,9 @@ class ManagementBot:
             if update.callback_query:
                 await update.callback_query.edit_message_text("❌ Error loading messages dashboard")
 
-    async def _show_groups_dashboard(self, update: Update, _context: ContextTypes.DEFAULT_TYPE) -> None:
+    async def _show_groups_dashboard(
+        self, update: Update, _context: ContextTypes.DEFAULT_TYPE
+    ) -> None:
         """Show groups dashboard with modern layout"""
         try:
             groups = await self.group_handlers.group_service.get_all_groups()
@@ -409,7 +413,9 @@ class ManagementBot:
             if update.callback_query:
                 await update.callback_query.edit_message_text("❌ Error loading groups dashboard")
 
-    async def _show_blacklist_dashboard(self, update: Update, _context: ContextTypes.DEFAULT_TYPE) -> None:
+    async def _show_blacklist_dashboard(
+        self, update: Update, _context: ContextTypes.DEFAULT_TYPE
+    ) -> None:
         """Show blacklist dashboard"""
         try:
             stats = await self.blacklist_handlers.blacklist_service.get_blacklist_stats()
@@ -458,9 +464,13 @@ class ManagementBot:
 
         except Exception:
             if update.callback_query:
-                await update.callback_query.edit_message_text("❌ Error loading blacklist dashboard")
+                await update.callback_query.edit_message_text(
+                    "❌ Error loading blacklist dashboard"
+                )
 
-    async def _show_settings_dashboard(self, update: Update, _context: ContextTypes.DEFAULT_TYPE) -> None:
+    async def _show_settings_dashboard(
+        self, update: Update, _context: ContextTypes.DEFAULT_TYPE
+    ) -> None:
         """Show settings dashboard"""
         text = (
             "⚙️ *SYSTEM SETTINGS*\n"
@@ -502,7 +512,9 @@ class ManagementBot:
                 text, parse_mode="Markdown", reply_markup=reply_markup
             )
 
-    async def _show_system_control(self, update: Update, _context: ContextTypes.DEFAULT_TYPE) -> None:
+    async def _show_system_control(
+        self, update: Update, _context: ContextTypes.DEFAULT_TYPE
+    ) -> None:
         """Show system control panel"""
         text = (
             "🎛️ *SYSTEM CONTROL PANEL*\n"

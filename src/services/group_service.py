@@ -22,9 +22,7 @@ class GroupService:
         identifier = group_data.group_identifier
 
         # Parse identifier
-        group_data = {
-            "group_identifier": identifier
-        }
+        group_data = {"group_identifier": identifier}
 
         if identifier.startswith("-") and identifier[1:].isdigit():
             group_data["group_id"] = identifier
