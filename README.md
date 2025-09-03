@@ -1,12 +1,12 @@
-# 🤖 Telegram Automation System
+# 🤖 Otogram - Advanced Telegram Automation System
 
-> **Professional Telegram mass messaging automation system with comprehensive management through Telegram Bot interface.**
+> **Production-ready Telegram mass messaging automation with intelligent blacklist management and comprehensive bot interface.**
 
 [![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-blue.svg)](https://github.com/dygje/Otogram/actions)
-[![Documentation](https://img.shields.io/badge/docs-mkdocs-blue.svg)](https://dygje.github.io/Otogram)
+[![Pyrofork](https://img.shields.io/badge/Pyrofork-2.3.68-green.svg)](https://github.com/Mayuri-Chan/pyrofork)
+[![Status](https://img.shields.io/badge/status-production--ready-brightgreen.svg)]()
 
 ## 🚀 Quick Start
 
@@ -14,19 +14,27 @@
 # 1. Install dependencies
 pip install -e ".[dev]"
 
-# 2. Setup credentials (interactive wizard)
-python scripts/setup.py
+# 2. Setup MongoDB
+mkdir -p mongodb_data && mongod --dbpath mongodb_data --fork --logpath logs/mongodb.log
 
-# 3. Run system
+# 3. Setup credentials
+cp .env.example .env
+# Edit .env with your Telegram credentials
+
+# 4. Health check
+python scripts/health_check.py
+
+# 5. Run system
 python main.py
 ```
 
 ## ✨ Key Features
 
-### 🎯 **Core Automation**
-- **Mass Broadcasting** - Send messages to multiple groups automatically
-- **Smart Scheduling** - Intelligent delay and timing management  
-- **Real-time Monitoring** - Dashboard and analytics through Telegram bot
+### 🎯 **Advanced Broadcasting System**
+- **MTProto Integration** - Direct Telegram API via Pyrofork for maximum reliability
+- **Smart Blacklist Management** - Automatic handling of SlowMode, FloodWait, and permanent errors  
+- **Intelligent Scheduling** - Random delays (5-10s messages, 1.1-1.3h cycles) for natural behavior
+- **Real-time Dashboard** - Complete system control through Telegram bot interface
 
 ### 🛡️ **Safety & Reliability**
 - **Smart Blacklist** - Auto-blacklist problematic groups (temporary/permanent)
