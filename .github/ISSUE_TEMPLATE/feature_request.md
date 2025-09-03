@@ -1,141 +1,164 @@
 ---
 name: ✨ Feature Request
-about: Suggest an idea for this project
+about: Suggest a new feature for Otogram
 title: '[FEATURE] '
-labels: ['type: enhancement']
-assignees: ''
+labels: ['type: enhancement', 'needs-review']
+assignees: 'dygje'
 ---
 
-## Problem Statement
+## 💡 Feature Description
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+Clear and concise description of the feature you'd like to see in Otogram.
 
-## Proposed Solution
+## 🎯 Problem/Use Case
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+**What problem does this solve?**
+Describe the specific use case or problem this feature would address.
 
-## Use Cases
+**Who would benefit?**
+- [ ] 👤 End users (people setting up Otogram)
+- [ ] 🤖 Bot management workflow
+- [ ] 📊 Mass messaging operations
+- [ ] 🛡️ Security and safety features
+- [ ] 📈 Analytics and monitoring
 
-**Who would benefit from this feature?**
-- [ ] End users (people setting up the system)
-- [ ] Developers (people contributing to the project)
-- [ ] Administrators (people managing deployments)
-- [ ] Everyone
+## 💭 Proposed Solution
 
-**Specific use cases:**
-1. As a [user type], I want [functionality] so that [benefit]
-2. When [scenario], I need [capability] to [outcome]
+**Describe your ideal solution:**
+How would you like this feature to work?
 
-## Alternatives Considered
+**Example usage:**
+```bash
+# How would users interact with this feature?
+# Include bot commands, configuration, or workflow examples
+```
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+## 🔄 Alternatives Considered
 
-## Implementation Ideas
+What other solutions or workarounds have you considered?
+
+## 🏗️ Implementation Ideas
 
 **Technical approach (if you have ideas):**
-- [ ] Modify existing service layer
-- [ ] Add new Telegram bot commands
-- [ ] Create new database models
-- [ ] Update configuration system
-- [ ] Change user interface
-- [ ] Add external integrations
+- [ ] New Telegram bot commands (`/new-command`)
+- [ ] Modify existing services (message, group, blacklist)
+- [ ] Add new database models/collections
+- [ ] Update configuration system (.env variables)
+- [ ] Change user interface/bot menus
+- [ ] Add external API integrations
+- [ ] Enhance broadcasting logic
+- [ ] Improve error handling
 
-**Architecture considerations:**
-- [ ] Follows clean architecture principles
-- [ ] Requires new ADR for decision rationale
-- [ ] May need breaking changes
-- [ ] Backward compatibility maintained
+**Which component would be affected:**
+- [ ] 🤖 Management Bot (`src/telegram/management_bot.py`)
+- [ ] 👤 Userbot (`src/telegram/userbot.py`)
+- [ ] 📊 Services Layer (`src/services/`)
+- [ ] 🗄️ Database Models (`src/models/`)
+- [ ] ⚙️ Core System (`src/core/`)
 
-## Impact Assessment
+## 📊 Impact Assessment
 
-**Complexity:**
-- [ ] Simple (few lines of code)
-- [ ] Medium (new functionality, existing patterns)
-- [ ] Complex (architectural changes, new patterns)
+**Complexity Level:**
+- [ ] 🟢 Simple (few lines of code, existing patterns)
+- [ ] 🟡 Medium (new functionality, follows existing architecture)
+- [ ] 🔴 Complex (major changes, new patterns needed)
 
-**Priority:**
-- [ ] Critical (blocks important workflows)
-- [ ] High (significantly improves experience)
-- [ ] Medium (nice to have)
-- [ ] Low (minor improvement)
+**Priority for you:**
+- [ ] 🚨 Critical (blocks important workflow)
+- [ ] 🔥 High (would significantly improve experience)
+- [ ] 📈 Medium (nice to have enhancement)
+- [ ] 💡 Low (minor improvement/convenience)
 
-**Risk:**
-- [ ] Low risk (isolated changes)
-- [ ] Medium risk (affects core functionality)
-- [ ] High risk (major architectural changes)
+**Breaking Changes:**
+- [ ] ✅ No breaking changes
+- [ ] ⚠️ Minor changes (existing configs need small updates)
+- [ ] 💥 Major changes (would require migration guide)
 
-## Examples
+## 🎨 Examples/Mockups
 
-**Screenshots/mockups (if applicable):**
-Add any visual examples or mockups.
+**Similar features in other tools:**
+Reference any similar implementations or tools.
 
-**Similar implementations:**
-Are there similar features in other projects you can reference?
+**Example bot conversation:**
+```
+User: /new-command
+Bot: 🎯 New feature activated!
+     Choose an option:
+     1️⃣ Option A
+     2️⃣ Option B
+User: [selects option]
+Bot: ✅ Feature configured successfully!
+```
 
-## Configuration
+## ⚙️ Configuration Requirements
 
-**Would this require new configuration options?**
-- [ ] No configuration needed
-- [ ] New environment variables
-- [ ] New bot commands
+**Would this need new configuration?**
+- [ ] No new configuration needed
+- [ ] New environment variables (.env)
+- [ ] New bot command options
 - [ ] Database schema changes
+- [ ] New dependencies/packages
 
 **Example configuration:**
 ```bash
 # New .env variables (if needed)
 NEW_FEATURE_ENABLED=true
-NEW_FEATURE_SETTING=value
+NEW_FEATURE_TIMEOUT=30
+NEW_FEATURE_MAX_ITEMS=100
 ```
 
-## Documentation Requirements
+## 📚 Documentation Impact
 
-**What documentation would be needed?**
-- [ ] Update README.md
-- [ ] Update GETTING_STARTED.md
-- [ ] Update API.md
-- [ ] Create new ADR
-- [ ] Update bot command help
+**What documentation would need updates?**
+- [ ] README.md (main project description)
+- [ ] docs/SETUP_GUIDE.md (installation/setup)
+- [ ] docs/API.md (if public interfaces change)
+- [ ] Bot help messages (`/help` command)
+- [ ] Configuration examples
 
-## Testing Strategy
+## 🧪 Testing Strategy
 
-**How would this feature be tested?**
-- [ ] Unit tests for business logic
-- [ ] Integration tests with Telegram
+**How should this be tested?**
+- [ ] Unit tests for new business logic
+- [ ] Integration tests with Telegram APIs
 - [ ] Manual testing scenarios
-- [ ] Performance testing
-- [ ] Security testing
+- [ ] Edge case testing
+- [ ] Performance impact testing
 
-## Dependencies
+## 📦 Dependencies
 
 **Would this require new dependencies?**
 - [ ] No new dependencies
-- [ ] New Python packages (specify)
-- [ ] New external services
-- [ ] Updated existing dependencies
+- [ ] New Python packages: `specify packages`
+- [ ] New external APIs/services
+- [ ] Update existing package versions
 
-## Migration/Compatibility
+## 🔄 Migration/Compatibility
 
-**Breaking changes:**
-- [ ] No breaking changes
-- [ ] Minor breaking changes (patch migration)
-- [ ] Major breaking changes (version bump required)
+**Backward compatibility:**
+- [ ] Fully backward compatible
+- [ ] Requires one-time setup/configuration
+- [ ] May require data migration
+- [ ] Breaking change (version bump needed)
 
-**Migration strategy:**
-If breaking changes, how would users migrate?
-
-## Additional Context
-
-Add any other context, links, or information about the feature request here.
-
-## Acceptance Criteria
+## ✅ Success Criteria
 
 **This feature is complete when:**
-- [ ] [Specific criteria 1]
-- [ ] [Specific criteria 2]
-- [ ] [Specific criteria 3]
+- [ ] Core functionality works as described
+- [ ] Bot commands/interface implemented
+- [ ] Error handling covers edge cases
 - [ ] Documentation updated
-- [ ] Tests passing
-- [ ] Health check passes
+- [ ] Health check still passes
+- [ ] No performance regression
+
+## 💬 Additional Context
+
+Any other context, examples, or information about the feature request.
+
+---
+
+**Note:** Feature requests are prioritized based on:
+1. 🎯 Alignment with Otogram's core mission (Telegram automation)
+2. 👥 Number of users who would benefit
+3. 🛠️ Implementation complexity vs. value added
+4. 🔧 Maintenance overhead

@@ -1,108 +1,125 @@
 ---
 name: 🐛 Bug Report
-about: Create a report to help us improve
+about: Report a bug in Otogram Telegram automation system
 title: '[BUG] '
-labels: ['type: bug']
-assignees: ''
+labels: ['type: bug', 'needs-triage']
+assignees: 'dygje'
 ---
 
-## Bug Description
+## 🐛 Bug Description
 
-A clear and concise description of what the bug is.
+Clear and concise description of the bug.
 
-## To Reproduce
+## 🔄 Steps to Reproduce
 
-Steps to reproduce the behavior:
-1. Run command '...'
-2. Configure setting '...'
-3. Observe error '...'
+1. Run command: `...`
+2. Configure setting: `...`
+3. Observe behavior: `...`
+4. Error occurs: `...`
 
-## Expected Behavior
+## ✅ Expected Behavior
 
-A clear and concise description of what you expected to happen.
+What should happen instead.
 
-## Actual Behavior
+## ❌ Actual Behavior
 
-What actually happened instead.
+What actually happened.
 
-## Environment
+## 🖥️ Environment
 
 **System Information:**
 - OS: [e.g., Ubuntu 22.04, macOS 13, Windows 11]
-- Python Version: [e.g., 3.11.13]
-- Project Version: [e.g., 2.0.0]
+- Python Version: [run `python --version`]
+- Otogram Version: [check `git describe --tags` or latest commit]
 
-**Health Check Results:**
+**Telegram Configuration:**
+- Using Bot: [ ] Yes [ ] No
+- Using Userbot: [ ] Yes [ ] No
+- Database: [ ] Local MongoDB [ ] MongoDB Atlas [ ] Other
+
+## 🩺 Health Check Results
+
 ```bash
 # Please run: python scripts/health_check.py
-# Paste output here
+# Paste the complete output here
 ```
 
-**Dependencies:**
-```bash
-# Please run: pip list | grep -E "(pyrogram|telegram|motor|pymongo|pydantic)"
-# Paste output here
-```
+## ⚙️ Configuration (Remove Sensitive Data!)
 
-## Configuration
-
-**Environment Variables (remove sensitive data):**
+**.env file (REMOVE ALL TOKENS/KEYS):**
 ```bash
-# .env file content (REMOVE API KEYS/TOKENS)
+# Example - DO NOT include real tokens
 MONGO_URL=mongodb://localhost:27017
 DB_NAME=telegram_automation
 LOG_LEVEL=INFO
 # ... other non-sensitive config
 ```
 
-## Logs
+## 📋 Logs
 
-**Error Logs:**
+**Error Messages:**
 ```bash
-# Please include relevant log entries from logs/app.log
-# Or output from terminal when error occurred
+# Include relevant log entries from logs/app.log
+# Or terminal output when error occurred
 ```
 
 **Stack Trace (if available):**
 ```python
-# Paste full stack trace here
+# Paste full Python stack trace here
 ```
 
-## Screenshots
+## 📸 Screenshots
 
-If applicable, add screenshots to help explain your problem.
+If applicable, add screenshots of the error or unexpected behavior.
 
-## Additional Context
+## 🔍 Troubleshooting Done
 
-### Telegram-Specific Information
-- [ ] Using bot commands
-- [ ] Using userbot functionality  
-- [ ] Database operations
-- [ ] Configuration changes
+**What I've already tried:**
+- [ ] Restarted the application (`python main.py`)
+- [ ] Ran health check (`python scripts/health_check.py`)
+- [ ] Checked MongoDB is running (`mongod` or `systemctl status mongod`)
+- [ ] Reviewed logs in `logs/app.log`
+- [ ] Cleared Telegram sessions (if userbot issue)
+- [ ] Verified .env configuration
+- [ ] Updated dependencies (`pip install -e ".[dev]"`)
 
-### What You've Tried
-- [ ] Restarted the application
-- [ ] Ran health check
-- [ ] Cleared sessions folder
-- [ ] Checked MongoDB connection
-- [ ] Reviewed logs for errors
+## 🎯 Component Affected
 
-### Impact
-- [ ] Blocks core functionality
-- [ ] Affects specific feature only
-- [ ] Performance issue
-- [ ] Data corruption/loss risk
+- [ ] 🤖 Management Bot (Telegram bot interface)
+- [ ] 👤 Userbot (MTProto mass messaging)
+- [ ] 🗄️ Database Operations (MongoDB)
+- [ ] ⚙️ Configuration System
+- [ ] 📊 Blacklist Management
+- [ ] 📨 Message Broadcasting
+- [ ] 👥 Group Management
+- [ ] 🔧 Setup/Installation
 
-### Frequency
-- [ ] Happens every time
-- [ ] Happens sometimes
+## 🚨 Impact Level
+
+- [ ] 🔴 Critical - System completely broken
+- [ ] 🟡 High - Major feature not working
+- [ ] 🟢 Medium - Minor feature issue
+- [ ] 🔵 Low - Cosmetic or edge case
+
+## 📈 Frequency
+
+- [ ] Always happens
+- [ ] Intermittent (sometimes works)
 - [ ] Happened once
-- [ ] Happens under specific conditions
+- [ ] Only under specific conditions
 
-## Related Issues/PRs
+## 💡 Additional Context
 
-Link any related issues or pull requests.
+Any other relevant information, recent changes, or context that might help debug this issue.
 
-## Proposed Solution (optional)
+## 🔗 Related Issues
 
-If you have ideas on how to fix this, please share them here.
+Link any related issues or mention if this might be connected to other problems.
+
+---
+
+**For faster resolution, please:**
+1. ✅ Run the health check and include results
+2. ✅ Check logs for relevant error messages  
+3. ✅ Remove all sensitive data (tokens, phone numbers, etc.)
+4. ✅ Include specific steps to reproduce the issue
