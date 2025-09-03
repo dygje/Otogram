@@ -154,7 +154,7 @@ class GroupHandlers:
 
             keyboard = [
                 [InlineKeyboardButton("👥 Lihat Semua Grup", callback_data="groups_menu")],
-                [InlineKeyboardButton("➕ Tambah Lagi", callback_data="groups_add")],
+                [InlineKeyboardButton("+ Tambah Lagi", callback_data="groups_add")],
                 [InlineKeyboardButton("🔙 Dashboard", callback_data="back_to_dashboard")],
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
