@@ -1,24 +1,10 @@
-# =============================================================================
-# MODERN PYTHON GITIGNORE - BEST PRACTICES 2025
-# =============================================================================
-# Generated for: Telegram Automation System
-# Updated: January 2025
-# Follows: Python.org + GitHub + Modern tooling standards
-# =============================================================================
-
-# =============================================================================
-# 🐍 PYTHON CORE FILES
-# =============================================================================
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
 
-# C extensions (from native dependencies)
+# C extensions
 *.so
-*.pyd
-*.dll
 
 # Distribution / packaging
 .Python
@@ -34,407 +20,149 @@ parts/
 sdist/
 var/
 wheels/
+pip-wheel-metadata/
 share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
 MANIFEST
-*.whl
 
 # PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
 
-# =============================================================================
-# 📦 MODERN PACKAGE MANAGERS & BUILD TOOLS
-# =============================================================================
-
-# pip
+# Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
-pip-selfcheck.json
 
-# Poetry (modern Python dependency management)
-poetry.lock
-dist/
-
-# PDM (modern Python dependency management)
-__pypackages__/
-.pdm-python
-.pdm.toml
-
-# Hatch (modern Python project management)
-.hatch/
-
-# pipx
-.local/
-
-# uv (ultra-fast Python package installer)
-uv.lock
-
-# =============================================================================
-# 🧪 TESTING & QUALITY ASSURANCE
-# =============================================================================
-
-# Testing frameworks
-.pytest_cache/
-.coverage
-.coverage.*
+# Unit test / coverage reports
 htmlcov/
 .tox/
 .nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
 coverage.xml
 *.cover
 *.py,cover
 .hypothesis/
-.cache
-nosetests.xml
-test-results/
-junit.xml
+.pytest_cache/
 
-# Mutation testing
-.mutmut-cache
+# Translations
+*.mo
+*.pot
 
-# Performance profiling
-.prof
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
 
-# =============================================================================
-# 🔍 CODE ANALYSIS & LINTING
-# =============================================================================
+# Flask stuff:
+instance/
+.webassets-cache
 
-# MyPy type checker
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
+#   However, in case of collaboration, if having platform-specific dependencies or dependencies
+#   having no cross-platform support, pipenv may install dependencies that don't work, or not
+#   install all needed dependencies.
+#Pipfile.lock
+
+# PEP 582; used by e.g. github.com/David-OConnor/pyflow
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
 .mypy_cache/
 .dmypy.json
 dmypy.json
 
-# Ruff (modern Python linter/formatter)
-.ruff_cache/
+# Pyre type checker
+.pyre/
 
-# PyLint
-.pylint.d/
-pylint-report.txt
+# Project specific
+logs/
+sessions/
+mongodb_data/
+*.session
+*.session-journal
 
-# Bandit security linter
-.bandit
-
-# Black formatter cache
-.black_cache/
-
-# isort cache
-.isort.cfg
-
-# Flake8 cache
-.flake8_cache/
-
-# Pre-commit
-.pre-commit-cache/
-
-# =============================================================================
-# 🏗️ DEVELOPMENT ENVIRONMENTS
-# =============================================================================
-
-# Virtual environments
-.env
-.env.*
-!.env.example
-.venv/
-venv/
-env/
-ENV/
-env.bak/
-venv.bak/
-.Python
-
-# Conda environments
-.conda/
-
-# pyenv version files
-.python-version
-
-# asdf version files
-.python-version
-
-# =============================================================================
-# 📱 MODERN IDEs & EDITORS
-# =============================================================================
-
-# Visual Studio Code
+# IDEs
 .vscode/
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-!.vscode/*.code-snippets
-
-# JetBrains IDEs (PyCharm, etc.)
 .idea/
-*.iws
-*.iml
-*.ipr
-
-# Sublime Text
-*.sublime-workspace
-*.sublime-project
-
-# Vim/Neovim
 *.swp
 *.swo
 *~
-.vim/
-.nvim/
 
-# Emacs
-*~
-\#*\#
-/.emacs.d/auto-save-list
-/.emacs.d/tramp
-/.emacs.d/eshell
-/.emacs.d/elpa
-
-# Cursor AI Editor
-.cursor/
-
-# Zed Editor
-.zed/
-
-# =============================================================================
-# 💾 OPERATING SYSTEMS
-# =============================================================================
-
-# macOS
+# OS generated files
 .DS_Store
 .DS_Store?
 ._*
 .Spotlight-V100
 .Trashes
 ehthumbs.db
-Icon?
-
-# Windows  
 Thumbs.db
-Thumbs.db:encryptable
-ehthumbs.db
-ehthumbs_vista.db
-*.stackdump
-[Dd]esktop.ini
-$RECYCLE.BIN/
-*.cab
-*.msi
-*.msix
-*.msm
-*.msp
-*.lnk
-
-# Linux
-*~
-.directory
-.Trash-*
-.nfs*
-
-# =============================================================================
-# 🗃️ DATABASES & STORAGE
-# =============================================================================
-
-# SQLite
-*.sqlite
-*.sqlite3
-*.db
-
-# PostgreSQL
-*.postgresql
-
-# MongoDB
-*.bson
-
-# Database dumps
-*.sql
-*.dump
-
-# =============================================================================
-# 📊 LOGGING & MONITORING
-# =============================================================================
-
-# Application logs
-logs/
-*.log
-*.log.*
-log/
-
-# System logs
-syslog
-*.out
-
-# =============================================================================
-# 🔒 SECURITY & CREDENTIALS
-# =============================================================================
-
-# Environment variables with secrets
-.env.local
-.env.production
-.env.staging
-.secrets
-secrets/
-.secrets/
-
-# SSH keys
-*.pem
-*.key
-*.p12
-*.pfx
-id_rsa*
-id_ed25519*
-
-# API keys and tokens  
-.api_keys
-*.token
-credentials.json
-service_account.json
-
-# Local configuration with secrets
-config.local.*
-settings.local.*
-local_settings.py
-
-# =============================================================================
-# 📡 TELEGRAM PROJECT SPECIFIC
-# =============================================================================
-
-# Telegram session files
-sessions/
-*.session
-*.session-journal
-
-# Bot data and cache
-bot_data/
-user_data/
-
-# Telegram API credentials (additional safety)
-telegram_credentials.*
-bot_tokens.*
-
-# =============================================================================
-# 🌐 WEB FRAMEWORKS & ASSETS
-# =============================================================================
-
-# Django
-db.sqlite3
-db.sqlite3-journal
-local_settings.py
-media/
-staticfiles/
-static/
-
-# Flask
-instance/
-.webassets-cache
-
-# FastAPI
-__pycache__/
-
-# =============================================================================
-# 📚 DOCUMENTATION & SITES
-# =============================================================================
-
-# Sphinx documentation
-docs/_build/
-docs/_static/
-docs/_templates/
-
-# MkDocs
-/site/
-site/
-
-# Jupyter Notebook
-.ipynb_checkpoints/
-*.ipynb_checkpoints
-
-# =============================================================================
-# 🗜️ TEMPORARY & CACHE FILES
-# =============================================================================
-
-# Temporary files
-*.tmp
-*.temp
-*.bak
-*.orig
-*.rej
-*~
-
-# Cache directories
-.cache/
-cache/
-tmp/
-temp/
-
-# Backup files
-backup/
-backups/
-*.backup
-
-# =============================================================================
-# 🏭 CI/CD & DEPLOYMENT
-# =============================================================================
-
-# Docker
-Dockerfile.local
-docker-compose.override.yml
-.dockerignore.local
-
-# Kubernetes
-*.local.yaml
-*.local.yml
-
-# Terraform
-*.tfstate
-*.tfstate.*
-.terraform/
-.terraform.lock.hcl
-
-# Ansible
-*.retry
-
-# GitHub Actions local testing
-.github/workflows/*.local.yml
-
-# =============================================================================
-# 🔧 DEVELOPMENT TOOLS
-# =============================================================================
-
-# Node.js (for pre-commit hooks, documentation tools)
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-package-lock.json
-yarn.lock
-
-# Ruby (for some dev tools)
-.bundle/
-vendor/bundle
-
-# Go modules (for some tools)
-go.mod
-go.sum
-
-# =============================================================================
-# 📊 ANALYTICS & REPORTING
-# =============================================================================
 
 # Coverage reports
 htmlcov/
 .coverage
 coverage.xml
-*.lcov
+*.cover
 
-# Performance reports
-.benchmarks/
-benchmark-results/
+# pytest
+.pytest_cache/
 
-# Security scan reports
-security-report.json
+# ruff
+.ruff_cache/
+
+# Security reports
 bandit-report.json
-
-# =============================================================================
-# END OF GITIGNORE
-# =============================================================================
+safety-report.json
