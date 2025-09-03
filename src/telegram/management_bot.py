@@ -170,7 +170,7 @@ class ManagementBot:
 
         await update.message.reply_text(status_text, parse_mode="Markdown")
 
-    async def help_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+    async def help_command(self, update: Update, _context: ContextTypes.DEFAULT_TYPE):
         """Handle /help command"""
         help_text = (
             "🤖 *OTOGRAM AUTOMATION SYSTEM*\n\n"
