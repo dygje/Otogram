@@ -25,7 +25,7 @@ class TestDatabase:
 
         # Test ping
         ping_result = await db.client.admin.command("ping")
-        assert ping_result["ok"] == 1.0
+        assert ping_result["ok"] == DB_PING_OK_VALUE
 
         # Disconnect
         await db.disconnect()
