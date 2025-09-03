@@ -640,7 +640,7 @@ class ManagementBot:
                 text, parse_mode="Markdown", reply_markup=reply_markup
             )
 
-    async def _show_analytics(self, update: Update, _context: ContextTypes.DEFAULT_TYPE):
+    async def _show_analytics(self, update: Update, _context: ContextTypes.DEFAULT_TYPE) -> None:
         """Show system analytics"""
         text = (
             "📊 *SYSTEM ANALYTICS*\n"
