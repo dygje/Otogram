@@ -111,7 +111,7 @@ class GroupService:
             ]
         }
 
-        doc = await self.collection.find_one(query)
+        doc = await self.collection.find_one(query)  # type: ignore[attr-defined]
 
         if doc:
             return Group(**doc)
