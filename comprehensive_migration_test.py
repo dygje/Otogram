@@ -51,7 +51,7 @@ class ComprehensiveMigrationTest:
             # Test essential methods exist
             essential_methods = [
                 'start', 'stop', 'send_message', 'get_me', 'get_chat',
-                'send_photo', 'send_document', 'get_messages', 'iter_chat_members'
+                'send_photo', 'send_document', 'get_messages', 'get_chat_members'
             ]
             
             for method in essential_methods:
