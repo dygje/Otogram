@@ -54,11 +54,11 @@ class MessageHandlers:
                         ]
                     )
 
-                if len(messages) > 10:
-                    text += f"... dan {len(messages) - 10} pesan lainnya\n\n"
+                if len(messages) > MAX_MESSAGES_DISPLAY:
+                    text += f"... dan {len(messages) - MAX_MESSAGES_DISPLAY} pesan lainnya\n\n"
 
                 keyboard.append(
-                    [InlineKeyboardButton("➕ Tambah Pesan", callback_data="messages_add")]
+                    [InlineKeyboardButton("+ Tambah Pesan", callback_data="messages_add")]
                 )
 
             keyboard.append(
