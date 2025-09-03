@@ -246,6 +246,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## ⚡ Recent Updates
 
+- ✅ **v2.0.1**: Migrated from pyrogram to pyrofork for continued support
 - ✅ **v2.0.0**: Complete rewrite with clean architecture
 - ✅ **Professional Setup**: Modern Python tooling (black, mypy, pytest)
 - ✅ **CI/CD Pipeline**: Automated testing and quality checks
