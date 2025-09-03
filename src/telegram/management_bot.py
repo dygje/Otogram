@@ -572,7 +572,7 @@ class ManagementBot:
             text, parse_mode="Markdown", reply_markup=reply_markup
         )
 
-    async def _show_help_center(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+    async def _show_help_center(self, update: Update, _context: ContextTypes.DEFAULT_TYPE):
         """Show help center with FAQ and troubleshooting"""
         text = (
             "🆘 *HELP CENTER*\n"
