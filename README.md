@@ -4,28 +4,50 @@
 
 [![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Code Style](https://img.shields.io/badge/code%20style-ruff-D7FF64.svg)](https://github.com/astral-sh/ruff)
+[![Formatter](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Pyrofork](https://img.shields.io/badge/Pyrofork-2.3.68-green.svg)](https://github.com/Mayuri-Chan/pyrofork)
 [![Status](https://img.shields.io/badge/status-production--ready-brightgreen.svg)]()
+[![CI](https://img.shields.io/badge/CI-GitHub%20Actions-blue)](https://github.com/dygje/Otogram/actions)
 
 ## 🚀 Quick Start
 
 ```bash
-# 1. Install dependencies
-pip install -e ".[dev]"
+# 1. Clone and setup
+git clone https://github.com/dygje/Otogram.git
+cd Otogram
 
-# 2. Setup MongoDB
-mkdir -p mongodb_data && mongod --dbpath mongodb_data --fork --logpath logs/mongodb.log
+# 2. Install dependencies
+make install-dev
 
-# 3. Setup credentials
+# 3. Setup MongoDB
+make db-setup
+# OR use Docker: docker run -d -p 27017:27017 --name otogram-mongo mongo:7.0
+
+# 4. Setup credentials
 cp .env.example .env
 # Edit .env with your Telegram credentials
 
-# 4. Health check
-python scripts/health_check.py
+# 5. Health check
+make health
 
-# 5. Run system
-python main.py
+# 6. Run Otogram
+make run
+```
+
+## 🐳 Docker Quick Start
+
+```bash
+# 1. Clone repository
+git clone https://github.com/dygje/Otogram.git
+cd Otogram
+
+# 2. Setup environment
+cp .env.example .env
+# Edit .env with your credentials
+
+# 3. Run with Docker Compose
+docker-compose up -d
 ```
 
 ## ✨ Key Features
