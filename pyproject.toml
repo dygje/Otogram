@@ -26,7 +26,7 @@ classifiers = [
 requires-python = ">=3.11"
 dependencies = [
     # Telegram Libraries
-    "pyrogram==2.0.106",
+    "pyrofork==2.3.68",
     "python-telegram-bot==20.8",
     "TgCrypto==1.2.5",
     # Database
