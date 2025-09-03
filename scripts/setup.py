@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 
-def print_banner():
+def print_banner() -> None:
     """Print welcome banner"""
     print("\n" + "=" * 70)
     print("🤖 TELEGRAM AUTOMATION SYSTEM - SETUP WIZARD")
