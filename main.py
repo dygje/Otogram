@@ -109,7 +109,7 @@ class TelegramAutomationApp:
         ]
         return all(cred for cred in required)
 
-    def signal_handler(self, signum, _frame):
+    def signal_handler(self, signum: int, _frame: Any) -> None:
         """Handle shutdown signals"""
         logger.info(f"📡 Received signal {signum}")
         # Store task reference to avoid RUF006 warning
