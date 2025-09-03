@@ -16,7 +16,7 @@ class ConfigService:
     def __init__(self) -> None:
         self.collection = database.get_collection("configurations")
 
-    async def initialize_default_configs(self):
+    async def initialize_default_configs(self) -> None:
         """Initialize default configurations"""
         for config_data in DEFAULT_CONFIGS:
             existing = await self.collection.find_one({"key": config_data["key"]})
