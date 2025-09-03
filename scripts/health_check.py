@@ -194,7 +194,7 @@ def check_imports() -> bool:
         return False
 
 
-def check_configuration():
+def check_configuration() -> bool:
     """Check configuration status"""
     try:
         from src.core.config import settings
