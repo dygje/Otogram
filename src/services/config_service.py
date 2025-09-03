@@ -13,7 +13,7 @@ from src.models.config import DEFAULT_CONFIGS, Configuration
 class ConfigService:
     """Service for managing configurations"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.collection = database.get_collection("configurations")
 
     async def initialize_default_configs(self):
