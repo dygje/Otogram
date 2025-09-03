@@ -91,7 +91,7 @@ class ManagementBot:
             MessageHandler(filters.TEXT & ~filters.COMMAND, self.handle_text_input)
         )
 
-    async def start_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+    async def start_command(self, update: Update, _context: ContextTypes.DEFAULT_TYPE):
         """Handle /start command"""
         welcome_text = (
             "🤖 *Telegram Automation System* v1.1\n\n"
