@@ -327,7 +327,7 @@ class ManagementBot:
 
             keyboard = [
                 [
-                    InlineKeyboardButton("➕ Add Message", callback_data="messages_add"),
+                    InlineKeyboardButton("+ Add Message", callback_data="messages_add"),
                     InlineKeyboardButton("📋 View All", callback_data="messages_menu"),
                 ],
                 [
