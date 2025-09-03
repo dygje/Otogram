@@ -50,7 +50,7 @@ class UserBot:
         if not settings.TELEGRAM_PHONE_NUMBER:
             raise ValueError("TELEGRAM_PHONE_NUMBER must be set")
 
-        # Initialize Pyrogram client
+        # Initialize Pyrofork client
         self.client = Client(
             "userbot_session",
             api_id=settings.TELEGRAM_API_ID,
