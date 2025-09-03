@@ -291,7 +291,7 @@ class UserBot:
 
         # Sleep in chunks to allow for graceful shutdown
         slept = 0
-        chunk_size = 60  # 1 minute chunks
+        chunk_size = SLEEP_CHUNK_SIZE  # 1 minute chunks
 
         while slept < delay_seconds and self.is_running:
             sleep_time = min(chunk_size, delay_seconds - slept)
