@@ -23,7 +23,7 @@ class MessageHandlers:
     def __init__(self):
         self.message_service = MessageService()
 
-    async def list_messages(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+    async def list_messages(self, update: Update, _context: ContextTypes.DEFAULT_TYPE):
         """List all messages"""
         try:
             messages = await self.message_service.get_all_messages()
