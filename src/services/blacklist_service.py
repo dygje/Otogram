@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 
 from loguru import logger
 
+from src.core.constants import DEFAULT_SLOWMODE_DURATION, DEFAULT_FLOOD_DURATION
 from src.core.database import database
 from src.models.blacklist import (
     Blacklist,
@@ -13,10 +14,6 @@ from src.models.blacklist import (
     BlacklistType,
     determine_blacklist_from_error,
 )
-
-# Default duration constants
-DEFAULT_SLOWMODE_DURATION = 60  # 1 minute default
-DEFAULT_FLOOD_DURATION = 3600  # 1 hour default
 
 
 class BlacklistService:
