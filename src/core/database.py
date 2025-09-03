@@ -41,6 +41,10 @@ class Database:
 
     async def _create_indexes(self) -> None:
         """Create necessary database indexes"""
+        if self.db is None:
+            logger.error("Database not connected, cannot create indexes")
+            return
+            
         try:
             # Messages collection
             await self.db.messages.create_index("is_active")
