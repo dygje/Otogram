@@ -131,7 +131,7 @@ class MessageHandlers:
 
             keyboard = [
                 [InlineKeyboardButton("📝 Lihat Semua Pesan", callback_data="messages_menu")],
-                [InlineKeyboardButton("➕ Tambah Lagi", callback_data="messages_add")],
+                [InlineKeyboardButton("+ Tambah Lagi", callback_data="messages_add")],
                 [InlineKeyboardButton("🔙 Dashboard", callback_data="back_to_dashboard")],
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
