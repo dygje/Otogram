@@ -24,14 +24,14 @@ from telegram.ext import (
 class ManagementBot:
     """Telegram bot for system management"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.app = None
         self.message_handlers = MessageHandlers()
         self.group_handlers = GroupHandlers()
         self.config_handlers = ConfigHandlers()
         self.blacklist_handlers = BlacklistHandlers()
 
-    async def start(self):
+    async def start(self) -> None:
         """Start the management bot"""
         if not settings.TELEGRAM_BOT_TOKEN:
             raise ValueError("TELEGRAM_BOT_TOKEN not set in environment")
