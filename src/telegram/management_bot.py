@@ -150,7 +150,7 @@ class ManagementBot:
 
         if update.message:
             await update.message.reply_text(text, parse_mode="Markdown", reply_markup=reply_markup)
-        else:
+        elif update.callback_query:
             await update.callback_query.edit_message_text(
                 text, parse_mode="Markdown", reply_markup=reply_markup
             )
