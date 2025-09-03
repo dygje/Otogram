@@ -2,10 +2,18 @@
 Database Management
 """
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from loguru import logger
-from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection, AsyncIOMotorDatabase
 
 from src.core.config import settings
+
+if TYPE_CHECKING:
+    from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection, AsyncIOMotorDatabase
+else:
+    from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection, AsyncIOMotorDatabase
 
 
 class Database:
