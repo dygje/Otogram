@@ -2,6 +2,8 @@
 Message Service - Handles message CRUD operations
 """
 
+from datetime import datetime
+from typing import Optional
 from loguru import logger
 
 from src.core.database import database
