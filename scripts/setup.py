@@ -106,7 +106,7 @@ def validate_credentials(
     return True, "Valid"
 
 
-def setup_credentials():
+def setup_credentials() -> bool:
     """Setup Telegram credentials interactively"""
     print("🔧 SETUP CREDENTIALS TELEGRAM\n")
 
