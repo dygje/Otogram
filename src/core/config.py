@@ -51,7 +51,7 @@ class Settings(BaseSettings):
 
     @field_validator("TELEGRAM_API_ID", mode="before")
     @classmethod
-    def parse_api_id(cls, v):
+    def parse_api_id(cls, v: Any) -> int | None:
         """Parse API ID from string or int"""
         if isinstance(v, str) and v.strip() == "":
             return None
