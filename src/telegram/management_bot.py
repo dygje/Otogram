@@ -2,7 +2,6 @@
 Management Bot - Telegram bot for managing the system
 """
 
-from typing import Optional, Any
 from loguru import logger
 
 from src.core.config import settings
@@ -11,7 +10,7 @@ from src.telegram.handlers.blacklist_handlers import BlacklistHandlers
 from src.telegram.handlers.config_handlers import ConfigHandlers
 from src.telegram.handlers.group_handlers import GroupHandlers
 from src.telegram.handlers.message_handlers import MessageHandlers
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, Message, CallbackQuery
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import (
     Application,
     CallbackQueryHandler,
@@ -26,7 +25,7 @@ class ManagementBot:
     """Telegram bot for system management"""
 
     def __init__(self) -> None:
-        self.app: Optional[Application] = None
+        self.app: Application | None = None
         self.message_handlers = MessageHandlers()
         self.group_handlers = GroupHandlers()
         self.config_handlers = ConfigHandlers()

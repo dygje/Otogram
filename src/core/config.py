@@ -3,9 +3,10 @@ Application Configuration
 Enhanced with additional safety settings and validation
 """
 
+from typing import Any
+
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from typing import Any
 
 
 class Settings(BaseSettings):

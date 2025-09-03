@@ -2,9 +2,9 @@
 Database Management
 """
 
-from typing import Optional
+
 from loguru import logger
-from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase, AsyncIOMotorCollection
+from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection, AsyncIOMotorDatabase
 
 from src.core.config import settings
 
@@ -13,8 +13,8 @@ class Database:
     """Database connection manager"""
 
     def __init__(self) -> None:
-        self.client: Optional[AsyncIOMotorClient] = None
-        self.db: Optional[AsyncIOMotorDatabase] = None
+        self.client: AsyncIOMotorClient | None = None
+        self.db: AsyncIOMotorDatabase | None = None
 
     async def connect(self) -> None:
         """Connect to MongoDB"""
@@ -44,7 +44,7 @@ class Database:
         if self.db is None:
             logger.error("Database not connected, cannot create indexes")
             return
-            
+
         try:
             # Messages collection
             await self.db.messages.create_index("is_active")
