@@ -14,7 +14,7 @@ We will use researched, stable versions of all dependencies with compatibility v
 
 ```
 # Telegram Libraries
-pyrogram==2.0.106           # Stable MTProto client
+pyrofork==2.3.68            # Updated MTProto client (fork of pyrogram)
 python-telegram-bot==20.8   # Latest stable Bot API
 TgCrypto==1.2.5            # Performance enhancement
 
