@@ -115,8 +115,13 @@ class TestSettings:
         assert status["phone_number"] is False
 
         # Test with all credentials
-        settings.TELEGRAM_API_ID = 12345678
-        settings.TELEGRAM_API_HASH = "test_hash"
+        settings = Settings(
+            TELEGRAM_API_ID=12345678,
+            TELEGRAM_API_HASH="test_hash",
+            TELEGRAM_BOT_TOKEN="123456789:ABC-DEF...",
+            TELEGRAM_PHONE_NUMBER="+1234567890",
+            _env_file=None
+        )
 
         status = settings.get_credentials_status()
         assert status["api_id"] is True
