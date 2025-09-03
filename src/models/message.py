@@ -17,7 +17,7 @@ class Message(BaseDocument):
     usage_count: int = Field(default=0, description="Times this message was used")
 
     class Config:
-        json_schema_extra = {
+        json_schema_extra: ClassVar = {
             "example": {
                 "content": "Hello! This is a broadcast message.",
                 "is_active": True,
