@@ -527,7 +527,7 @@ class ManagementBot:
             text, parse_mode="Markdown", reply_markup=reply_markup
         )
 
-    async def _show_tutorial(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+    async def _show_tutorial(self, update: Update, _context: ContextTypes.DEFAULT_TYPE):
         """Show interactive tutorial"""
         text = (
             "📚 *INTERACTIVE TUTORIAL*\n"
