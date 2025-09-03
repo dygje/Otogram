@@ -238,9 +238,14 @@ class MigrationTester:
             pydantic_version = getattr(pydantic, '__version__', 'Unknown')
             print(f"   📦 Pydantic version: {pydantic_version}")
             
-            # Test TgCrypto compatibility
-            import TgCrypto
-            print(f"   ✅ TgCrypto imported successfully")
+            # Test TgCrypto compatibility (correct import)
+            try:
+                import TgCrypto
+                print(f"   ✅ TgCrypto imported successfully")
+            except ImportError:
+                # Try alternative import
+                import tgcrypto
+                print(f"   ✅ tgcrypto imported successfully")
             
             # Test python-telegram-bot compatibility
             import telegram
