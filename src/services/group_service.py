@@ -148,7 +148,7 @@ class GroupService:
             {"group_id": group_telegram_id}, {"$inc": {"message_count": 1}}
         )
 
-    async def get_group_stats(self) -> dict:
+    async def get_group_stats(self) -> dict[str, int]:
         """Get group statistics"""
         total = await self.collection.count_documents({})
         active = await self.collection.count_documents({"is_active": True})
