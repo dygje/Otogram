@@ -1,100 +1,169 @@
-## Description
+# 🚀 Pull Request for Otogram
 
-Brief description of changes and which issue this PR addresses.
+## 📝 Description
 
-Fixes #(issue number)
+Brief description of changes and the problem this PR solves.
 
-## Type of Change
+**Related Issue:** Fixes #(issue number)
 
-- [ ] 🐛 Bug fix (non-breaking change that fixes an issue)
-- [ ] ✨ New feature (non-breaking change that adds functionality)
-- [ ] 💥 Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] 📚 Documentation update
-- [ ] 🔧 Configuration change
-- [ ] 🏗️ Architecture change (requires ADR)
+## 🔄 Type of Change
 
-## Changes Made
+- [ ] 🐛 **Bug Fix** - non-breaking change that fixes an issue
+- [ ] ✨ **New Feature** - non-breaking change that adds functionality  
+- [ ] 💥 **Breaking Change** - fix or feature that would cause existing functionality to not work as expected
+- [ ] 📚 **Documentation** - updates to documentation only
+- [ ] 🔧 **Configuration** - changes to configuration, dependencies, or build process
+- [ ] 🏗️ **Refactoring** - code changes that neither fix bugs nor add features
+- [ ] ⚡ **Performance** - changes that improve performance
+- [ ] 🧪 **Tests** - adding missing tests or correcting existing tests
 
-### Code Changes
-- [ ] Modified core functionality
-- [ ] Updated services layer
-- [ ] Changed Telegram integration
-- [ ] Updated models/database schema
+## 🎯 Changes Made
 
-### Architecture Impact
-- [ ] Follows clean architecture principles
-- [ ] No cross-layer violations
-- [ ] Dependencies point inward
-- [ ] Interface segregation maintained
+### 📦 Core Components Modified
+- [ ] 🤖 Management Bot (`src/telegram/management_bot.py`)
+- [ ] 👤 Userbot (`src/telegram/userbot.py`)
+- [ ] 📊 Services Layer (`src/services/`)
+- [ ] 🗄️ Models (`src/models/`)
+- [ ] ⚙️ Core Configuration (`src/core/`)
+- [ ] 📋 Database Schema
+- [ ] 🔧 Scripts (`scripts/`)
 
-## Testing
+### 🏗️ Architecture Impact
+- [ ] ✅ Follows clean architecture principles
+- [ ] ✅ No cross-layer violations (models don't import services, etc.)
+- [ ] ✅ Dependencies point inward (services -> models, not reverse)
+- [ ] ✅ Interface segregation maintained
+- [ ] ✅ Single responsibility principle followed
 
-### Health Check
-- [ ] `python scripts/health_check.py` passes (5/5 checks)
-- [ ] All imports work correctly
-- [ ] Configuration loads properly
-- [ ] No circular dependencies
+## 🧪 Testing Checklist
 
-### Manual Testing
-- [ ] Tested setup process (`python scripts/setup.py`)
-- [ ] Verified application starts without errors
-- [ ] Tested core functionality
-- [ ] Checked error handling
+### 🩺 System Health
+- [ ] ✅ `python scripts/health_check.py` passes (all checks green)
+- [ ] ✅ Application starts without errors (`python main.py`)
+- [ ] ✅ All imports resolve correctly
+- [ ] ✅ Configuration loads properly
+- [ ] ✅ No circular dependencies
 
-### Integration Testing
-- [ ] Database operations work
-- [ ] Telegram integration works
-- [ ] Service layer functions properly
-- [ ] No memory leaks or performance issues
+### 🔧 Manual Testing
+- [ ] ✅ Core functionality works as expected
+- [ ] ✅ Error handling works correctly
+- [ ] ✅ Bot commands respond properly (if applicable)
+- [ ] ✅ Database operations complete successfully
+- [ ] ✅ No memory leaks or performance degradation
 
-## Documentation
+### 🤖 Telegram Integration Testing
+- [ ] Management bot responds to commands
+- [ ] Userbot authenticates successfully (if applicable)
+- [ ] Message broadcasting works (if applicable)
+- [ ] Blacklist management functions (if applicable)
+- [ ] Group operations work correctly (if applicable)
 
-- [ ] Updated `docs/API.md` for public interface changes
-- [ ] Updated `docs/GETTING_STARTED.md` for setup changes
-- [ ] Updated `CHANGELOG.md` for user-facing changes
-- [ ] Created ADR for architectural decisions
-- [ ] Updated README.md if needed
+### 📊 Automated Testing
+- [ ] ✅ Unit tests pass (`pytest tests/`)
+- [ ] ✅ Type checking passes (`mypy src/`)
+- [ ] ✅ Code formatting correct (`black --check src/`)
+- [ ] ✅ Import sorting correct (`isort --check src/`)
+- [ ] ✅ Security scan clean (`bandit -r src/`)
 
-## Dependencies
+## 📚 Documentation Updates
 
-- [ ] No new dependencies added
-- [ ] OR: New dependencies researched for compatibility
-- [ ] OR: Dependencies updated with version justification
-- [ ] `requirements.txt` updated if needed
+- [ ] 📖 Updated `README.md` (if user-facing changes)
+- [ ] 📋 Updated `docs/SETUP_GUIDE.md` (if setup changes)
+- [ ] 🔍 Updated `docs/API.md` (if public interfaces changed)
+- [ ] 📝 Updated `docs/CHANGELOG.md` (for user-facing changes)
+- [ ] 🤖 Updated bot help messages (if new commands)
+- [ ] ⚙️ Updated configuration examples (if new env vars)
 
-## Security
+## 🔒 Security Considerations
 
-- [ ] No credentials in code or logs
-- [ ] Input validation implemented
-- [ ] Error messages don't expose sensitive data
-- [ ] Follows security best practices
+- [ ] ✅ No credentials or sensitive data in code
+- [ ] ✅ Input validation implemented where needed
+- [ ] ✅ Error messages don't expose sensitive information
+- [ ] ✅ Follows existing security patterns
+- [ ] ✅ Dependencies are from trusted sources
+- [ ] ✅ No new security vulnerabilities introduced
 
-## Breaking Changes
+## 📦 Dependencies
 
-If this is a breaking change:
-- [ ] Version bump required (major version)
-- [ ] Migration guide provided
-- [ ] Deprecation notices added
-- [ ] Backward compatibility considered
+- [ ] ✅ No new dependencies added
+- [ ] **OR:** New dependencies justified and documented below
+- [ ] **OR:** Dependencies updated with reason documented below
+- [ ] ✅ `pyproject.toml` updated if dependencies changed
 
-## Checklist
+**New/Updated Dependencies:**
+```toml
+# If any dependencies were added or updated, list them here with reasoning
+# pyrofork = "2.3.68"  # Updated for security fix in issue #123
+```
 
-- [ ] Code follows the project's coding standards
-- [ ] Self-review completed
-- [ ] Code is self-documenting with clear naming
-- [ ] Complex logic has explanatory comments
-- [ ] No debugging code left in
-- [ ] Performance impact considered
-- [ ] Memory usage impact considered
+## ⚡ Performance Impact
 
-## Screenshots (if applicable)
+- [ ] ✅ No performance impact
+- [ ] **OR:** Performance improvement documented below
+- [ ] **OR:** Performance impact analyzed and acceptable
 
-Add screenshots to help explain your changes.
+**Performance Notes:**
+<!-- If there's any performance impact, describe it here -->
 
-## Additional Context
+## 💥 Breaking Changes
 
-Add any other context about the pull request here.
+- [ ] ✅ No breaking changes
+- [ ] **OR:** Breaking changes documented and migration guide provided below
 
-## Reviewer Notes
+**Breaking Changes & Migration:**
+<!-- If there are breaking changes, describe them and how users should migrate -->
 
-Any specific areas you'd like reviewers to pay attention to?
+## 🎯 Specific Testing Instructions
+
+**How to test this PR:**
+1. Step 1: ...
+2. Step 2: ...
+3. Expected Result: ...
+
+**Test scenarios to verify:**
+- [ ] Scenario A: ...
+- [ ] Scenario B: ...
+- [ ] Edge case: ...
+
+## 📸 Screenshots (if applicable)
+
+<!-- Add screenshots of new features, UI changes, or bot interactions -->
+
+## ✅ Final Checklist
+
+**Code Quality:**
+- [ ] ✅ Code follows project coding standards
+- [ ] ✅ Self-reviewed all changes thoroughly
+- [ ] ✅ Code is self-documenting with clear variable/function names
+- [ ] ✅ Complex logic has explanatory comments
+- [ ] ✅ No debugging code, console.logs, or temporary changes left
+- [ ] ✅ Error handling is appropriate and user-friendly
+
+**Process:**
+- [ ] ✅ Branch is up to date with main/develop
+- [ ] ✅ All CI checks are passing
+- [ ] ✅ PR title follows conventional commit format
+- [ ] ✅ Labels applied appropriately
+
+**Impact:**
+- [ ] ✅ Changes are minimal and focused
+- [ ] ✅ No unrelated changes included
+- [ ] ✅ Memory usage impact considered
+- [ ] ✅ Database impact considered (indexes, queries, etc.)
+
+## 💬 Additional Context
+
+<!-- Any other context, decisions made, or notes for reviewers -->
+
+## 🔍 Review Focus Areas
+
+**Please pay special attention to:**
+- [ ] Code section: ...
+- [ ] Logic in: ...
+- [ ] Security implications of: ...
+- [ ] Performance impact of: ...
+
+---
+
+**For Reviewer:**
+This PR modifies Otogram's [component] to [brief description]. Key changes include [summary]. Please verify [specific areas] work correctly.

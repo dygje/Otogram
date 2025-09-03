@@ -1,0 +1,104 @@
+# 🧹 Stale Issues and PRs Management for Otogram
+# Automatically manage inactive issues and pull requests
+
+name: "🧹 Stale Issues"
+
+on:
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    # Allow manual triggering
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    name: "🧹 Close Stale Issues & PRs"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    steps:
+    - name: "🧹 Stale Action"
+      uses: actions/stale@v9
+      with:
+        # Repository token
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        
+        # Stale issue configuration
+        stale-issue-message: |
+          👋 This issue has been automatically marked as stale because it has been inactive for 30 days.
+          
+          **Next Steps:**
+          - If this is still relevant, please comment to keep it open
+          - If you've found a solution, please share it and close the issue
+          - Otherwise, this will be automatically closed in 7 days
+          
+          Thank you for contributing to Otogram! 🤖
+        
+        close-issue-message: |
+          🔒 This issue has been automatically closed due to inactivity.
+          
+          **Reopen if needed:**
+          If this issue is still relevant, please:
+          1. Comment on this issue explaining the current status
+          2. Or create a new issue with updated information
+          
+          Thanks for your understanding! 🙏
+        
+        # Stale PR configuration  
+        stale-pr-message: |
+          👋 This pull request has been automatically marked as stale because it has been inactive for 14 days.
+          
+          **Next Steps:**
+          - Please update this PR if you're still working on it
+          - Resolve any merge conflicts
+          - Address review feedback if applicable
+          - Otherwise, this will be automatically closed in 7 days
+          
+          Thank you for your contribution to Otogram! 🚀
+        
+        close-pr-message: |
+          🔒 This pull request has been automatically closed due to inactivity.
+          
+          **Reopen if needed:**
+          If you're still working on this:
+          1. Please comment to reopen
+          2. Update the branch and resolve conflicts
+          3. Address any outstanding review feedback
+          
+          Feel free to create a new PR if needed! 🔄
+        
+        # Timing configuration
+        days-before-stale: 30          # Issues become stale after 30 days
+        days-before-close: 7           # Close 7 days after marking stale
+        days-before-pr-stale: 14       # PRs become stale after 14 days  
+        days-before-pr-close: 7        # Close PRs 7 days after stale
+        
+        # Label configuration
+        stale-issue-label: 'stale'
+        stale-pr-label: 'stale'
+        exempt-issue-labels: 'pinned,security,help-wanted,good-first-issue'
+        exempt-pr-labels: 'pinned,work-in-progress,security'
+        
+        # Only process specific labels
+        only-labels: 'needs-triage,needs-review,needs-answer,type: bug,type: enhancement,type: question'
+        
+        # Exemptions
+        exempt-assignees: 'dygje'      # Don't mark issues assigned to maintainer as stale
+        exempt-milestones: true        # Don't mark issues in milestones as stale
+        exempt-all-assignees: false    # Only exempt specific assignees
+        
+        # Behavior configuration
+        remove-stale-when-updated: true # Remove stale label when updated
+        delete-branch: false           # Don't auto-delete PR branches
+        start-date: '2025-01-01T00:00:00Z' # Only process issues created after this date
+        
+        # Rate limiting
+        operations-per-run: 50         # Limit operations per run
+        
+        # Additional options
+        enable-statistics: true        # Enable GitHub Action summary statistics
+        ascending: false              # Process newest issues first
