@@ -68,9 +68,8 @@ Brief description of changes and the problem this PR solves.
 ## 📚 Documentation Updates
 
 - [ ] 📖 Updated `README.md` (if user-facing changes)
-- [ ] 📋 Updated `docs/SETUP_GUIDE.md` (if setup changes)
+- [ ] 📋 Updated `docs/SETUP_GUIDE.md` (if setup changes)  
 - [ ] 🔍 Updated `docs/API.md` (if public interfaces changed)
-- [ ] 📝 Updated `docs/CHANGELOG.md` (for user-facing changes)
 - [ ] 🤖 Updated bot help messages (if new commands)
 - [ ] ⚙️ Updated configuration examples (if new env vars)
 
