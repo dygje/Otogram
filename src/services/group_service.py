@@ -22,22 +22,22 @@ class GroupService:
         identifier = group_data.group_identifier
 
         # Parse identifier
-        group_data = {"group_identifier": identifier}
+        group_dict = {"group_identifier": identifier}
 
         if identifier.startswith("-") and identifier[1:].isdigit():
-            group_data["group_id"] = identifier
+            group_dict["group_id"] = identifier
         elif identifier.startswith("@"):
-            group_data["group_username"] = identifier
+            group_dict["group_username"] = identifier
         elif "t.me/" in identifier:
-            group_data["group_link"] = identifier
+            group_dict["group_link"] = identifier
             # Extract username from link
             if "/" in identifier:
                 username = identifier.split("/")[-1]
                 if not username.startswith("@"):
                     username = f"@{username}"
-                group_data["group_username"] = username
+                group_dict["group_username"] = username
 
-        group = Group(**group_data)
+        group = Group(**group_dict)
 
         # Check if group already exists
         existing = await self.get_group_by_identifier(identifier)
