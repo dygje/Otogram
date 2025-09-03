@@ -59,8 +59,8 @@ class GroupHandlers:
                         ]
                     )
 
-                if len(groups) > 10:
-                    text += f"... dan {len(groups) - 10} grup lainnya\n\n"
+                if len(groups) > MAX_GROUPS_DISPLAY:
+                    text += f"... dan {len(groups) - MAX_GROUPS_DISPLAY} grup lainnya\n\n"
 
                 keyboard.extend(
                     [
