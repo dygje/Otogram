@@ -222,7 +222,7 @@ def check_configuration() -> bool:
         return False
 
 
-def check_file_structure():
+def check_file_structure() -> bool:
     """Check if all required files exist"""
     required_files = [
         "main.py",
