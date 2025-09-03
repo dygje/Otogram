@@ -85,39 +85,71 @@ src/
 └── telegram/       # Interface layer (bot + userbot)
 ```
 
-## 📋 Requirements
+## 📋 System Requirements
 
-### System Requirements
-- **Python**: 3.11+ (with type checking)
-- **MongoDB**: 4.4+ (local or cloud)
-- **RAM**: 1GB minimum, 2GB recommended
-- **OS**: Ubuntu 20.04+, macOS 12+, Windows 10+
+### Core Requirements
+- **Python**: 3.11+ (tested with 3.11.13)
+- **MongoDB**: 4.4+ (local instance or MongoDB Atlas)
+- **RAM**: 1GB minimum, 2GB recommended for optimal performance
+- **OS**: Linux (Ubuntu 20.04+), macOS 12+, Windows 10+
 
 ### Telegram Requirements
-- **API Credentials** from [my.telegram.org](https://my.telegram.org)
-- **Bot Token** from [@BotFather](https://t.me/BotFather)
-- **Phone Number** for userbot authentication
+- **API Credentials**: Get from [my.telegram.org](https://my.telegram.org) → API Development Tools
+- **Bot Token**: Create via [@BotFather](https://t.me/BotFather) → `/newbot`
+- **Phone Number**: International format (+country_code) for MTProto auth
 
 ## 🛠️ Installation & Setup
 
-### 1. Clone & Install
+### 1. Environment Preparation
 
 ```bash
+# Clone repository
 git clone https://github.com/dygje/Otogram.git
 cd Otogram
+
+# Install all dependencies
 pip install -e ".[dev]"
+
+# Setup MongoDB (choose one)
+# Option A: Local MongoDB
+mkdir -p mongodb_data
+mongod --dbpath mongodb_data --fork --logpath logs/mongodb.log
+
+# Option B: System MongoDB
+sudo systemctl start mongod
+
+# Option C: Docker MongoDB
+docker run -d -p 27017:27017 --name otogram-mongo mongo:4.4
 ```
 
-### 2. Environment Setup
+### 2. Configuration Setup
 
-**Interactive Setup (Recommended)**
-```bash
-make setup-wizard
-```
-
-**Manual Setup**
+**Step 1: Copy environment template**
 ```bash
 cp .env.example .env
+```
+
+**Step 2: Configure credentials in .env**
+```env
+# Telegram API (from my.telegram.org)
+TELEGRAM_API_ID=21507942
+TELEGRAM_API_HASH=399fae9734796b25b068050f5f03b698
+
+# Bot token (from @BotFather)  
+TELEGRAM_BOT_TOKEN=8118820592:AAFX05zaXmmW3nWY2pM7s90Pbqn8f1ptc0M
+
+# Phone number (international format)
+TELEGRAM_PHONE_NUMBER=+6282298147520
+
+# Database (adjust if needed)
+MONGO_URL=mongodb://localhost:27017
+```
+
+**Step 3: Health check**
+```bash
+python scripts/health_check.py
+# Expected: "🎉 System is HEALTHY and ready to run!"
+```
 # Edit .env with your credentials
 ```
 
