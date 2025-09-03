@@ -14,6 +14,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from loguru import logger
+
 from src.core.config import settings
 from src.core.database import database
 from src.telegram.bot_manager import BotManager
@@ -21,17 +22,17 @@ from src.telegram.bot_manager import BotManager
 
 class TelegramAutomationApp:
     """Main Application Class"""
-    
+
     def __init__(self):
         self.bot_manager = None
         self.database = None
         self.running = False
         self._setup_logging()
-    
+
     def _setup_logging(self):
         """Configure logging system"""
         logger.remove()  # Remove default handler
-        
+
         # Console logging
         logger.add(
             sys.stdout,
@@ -41,11 +42,11 @@ class TelegramAutomationApp:
             ),
             level=settings.LOG_LEVEL
         )
-        
+
         # File logging
         log_dir = Path("logs")
         log_dir.mkdir(exist_ok=True)
-        
+
         logger.add(
             log_dir / "app.log",
             rotation="1 day",
@@ -53,51 +54,51 @@ class TelegramAutomationApp:
             format="{time:YYYY-MM-DD HH:mm:ss} | {level: <8} | {name} - {message}",
             level=settings.LOG_LEVEL
         )
-    
+
     async def start(self):
         """Start the application"""
         try:
             logger.info("🚀 Starting Telegram Automation System")
-            
+
             # Check required credentials
             if not self._check_credentials():
                 logger.error("❌ Missing required Telegram credentials in .env file")
                 return
-            
+
             # Initialize database
             self.database = database
             await self.database.connect()
             logger.info("✅ Database connected")
-            
+
             # Initialize bot manager
             self.bot_manager = BotManager()
             await self.bot_manager.start()
             logger.info("✅ Telegram services started")
-            
+
             self.running = True
             logger.info("🎯 System ready! Use your Telegram bot to manage everything.")
-            
+
             # Keep running
             while self.running:
                 await asyncio.sleep(1)
-                
+
         except Exception as e:
             logger.error(f"❌ Failed to start: {e}")
             await self.stop()
-    
+
     async def stop(self):
         """Stop the application"""
         logger.info("🛑 Shutting down...")
         self.running = False
-        
+
         if self.bot_manager:
             await self.bot_manager.stop()
-        
+
         if self.database:
             await self.database.disconnect()
-        
+
         logger.info("✅ Shutdown complete")
-    
+
     def _check_credentials(self) -> bool:
         """Check if required credentials are provided"""
         required = [
@@ -107,7 +108,7 @@ class TelegramAutomationApp:
             settings.TELEGRAM_PHONE_NUMBER
         ]
         return all(cred for cred in required)
-    
+
     def signal_handler(self, signum, frame):
         """Handle shutdown signals"""
         logger.info(f"📡 Received signal {signum}")
@@ -117,11 +118,11 @@ class TelegramAutomationApp:
 async def main():
     """Main entry point"""
     app = TelegramAutomationApp()
-    
+
     # Setup signal handlers
     signal.signal(signal.SIGINT, app.signal_handler)
     signal.signal(signal.SIGTERM, app.signal_handler)
-    
+
     try:
         await app.start()
     except KeyboardInterrupt:
