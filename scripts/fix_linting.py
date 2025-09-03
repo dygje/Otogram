@@ -28,7 +28,7 @@ def run_command(cmd: list[str], description: str = "") -> bool:
         return False
 
 
-def main():
+def main() -> None:
     """Fix common linting issues"""
     print("🔧 Auto-fixing linting issues for Otogram...")
 
