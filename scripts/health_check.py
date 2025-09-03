@@ -151,7 +151,7 @@ def check_python_version():
 def check_dependencies():
     """Check if all required packages are installed"""
     required_packages = [
-        ("pyrogram", "pyrogram"),
+        ("pyrofork", "pyrofork"),
         ("telegram", "python-telegram-bot"),
         ("motor", "motor"),
         ("pymongo", "pymongo"),
