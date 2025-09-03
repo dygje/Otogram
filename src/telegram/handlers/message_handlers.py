@@ -2,11 +2,12 @@
 Message Handlers - Handle message management through bot
 """
 
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import ContextTypes
 from loguru import logger
-from src.services.message_service import MessageService
+
 from src.models.message import MessageCreate
+from src.services.message_service import MessageService
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram.ext import ContextTypes
 
 
 class MessageHandlers:

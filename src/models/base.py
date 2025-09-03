@@ -2,9 +2,10 @@
 Base Models
 """
 
-from datetime import datetime
-from pydantic import BaseModel, Field
 import uuid
+from datetime import datetime
+
+from pydantic import BaseModel, Field
 
 
 class BaseDocument(BaseModel):

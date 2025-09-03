@@ -237,8 +237,9 @@ def run_system():
 
     try:
         sys.path.insert(0, str(Path(__file__).parent.parent))
-        from main import main
         import asyncio
+
+        from main import main
 
         print("\n" + "=" * 50)
         print("🚀 STARTING TELEGRAM AUTOMATION SYSTEM...")

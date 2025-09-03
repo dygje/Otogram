@@ -2,11 +2,12 @@
 Group Handlers - Handle group management through bot
 """
 
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import ContextTypes
 from loguru import logger
+
+from src.models.group import GroupBulkCreate, GroupCreate
 from src.services.group_service import GroupService
-from src.models.group import GroupCreate, GroupBulkCreate
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram.ext import ContextTypes
 
 
 class GroupHandlers:

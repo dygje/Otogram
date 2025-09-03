@@ -2,10 +2,11 @@
 Configuration Handlers - Handle system configuration through bot
 """
 
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import ContextTypes
 from loguru import logger
+
 from src.services.config_service import ConfigService
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram.ext import ContextTypes
 
 
 class ConfigHandlers:

@@ -2,8 +2,9 @@
 Database Management
 """
 
-from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 from loguru import logger
+from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
+
 from src.core.config import settings
 
 

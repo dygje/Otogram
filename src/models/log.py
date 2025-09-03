@@ -2,9 +2,11 @@
 Log Models
 """
 
-from typing import Optional, Dict, Any
 from enum import Enum
+from typing import Any, Dict, Optional
+
 from pydantic import BaseModel, Field
+
 from src.models.base import BaseDocument
 
 

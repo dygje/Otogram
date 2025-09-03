@@ -3,8 +3,8 @@
 Health Check Script for Telegram Automation System
 Verifies all system components are working correctly
 """
-import sys
 import os
+import sys
 from pathlib import Path
 
 # Add app directory to path - Updated untuk reorganisasi
@@ -67,10 +67,10 @@ def check_imports():
 
         print("✅ Database module - OK")
 
-        from src.services.message_service import MessageService
-        from src.services.group_service import GroupService
         from src.services.blacklist_service import BlacklistService
         from src.services.config_service import ConfigService
+        from src.services.group_service import GroupService
+        from src.services.message_service import MessageService
 
         print("✅ All services - OK")
 

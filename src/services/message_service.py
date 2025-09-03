@@ -3,7 +3,9 @@ Message Service - Handles message CRUD operations
 """
 
 from typing import List, Optional
+
 from loguru import logger
+
 from src.core.database import database
 from src.models.message import Message, MessageCreate, MessageUpdate
 

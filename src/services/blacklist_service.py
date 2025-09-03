@@ -4,7 +4,9 @@ Blacklist Service - Handles blacklist management
 
 from datetime import datetime, timedelta
 from typing import List, Optional
+
 from loguru import logger
+
 from src.core.database import database
 from src.models.blacklist import (
     Blacklist,

@@ -3,9 +3,11 @@ Blacklist Models
 """
 
 from datetime import datetime, timedelta
-from typing import Optional
 from enum import Enum
+from typing import Optional
+
 from pydantic import BaseModel, Field
+
 from src.models.base import BaseDocument
 
 

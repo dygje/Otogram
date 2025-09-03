@@ -3,9 +3,10 @@ Bot Manager - Manages Telegram Bot and Userbot
 """
 
 from loguru import logger
+
+from src.services.config_service import ConfigService
 from src.telegram.management_bot import ManagementBot
 from src.telegram.userbot import UserBot
-from src.services.config_service import ConfigService
 
 
 class BotManager:

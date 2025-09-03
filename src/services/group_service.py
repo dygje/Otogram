@@ -3,9 +3,11 @@ Group Service - Handles group CRUD operations
 """
 
 from typing import List, Optional
+
 from loguru import logger
+
 from src.core.database import database
-from src.models.group import Group, GroupCreate, GroupBulkCreate
+from src.models.group import Group, GroupBulkCreate, GroupCreate
 
 
 class GroupService:

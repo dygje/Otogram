@@ -2,10 +2,12 @@
 Configuration Service - Handles system configuration
 """
 
-from typing import List, Optional, Any
+from typing import Any, List, Optional
+
 from loguru import logger
+
 from src.core.database import database
-from src.models.config import Configuration, DEFAULT_CONFIGS
+from src.models.config import DEFAULT_CONFIGS, Configuration
 
 
 class ConfigService:

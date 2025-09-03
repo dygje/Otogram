@@ -3,7 +3,9 @@ Group Models
 """
 
 from typing import Optional
+
 from pydantic import BaseModel, Field, validator
+
 from src.models.base import BaseDocument
 
 
