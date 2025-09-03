@@ -72,7 +72,7 @@ class Settings(BaseSettings):
 
     @field_validator("TELEGRAM_PHONE_NUMBER")
     @classmethod
-    def validate_phone_number(cls, v):
+    def validate_phone_number(cls, v: str | None) -> str | None:
         """Validate phone number format"""
         if v is not None and not v.startswith("+"):
             raise ValueError("Phone number must start with + (international format)")
