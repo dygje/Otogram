@@ -155,76 +155,62 @@ check-build: build ## Check if build is valid
 	python -m twine check dist/*
 	@echo "✅ Build validation complete"
 
-# Security
-security-check: ## Run security checks
-	@echo "🔐 Running security checks..."
-	@if command -v bandit >/dev/null 2>&1; then \
-		bandit -r src/; \
-	else \
-		echo "ℹ️ Install bandit: pip install bandit"; \
-	fi
-	@if command -v safety >/dev/null 2>&1; then \
-		safety check; \
-	else \
-		echo "ℹ️ Install safety: pip install safety"; \
-	fi
+# Development Workflow
+dev: clean install-dev health ## Prepare for development
+	@echo "🚀 Development environment ready!"
+	@echo "Next steps:"
+	@echo "1. Run 'make setup-wizard' to configure"
+	@echo "2. Run 'make run' to start Otogram"
 
-# Database
-db-setup: ## Setup MongoDB (reminder command)
+# CI/CD helpers
+ci-install: ## Install dependencies for CI
+	python -m pip install --upgrade pip
+	pip install -e ".[dev]"
+
+ci-test: ## Run CI tests and checks
+	python scripts/health_check.py
+	ruff check src/ scripts/ tests/
+	black --check src/ scripts/ tests/
+	isort --check-only src/ scripts/ tests/
+	mypy src/
+	pytest tests/ -v --cov=src
+
+# Database Management
+db-setup: ## MongoDB setup instructions
 	@echo "🗄️ MongoDB Setup Instructions:"
 	@echo "Ubuntu/Debian: sudo apt-get install mongodb"
 	@echo "macOS: brew install mongodb-community"
 	@echo "Windows: Download from https://www.mongodb.com/try/download/community"
-	@echo "Docker: docker run -d -p 27017:27017 mongo:4.4"
+	@echo "Docker: docker run -d -p 27017:27017 --name otogram-mongo mongo:7.0"
 
-# Development Workflow
-dev: clean install health ## Prepare for development
-	@echo "🚀 Development environment ready!"
-	@echo "Next steps:"
-	@echo "1. Run 'make setup-wizard' to configure"  
-	@echo "2. Run 'make run' to start the application"
-
-# CI/CD helpers
-ci-install: ## Install dependencies for CI
-	pip install --upgrade pip
-	pip install -r requirements.txt
-	pip install -e ".[dev]"
-
-ci-test: ## Run CI tests
-	python scripts/health_check.py
-	black --check src/ scripts/
-	isort --check-only src/ scripts/
-	flake8 src/ scripts/
-	mypy src/
-
-# Utility
+# Utilities
 check-deps: ## Check for dependency updates
 	@echo "🔍 Checking for dependency updates..."
 	python scripts/update_deps.py
 
-update-deps: ## Update dependencies (interactive)
+update-deps: ## Update dependencies
 	@echo "📦 Updating dependencies..."
-	pip install --upgrade pip
+	python -m pip install --upgrade pip
 	pip install --upgrade -e ".[dev]"
 	@echo "✅ Dependencies updated. Run 'make test' to verify."
 
 version: ## Show version information
-	@echo "Telegram Automation System"
-	@echo "=========================="
+	@echo "🤖 Otogram - Telegram Automation System"
+	@echo "========================================"
 	@echo "Project Version: $(shell grep '^version' pyproject.toml | cut -d'"' -f2)"
 	@echo "Python Version: $(shell python --version)"
-	@echo "Dependencies:"
+	@echo "Key Dependencies:"
 	@pip list | grep -E "(pyrofork|telegram|motor|pymongo|pydantic)" || echo "Dependencies not installed"
 
-# Help with setup
+# Help & Setup
 first-time: ## First time setup guide
-	@echo "🎯 First Time Setup Guide"
-	@echo "========================"
+	@echo "🎯 Otogram - First Time Setup Guide"
+	@echo "===================================="
 	@echo "1. Install Python 3.11+: https://python.org/downloads/"
 	@echo "2. Install MongoDB: make db-setup"
 	@echo "3. Setup project: make setup"
 	@echo "4. Configure app: make setup-wizard"
 	@echo "5. Run health check: make health"
-	@echo "6. Start application: make run"
+	@echo "6. Start Otogram: make run"
 	@echo ""
 	@echo "For detailed instructions, see: docs/GETTING_STARTED.md"
