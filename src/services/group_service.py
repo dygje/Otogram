@@ -3,6 +3,7 @@ Group Service - Handles group CRUD operations
 """
 
 from datetime import datetime
+from typing import Any
 
 from loguru import logger
 
