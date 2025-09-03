@@ -1,4 +1,4 @@
-# Makefile for Telegram Automation System
+# Makefile for Otogram - Telegram Automation System
 # Provides convenient commands for development and maintenance
 
 .PHONY: help setup install test lint format health clean build docs pre-commit
