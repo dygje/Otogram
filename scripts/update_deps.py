@@ -99,7 +99,7 @@ def suggest_updates() -> None:
     print("   • Keep security updates prioritized")
 
 
-def main():
+def main() -> int:
     """Main dependency update checker"""
     print("🔄 DEPENDENCY UPDATE CHECKER")
     print("=" * 40)
