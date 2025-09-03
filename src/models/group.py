@@ -2,7 +2,6 @@
 Group Models
 """
 
-from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
@@ -12,10 +11,10 @@ from src.models.base import BaseDocument
 class Group(BaseDocument):
     """Group model for target groups"""
 
-    group_id: Optional[str] = Field(None, description="Telegram group ID")
-    group_username: Optional[str] = Field(None, description="Group username")
-    group_link: Optional[str] = Field(None, description="Group link")
-    group_title: Optional[str] = Field(None, description="Group title")
+    group_id: str | None = Field(None, description="Telegram group ID")
+    group_username: str | None = Field(None, description="Group username")
+    group_link: str | None = Field(None, description="Group link")
+    group_title: str | None = Field(None, description="Group title")
     is_active: bool = Field(default=True, description="Whether group is active")
     message_count: int = Field(default=0, description="Messages sent to this group")
 
@@ -76,11 +75,7 @@ class GroupBulkCreate(BaseModel):
             line = line.strip()
             if line:
                 # Process each identifier
-                if line.startswith("-") and line[1:].isdigit():
-                    result.append(line)
-                elif line.startswith("@"):
-                    result.append(line)
-                elif "t.me/" in line:
+                if (line.startswith("-") and line[1:].isdigit()) or line.startswith("@") or "t.me/" in line:
                     result.append(line)
                 else:
                     result.append(f"@{line}")

@@ -4,7 +4,6 @@ Blacklist Models
 
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import Optional
 
 from pydantic import BaseModel, Field
 
@@ -43,12 +42,12 @@ class Blacklist(BaseDocument):
     """Blacklist entry model"""
 
     group_id: str = Field(..., description="Group ID")
-    group_identifier: Optional[str] = Field(None, description="Group username/link")
+    group_identifier: str | None = Field(None, description="Group username/link")
     blacklist_type: BlacklistType = Field(..., description="Blacklist type")
     reason: BlacklistReason = Field(..., description="Reason for blacklisting")
-    expires_at: Optional[datetime] = Field(None, description="Expiration time (temporary only)")
-    duration_seconds: Optional[int] = Field(None, description="Duration in seconds")
-    error_message: Optional[str] = Field(None, description="Original error message")
+    expires_at: datetime | None = Field(None, description="Expiration time (temporary only)")
+    duration_seconds: int | None = Field(None, description="Duration in seconds")
+    error_message: str | None = Field(None, description="Original error message")
 
     @property
     def is_expired(self) -> bool:
@@ -62,7 +61,7 @@ class Blacklist(BaseDocument):
         return datetime.utcnow() >= self.expires_at
 
     @property
-    def time_remaining(self) -> Optional[timedelta]:
+    def time_remaining(self) -> timedelta | None:
         """Get remaining time for temporary blacklist"""
         if self.blacklist_type == BlacklistType.PERMANENT or not self.expires_at:
             return None
@@ -88,11 +87,11 @@ class BlacklistCreate(BaseModel):
     """Model for creating blacklist entries"""
 
     group_id: str = Field(..., description="Group ID")
-    group_identifier: Optional[str] = Field(None)
+    group_identifier: str | None = Field(None)
     blacklist_type: BlacklistType = Field(..., description="Blacklist type")
     reason: BlacklistReason = Field(..., description="Reason")
-    duration_seconds: Optional[int] = Field(None, description="Duration for temporary")
-    error_message: Optional[str] = Field(None)
+    duration_seconds: int | None = Field(None, description="Duration for temporary")
+    error_message: str | None = Field(None)
 
 
 def determine_blacklist_from_error(error_msg: str) -> tuple[BlacklistType, BlacklistReason]:

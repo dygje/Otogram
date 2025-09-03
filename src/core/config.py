@@ -3,7 +3,6 @@ Application Configuration
 Enhanced with additional safety settings and validation
 """
 
-from typing import Optional
 
 from pydantic import ConfigDict, Field, field_validator
 from pydantic_settings import BaseSettings
@@ -19,10 +18,10 @@ class Settings(BaseSettings):
     DB_NAME: str = Field(default="otogram")
 
     # Telegram Credentials (Required)
-    TELEGRAM_API_ID: Optional[int] = Field(default=None)
-    TELEGRAM_API_HASH: Optional[str] = Field(default=None)
-    TELEGRAM_BOT_TOKEN: Optional[str] = Field(default=None)
-    TELEGRAM_PHONE_NUMBER: Optional[str] = Field(default=None)
+    TELEGRAM_API_ID: int | None = Field(default=None)
+    TELEGRAM_API_HASH: str | None = Field(default=None)
+    TELEGRAM_BOT_TOKEN: str | None = Field(default=None)
+    TELEGRAM_PHONE_NUMBER: str | None = Field(default=None)
 
     # System Settings
     LOG_LEVEL: str = Field(default="INFO")

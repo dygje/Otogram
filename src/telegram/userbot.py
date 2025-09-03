@@ -4,8 +4,7 @@ Userbot - Handles mass messaging using MTProto
 
 import asyncio
 import random
-from datetime import datetime, timedelta
-from typing import List, Optional
+from datetime import datetime
 
 from loguru import logger
 from pyrogram import Client
@@ -34,7 +33,7 @@ class UserBot:
     """Telegram userbot for mass messaging"""
 
     def __init__(self):
-        self.client: Optional[Client] = None
+        self.client: Client | None = None
         self.message_service = MessageService()
         self.group_service = GroupService()
         self.blacklist_service = BlacklistService()
@@ -119,7 +118,7 @@ class UserBot:
                 # Wait a bit before retrying
                 await asyncio.sleep(300)  # 5 minutes
 
-    async def _broadcast_cycle(self, messages: List, groups: List):
+    async def _broadcast_cycle(self, messages: list, groups: list):
         """Execute a single broadcasting cycle"""
         logger.info(f"🚀 Starting broadcast cycle: {len(groups)} groups, {len(messages)} messages")
 
@@ -254,7 +253,7 @@ class UserBot:
         group,
         blacklist_type: BlacklistType,
         reason: BlacklistReason,
-        duration_seconds: Optional[int],
+        duration_seconds: int | None,
         error_message: str,
     ):
         """Add group to blacklist"""

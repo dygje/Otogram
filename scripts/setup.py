@@ -3,7 +3,6 @@
 Enhanced Setup Script for Telegram Automation System
 Membantu user mengkonfigurasi credentials dan menjalankan sistem
 """
-import os
 import sys
 from pathlib import Path
 
@@ -197,7 +196,7 @@ def run_health_check():
             import subprocess
 
             result = subprocess.run(
-                [sys.executable, str(health_script)], capture_output=True, text=True
+                [sys.executable, str(health_script)], check=False, capture_output=True, text=True
             )
 
             print(result.stdout)
@@ -266,7 +265,7 @@ def main():
     missing_fields = check_env_file()
 
     if missing_fields:
-        print(f"❌ Field berikut masih kosong di .env:")
+        print("❌ Field berikut masih kosong di .env:")
         for field in missing_fields:
             print(f"  • {field}")
         print("")

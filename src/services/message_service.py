@@ -2,7 +2,6 @@
 Message Service - Handles message CRUD operations
 """
 
-from typing import List, Optional
 
 from loguru import logger
 
@@ -25,7 +24,7 @@ class MessageService:
 
         return message
 
-    async def get_all_messages(self) -> List[Message]:
+    async def get_all_messages(self) -> list[Message]:
         """Get all messages"""
         cursor = self.collection.find()
         messages = []
@@ -35,7 +34,7 @@ class MessageService:
 
         return messages
 
-    async def get_active_messages(self) -> List[Message]:
+    async def get_active_messages(self) -> list[Message]:
         """Get only active messages"""
         cursor = self.collection.find({"is_active": True})
         messages = []
@@ -45,7 +44,7 @@ class MessageService:
 
         return messages
 
-    async def get_message_by_id(self, message_id: str) -> Optional[Message]:
+    async def get_message_by_id(self, message_id: str) -> Message | None:
         """Get message by ID"""
         doc = await self.collection.find_one({"id": message_id})
 
@@ -55,7 +54,7 @@ class MessageService:
 
     async def update_message(
         self, message_id: str, update_data: MessageUpdate
-    ) -> Optional[Message]:
+    ) -> Message | None:
         """Update a message"""
         update_dict = {k: v for k, v in update_data.dict().items() if v is not None}
 

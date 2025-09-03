@@ -3,7 +3,7 @@ Log Models
 """
 
 from enum import Enum
-from typing import Any, Dict, Optional
+from typing import Any
 
 from pydantic import BaseModel, Field
 
@@ -36,9 +36,9 @@ class Log(BaseDocument):
     log_type: LogType = Field(..., description="Log type")
     level: LogLevel = Field(default=LogLevel.INFO, description="Log level")
     message: str = Field(..., description="Log message")
-    details: Optional[Dict[str, Any]] = Field(None, description="Additional details")
-    group_id: Optional[str] = Field(None, description="Related group ID")
-    user_id: Optional[str] = Field(None, description="Related user ID")
+    details: dict[str, Any] | None = Field(None, description="Additional details")
+    group_id: str | None = Field(None, description="Related group ID")
+    user_id: str | None = Field(None, description="Related user ID")
 
     class Config:
         json_schema_extra = {
@@ -57,6 +57,6 @@ class LogCreate(BaseModel):
     log_type: LogType = Field(..., description="Log type")
     level: LogLevel = Field(default=LogLevel.INFO)
     message: str = Field(..., description="Log message")
-    details: Optional[Dict[str, Any]] = Field(None)
-    group_id: Optional[str] = Field(None)
-    user_id: Optional[str] = Field(None)
+    details: dict[str, Any] | None = Field(None)
+    group_id: str | None = Field(None)
+    user_id: str | None = Field(None)

@@ -2,7 +2,6 @@
 Configuration Models
 """
 
-from typing import Optional, Union
 
 from pydantic import BaseModel, Field
 
@@ -13,9 +12,9 @@ class Configuration(BaseDocument):
     """Configuration model"""
 
     key: str = Field(..., description="Configuration key")
-    value: Union[str, int, float, bool] = Field(..., description="Configuration value")
+    value: str | int | float | bool = Field(..., description="Configuration value")
     value_type: str = Field(..., description="Type of value")
-    description: Optional[str] = Field(None, description="Description")
+    description: str | None = Field(None, description="Description")
     category: str = Field(default="general", description="Category")
     is_editable: bool = Field(default=True, description="Can be edited")
 
@@ -33,7 +32,7 @@ class Configuration(BaseDocument):
 class ConfigUpdate(BaseModel):
     """Model for updating configuration"""
 
-    value: Union[str, int, float, bool] = Field(..., description="New value")
+    value: str | int | float | bool = Field(..., description="New value")
 
 
 # Default configurations

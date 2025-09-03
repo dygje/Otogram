@@ -55,7 +55,7 @@ def check_security_vulnerabilities():
 
     try:
         # Try safety check
-        result = subprocess.run(["safety", "check", "--json"], capture_output=True, text=True)
+        result = subprocess.run(["safety", "check", "--json"], check=False, capture_output=True, text=True)
 
         if result.returncode == 0:
             print("✅ No known security vulnerabilities found!")
@@ -118,7 +118,7 @@ def main():
         suggest_updates()
 
     # Summary
-    print(f"\n📊 Summary:")
+    print("\n📊 Summary:")
     print(f"   Packages up to date: {'✅' if packages_ok else '❌'}")
     print(f"   Security status: {'✅' if security_ok else '⚠️'}")
 

@@ -2,7 +2,6 @@
 Message Models
 """
 
-from typing import Optional
 
 from pydantic import BaseModel, Field
 
@@ -35,5 +34,5 @@ class MessageCreate(BaseModel):
 class MessageUpdate(BaseModel):
     """Model for updating messages"""
 
-    content: Optional[str] = Field(None, min_length=1, max_length=4096)
-    is_active: Optional[bool] = Field(None)
+    content: str | None = Field(None, min_length=1, max_length=4096)
+    is_active: bool | None = Field(None)

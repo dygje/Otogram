@@ -4,12 +4,9 @@ Health Check Script for Telegram Automation System
 Verifies all system components are working correctly
 """
 import asyncio
-import importlib
-import os
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional
 
 # Add app directory to path - Updated untuk reorganisasi
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -21,7 +18,7 @@ class HealthCheckResult:
 
     status: str  # ✅, ⚠️, or ❌
     message: str
-    details: Optional[str] = None
+    details: str | None = None
 
 
 async def check_mongodb_connection() -> HealthCheckResult:
@@ -112,7 +109,7 @@ async def run_health_check() -> int:
         except Exception as e:
             print(f"❌ {name} check error: {e}")
 
-    print(f"\n📊 HEALTH CHECK SUMMARY")
+    print("\n📊 HEALTH CHECK SUMMARY")
     print(f"{'=' * 30}")
     print(f"Passed: {passed}/{total} checks")
 
@@ -172,26 +169,18 @@ def check_imports():
     try:
         print("\n📦 Testing project imports...")
 
-        from src.core.config import settings
 
         print("✅ Core config - OK")
 
-        from src.core.database import Database
 
         print("✅ Database module - OK")
 
-        from src.services.blacklist_service import BlacklistService
-        from src.services.config_service import ConfigService
-        from src.services.group_service import GroupService
-        from src.services.message_service import MessageService
 
         print("✅ All services - OK")
 
-        from src.telegram.bot_manager import BotManager
 
         print("✅ Telegram components - OK")
 
-        from main import TelegramAutomationApp
 
         print("✅ Main application - OK")
 
@@ -207,7 +196,7 @@ def check_configuration():
     try:
         from src.core.config import settings
 
-        print(f"\n⚙️ Configuration status:")
+        print("\n⚙️ Configuration status:")
         print(f"📊 Database: {settings.DB_NAME}")
         print(f"📝 Log Level: {settings.LOG_LEVEL}")
 

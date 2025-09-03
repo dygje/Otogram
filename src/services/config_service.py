@@ -2,7 +2,7 @@
 Configuration Service - Handles system configuration
 """
 
-from typing import Any, List, Optional
+from typing import Any
 
 from loguru import logger
 
@@ -26,7 +26,7 @@ class ConfigService:
                 await self.collection.insert_one(config.dict())
                 logger.info(f"Initialized config: {config_data['key']}")
 
-    async def get_config(self, key: str) -> Optional[Configuration]:
+    async def get_config(self, key: str) -> Configuration | None:
         """Get configuration by key"""
         doc = await self.collection.find_one({"key": key})
 
@@ -43,7 +43,7 @@ class ConfigService:
 
         return default
 
-    async def set_config(self, key: str, value: Any) -> Optional[Configuration]:
+    async def set_config(self, key: str, value: Any) -> Configuration | None:
         """Set configuration value"""
         config = await self.get_config(key)
 
@@ -64,7 +64,7 @@ class ConfigService:
         logger.info(f"Updated config {key}: {value}")
         return config
 
-    async def get_all_configs(self) -> List[Configuration]:
+    async def get_all_configs(self) -> list[Configuration]:
         """Get all configurations"""
         cursor = self.collection.find()
         configs = []
@@ -74,7 +74,7 @@ class ConfigService:
 
         return configs
 
-    async def get_configs_by_category(self, category: str) -> List[Configuration]:
+    async def get_configs_by_category(self, category: str) -> list[Configuration]:
         """Get configurations by category"""
         cursor = self.collection.find({"category": category})
         configs = []
@@ -84,7 +84,7 @@ class ConfigService:
 
         return configs
 
-    async def get_config_by_id(self, config_id: str) -> Optional[Configuration]:
+    async def get_config_by_id(self, config_id: str) -> Configuration | None:
         """Get configuration by ID"""
         doc = await self.collection.find_one({"id": config_id})
 

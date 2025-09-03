@@ -227,7 +227,7 @@ class ManagementBot:
 
             return stats
 
-        except Exception as e:
+        except Exception:
             return "📊 *Status:* ⚠️ Loading stats..."
 
     async def handle_callback(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -346,7 +346,7 @@ class ManagementBot:
                 text, parse_mode="Markdown", reply_markup=reply_markup
             )
 
-        except Exception as e:
+        except Exception:
             await update.callback_query.edit_message_text("❌ Error loading messages dashboard")
 
     async def _show_groups_dashboard(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -394,7 +394,7 @@ class ManagementBot:
                 text, parse_mode="Markdown", reply_markup=reply_markup
             )
 
-        except Exception as e:
+        except Exception:
             await update.callback_query.edit_message_text("❌ Error loading groups dashboard")
 
     async def _show_blacklist_dashboard(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -443,7 +443,7 @@ class ManagementBot:
                 text, parse_mode="Markdown", reply_markup=reply_markup
             )
 
-        except Exception as e:
+        except Exception:
             await update.callback_query.edit_message_text("❌ Error loading blacklist dashboard")
 
     async def _show_settings_dashboard(self, update: Update, context: ContextTypes.DEFAULT_TYPE):

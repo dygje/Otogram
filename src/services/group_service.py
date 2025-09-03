@@ -2,7 +2,6 @@
 Group Service - Handles group CRUD operations
 """
 
-from typing import List, Optional
 
 from loguru import logger
 
@@ -47,7 +46,7 @@ class GroupService:
 
         return group
 
-    async def create_groups_bulk(self, bulk_data: GroupBulkCreate) -> List[Group]:
+    async def create_groups_bulk(self, bulk_data: GroupBulkCreate) -> list[Group]:
         """Create multiple groups"""
         identifiers = bulk_data.get_identifiers_list()
         created_groups = []
@@ -62,7 +61,7 @@ class GroupService:
 
         return created_groups
 
-    async def get_all_groups(self) -> List[Group]:
+    async def get_all_groups(self) -> list[Group]:
         """Get all groups"""
         cursor = self.collection.find()
         groups = []
@@ -72,7 +71,7 @@ class GroupService:
 
         return groups
 
-    async def get_active_groups(self) -> List[Group]:
+    async def get_active_groups(self) -> list[Group]:
         """Get only active groups"""
         cursor = self.collection.find({"is_active": True})
         groups = []
@@ -82,7 +81,7 @@ class GroupService:
 
         return groups
 
-    async def get_group_by_id(self, group_id: str) -> Optional[Group]:
+    async def get_group_by_id(self, group_id: str) -> Group | None:
         """Get group by ID"""
         doc = await self.collection.find_one({"id": group_id})
 
@@ -90,7 +89,7 @@ class GroupService:
             return Group(**doc)
         return None
 
-    async def get_group_by_identifier(self, identifier: str) -> Optional[Group]:
+    async def get_group_by_identifier(self, identifier: str) -> Group | None:
         """Get group by telegram identifier"""
         # Try different fields
         query = {
@@ -109,7 +108,7 @@ class GroupService:
 
     async def update_group_info(
         self, group_id: str, title: str = None, is_active: bool = None
-    ) -> Optional[Group]:
+    ) -> Group | None:
         """Update group information"""
         update_dict = {}
 

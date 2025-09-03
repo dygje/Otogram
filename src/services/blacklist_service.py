@@ -3,7 +3,6 @@ Blacklist Service - Handles blacklist management
 """
 
 from datetime import datetime, timedelta
-from typing import List, Optional
 
 from loguru import logger
 
@@ -78,7 +77,7 @@ class BlacklistService:
 
         return await self.add_to_blacklist(blacklist_data)
 
-    def _extract_duration_from_error(self, error_msg: str) -> Optional[int]:
+    def _extract_duration_from_error(self, error_msg: str) -> int | None:
         """Extract duration from error message"""
         import re
 
@@ -112,7 +111,7 @@ class BlacklistService:
         doc = await self.collection.find_one({"group_id": group_id})
         return doc is not None
 
-    async def get_blacklist_entry(self, group_id: str) -> Optional[Blacklist]:
+    async def get_blacklist_entry(self, group_id: str) -> Blacklist | None:
         """Get blacklist entry for group"""
         doc = await self.collection.find_one({"group_id": group_id})
 
@@ -143,7 +142,7 @@ class BlacklistService:
 
         return result.deleted_count
 
-    async def get_all_blacklists(self) -> List[Blacklist]:
+    async def get_all_blacklists(self) -> list[Blacklist]:
         """Get all blacklist entries"""
         cursor = self.collection.find()
         blacklists = []
@@ -171,7 +170,7 @@ class BlacklistService:
 
         return {"total": total, "permanent": permanent, "temporary": temporary, "expired": expired}
 
-    async def get_blacklist_entry_by_id(self, blacklist_id: str) -> Optional[Blacklist]:
+    async def get_blacklist_entry_by_id(self, blacklist_id: str) -> Blacklist | None:
         """Get blacklist entry by ID"""
         doc = await self.collection.find_one({"id": blacklist_id})
 

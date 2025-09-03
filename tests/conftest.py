@@ -3,11 +3,10 @@ Pytest configuration and fixtures
 """
 import asyncio
 import os
-from typing import AsyncGenerator, Generator
+from collections.abc import AsyncGenerator, Generator
 
 import pytest
 import pytest_asyncio
-from motor.motor_asyncio import AsyncIOMotorClient
 
 from src.core.config import settings
 from src.core.database import Database
@@ -28,17 +27,17 @@ async def test_database() -> AsyncGenerator[Database, None]:
     test_db_name = "telegram_automation_test"
     original_db_name = settings.DB_NAME
     settings.DB_NAME = test_db_name
-    
+
     # Create test database instance
     db = Database()
     await db.connect()
-    
+
     yield db
-    
+
     # Cleanup - drop test database
     await db.client.drop_database(test_db_name)
     await db.disconnect()
-    
+
     # Restore original database name
     settings.DB_NAME = original_db_name
 
