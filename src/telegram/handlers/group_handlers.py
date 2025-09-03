@@ -90,7 +90,7 @@ class GroupHandlers:
     async def add_group_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Start adding single group"""
         text = (
-            "➕ *Tambah Grup Baru*\n\n"
+            "+ *Tambah Grup Baru*\n\n"
             "Kirim ID grup, username, atau link grup yang ingin ditambahkan.\n\n"
             "📋 *Format yang didukung:*\n"
             "• ID Grup: `-1001234567890`\n"
