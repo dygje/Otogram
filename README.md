@@ -216,41 +216,21 @@ make help          # Show all available commands
 make setup         # Complete development setup  
 make health        # Run health check
 make test          # Run test suite with coverage
-make ruff          # Run ruff linting and formatting
 make lint          # Run all linting tools
 make format        # Format code with ruff and black
-make security      # Run security checks
 make clean         # Clean temporary files
 ```
 
-### Code Quality & Modern Tools
+### Code Quality
 
 ```bash
-# Format code with modern tools
-make ruff          # Ruff (fast Python linter & formatter)
-make format        # Black + isort + ruff
+# Format and lint code
+make format        # Format with ruff and black
+make lint         # Run all quality checks
 
-# Run all quality checks
-make quality       # Lint + fast tests
-make ci-test       # Full CI pipeline
-
-# Security scanning
-make security      # Bandit + Safety checks
-```
-### Pre-commit Hooks & Docker
-
-```bash
-# Install pre-commit hooks (runs automatically on commit)
-make pre-commit
-
-# Run manually on all files
-make pre-commit-run
-
-# Docker development
-docker-compose up -d        # Run with Docker
-docker-compose logs -f      # View logs
-docker-compose down         # Stop services
-```
+# Run tests
+make test         # Full test suite with coverage
+make ci-test      # CI pipeline tests
 ```
 
 ## 📊 Features
