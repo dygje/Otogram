@@ -55,7 +55,7 @@ class TelegramAutomationApp:
             level=settings.LOG_LEVEL
         )
 
-    async def start(self):
+    async def start(self) -> None:
         """Start the application"""
         try:
             logger.info("🚀 Starting Telegram Automation System")
