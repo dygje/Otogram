@@ -68,7 +68,7 @@ class Settings(BaseSettings):
         """Convert empty strings to None"""
         if isinstance(v, str) and v.strip() == "":
             return None
-        return v
+        return str(v) if v is not None else None
 
     @field_validator("TELEGRAM_PHONE_NUMBER")
     @classmethod
