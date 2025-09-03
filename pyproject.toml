@@ -127,7 +127,7 @@ strict_equality = true
 
 [[tool.mypy.overrides]]
 module = [
-    "pyrogram.*",
+    "pyrofork.*",
     "telegram.*",
     "motor.*",
     "apscheduler.*",
