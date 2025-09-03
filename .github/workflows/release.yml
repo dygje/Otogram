@@ -5,13 +5,10 @@ name: "🚀 Release"
 
 on:
   push:
-    branches: [ main ]
     tags: [ 'v*' ]
 
 permissions:
   contents: write
-  issues: write
-  pull-requests: write
 
 jobs:
   release:
@@ -55,18 +52,25 @@ jobs:
         VERSION=${GITHUB_REF#refs/tags/v}
         echo "version=$VERSION" >> $GITHUB_OUTPUT
         
-        # Generate release notes from changelog or commits
-        if [[ -f "docs/CHANGELOG.md" ]]; then
-          # Extract changelog section for this version
-          awk "/^## \[?$VERSION\]?/,/^## \[?[0-9]/" docs/CHANGELOG.md | head -n -1 > release_notes.md
-        else
-          # Generate from recent commits
-          echo "## What's Changed in v$VERSION" > release_notes.md
+        # Generate release notes
+        echo "## 🚀 Otogram v$VERSION" > release_notes.md
+        echo "" >> release_notes.md
+        echo "### What's New" >> release_notes.md
+        echo "" >> release_notes.md
+        
+        # Get commits since last tag
+        if git describe --tags --abbrev=0 HEAD~1 >/dev/null 2>&1; then
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD~1)
+          echo "**Changes since $PREV_TAG:**" >> release_notes.md
           echo "" >> release_notes.md
-          git log --pretty=format:"* %s" $(git describe --tags --abbrev=0 HEAD~1)..HEAD >> release_notes.md
+          git log --pretty=format:"* %s" $PREV_TAG..HEAD >> release_notes.md
+        else
+          echo "**Initial Release:**" >> release_notes.md
+          echo "" >> release_notes.md
+          git log --pretty=format:"* %s" >> release_notes.md
         fi
         
-        # Add installation instructions
+        echo "" >> release_notes.md
         echo "" >> release_notes.md
         echo "## 🚀 Installation" >> release_notes.md
         echo "" >> release_notes.md
@@ -76,7 +80,7 @@ jobs:
         echo 'pip install -e ".[dev]"' >> release_notes.md
         echo '```' >> release_notes.md
         echo "" >> release_notes.md
-        echo "See [SETUP_GUIDE.md](docs/SETUP_GUIDE.md) for detailed installation instructions." >> release_notes.md
+        echo "📚 **Documentation:** [Setup Guide](https://github.com/dygje/Otogram/blob/main/docs/SETUP_GUIDE.md)" >> release_notes.md
 
     - name: "🎉 Create GitHub Release"
       uses: actions/create-release@v1
@@ -88,16 +92,6 @@ jobs:
         body_path: release_notes.md
         draft: false
         prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') || contains(github.ref, 'rc') }}
-
-    - name: "📎 Upload Release Assets"
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist/
-        asset_name: otogram-${{ steps.release_notes.outputs.version }}-dist.tar.gz
-        asset_content_type: application/gzip
 
   # Notify on successful release
   notify:

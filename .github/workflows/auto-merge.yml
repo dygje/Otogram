@@ -65,37 +65,3 @@ jobs:
       env:
         PR_URL: ${{github.event.pull_request.html_url}}
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-  # Auto-merge workflow files updates (if they pass CI/CD)
-  auto-merge-workflows:
-    name: "🔄 Auto Merge Workflow Updates"
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    
-    # Only run for PRs that only modify workflow files and pass all checks
-    if: ${{ github.actor == 'dygje' && contains(github.event.pull_request.title, '[auto]') }}
-    
-    steps:
-    - name: "📥 Checkout Code"
-      uses: actions/checkout@v4
-
-    - name: "✅ Auto-approve workflow updates"
-      if: ${{ github.event.pull_request.user.login == 'dygje' }}
-      run: gh pr review --approve "$PR_URL"
-      env:
-        PR_URL: ${{github.event.pull_request.html_url}}
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-    - name: "⏳ Wait for CI to complete"
-      uses: lewagon/wait-on-check-action@v1.3.3
-      with:
-        ref: ${{ github.event.pull_request.head.sha }}
-        check-name: '✅ CI Success'
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        wait-interval: 10
-
-    - name: "🔄 Enable auto-merge"
-      run: gh pr merge --auto --squash "$PR_URL"
-      env:
-        PR_URL: ${{github.event.pull_request.html_url}}
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
