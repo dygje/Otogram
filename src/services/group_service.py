@@ -144,7 +144,7 @@ class GroupService:
 
     async def delete_group(self, group_id: str) -> bool:
         """Delete a group"""
-        result = await self.collection.delete_one({"id": group_id})
+        result = await self.collection.delete_one({"id": group_id})  # type: ignore[attr-defined]
 
         if result.deleted_count > 0:
             logger.info(f"Deleted group: {group_id}")
