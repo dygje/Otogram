@@ -246,7 +246,7 @@ class GroupHandlers:
     async def _show_add_group_prompt(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Show add group prompt"""
         text = (
-            "➕ *Tambah Grup Baru*\n\n"
+            "+ *Tambah Grup Baru*\n\n"
             "Kirim ID grup, username, atau link grup.\n\n"
             "📋 *Format:*\n"
             "• `-1001234567890`\n"
