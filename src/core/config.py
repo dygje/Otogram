@@ -64,7 +64,7 @@ class Settings(BaseSettings):
         "TELEGRAM_API_HASH", "TELEGRAM_BOT_TOKEN", "TELEGRAM_PHONE_NUMBER", mode="before"
     )
     @classmethod
-    def parse_empty_strings(cls, v):
+    def parse_empty_strings(cls, v: Any) -> str | None:
         """Convert empty strings to None"""
         if isinstance(v, str) and v.strip() == "":
             return None
