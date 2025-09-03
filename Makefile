@@ -101,7 +101,7 @@ clean: ## Clean up temporary files
 	rm -rf build/ dist/ site/
 	@echo "✅ Cleanup complete"
 
-clean-sessions: ## Clean Pyrogram session files
+clean-sessions: ## Clean Pyrofork session files
 	@echo "🗑️ Cleaning session files..."
 	rm -rf sessions/
 	mkdir -p sessions
