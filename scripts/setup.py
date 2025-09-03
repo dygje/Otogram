@@ -18,7 +18,7 @@ def print_banner() -> None:
     print("=" * 70 + "\n")
 
 
-def check_env_file():
+def check_env_file() -> list[str]:
     """Check if .env file exists and validate required fields"""
     env_path = Path(__file__).parent.parent / ".env"
 
