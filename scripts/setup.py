@@ -226,7 +226,7 @@ def run_health_check() -> bool:
         return False
 
 
-def run_system():
+def run_system() -> None:
     """Run the telegram automation system"""
     print("\n🚀 MENJALANKAN SISTEM...\n")
     print("Sistem akan:")
