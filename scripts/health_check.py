@@ -128,7 +128,7 @@ def check_python_version():
     PYTHON_MAJOR_REQUIRED = 3
     PYTHON_MINOR_RECOMMENDED = 11
     PYTHON_MINOR_MINIMUM = 8
-    
+
     version = sys.version_info
     if version.major >= PYTHON_MAJOR_REQUIRED and version.minor >= PYTHON_MINOR_RECOMMENDED:
         print(f"✅ Python {version.major}.{version.minor}.{version.micro} - OK")

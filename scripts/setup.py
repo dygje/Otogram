@@ -69,7 +69,7 @@ def validate_credentials(
     api_id: str, api_hash: str, bot_token: str, phone_number: str
 ) -> tuple[bool, str]:
     """Validate credential formats"""
-    
+
     # Constants for validation
     API_ID_LENGTH = 8
     API_HASH_LENGTH = 32
@@ -102,7 +102,7 @@ def validate_credentials(
     # Return result
     if errors:
         return False, "; ".join(errors)
-    
+
     return True, "Valid"
 
 
