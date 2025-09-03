@@ -31,7 +31,7 @@ class MessageHandlers:
 
             if not messages:
                 text = "📝 *Daftar Pesan*\n\n❌ Belum ada pesan yang tersimpan.\n\nGunakan /addmessage untuk menambah pesan."
-                keyboard = [[InlineKeyboardButton("➕ Tambah Pesan", callback_data="messages_add")]]
+                keyboard = [[InlineKeyboardButton("+ Tambah Pesan", callback_data="messages_add")]]
             else:
                 text = f"📝 *Daftar Pesan* ({stats['active']}/{stats['total']} aktif)\n\n"
 
