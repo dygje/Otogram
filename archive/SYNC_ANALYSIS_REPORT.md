@@ -53,7 +53,7 @@ Proyek ini **BENAR-BENAR SINKRON** tanpa konflik yang berbahaya.
 ```
 
 **Verified Versions:**
-- ✅ pyrogram: 2.0.106
+- ✅ pyrofork: 2.3.68 (migrated from pyrogram)
 - ✅ python-telegram-bot: 20.8
 - ✅ motor: 3.7.0
 - ✅ pymongo: 4.11
