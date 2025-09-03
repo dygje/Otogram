@@ -15,7 +15,7 @@ class ConfigHandlers:
     def __init__(self):
         self.config_service = ConfigService()
 
-    async def show_config(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+    async def show_config(self, update: Update, _context: ContextTypes.DEFAULT_TYPE):
         """Show system configuration"""
         try:
             configs = await self.config_service.get_all_configs()
