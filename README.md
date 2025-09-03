@@ -217,17 +217,30 @@ make run
 
 ```bash
 make help          # Show all available commands
-make setup         # Complete development setup
+make setup         # Complete development setup  
 make health        # Run health check
-make test          # Run test suite
-make lint          # Run code linting
-make format        # Format code with black
+make test          # Run test suite with coverage
+make ruff          # Run ruff linting and formatting
+make lint          # Run all linting tools
+make format        # Format code with ruff and black
+make security      # Run security checks
 make clean         # Clean temporary files
 ```
 
-### Code Quality
+### Code Quality & Modern Tools
 
 ```bash
+# Format code with modern tools
+make ruff          # Ruff (fast Python linter & formatter)
+make format        # Black + isort + ruff
+
+# Run all quality checks
+make quality       # Lint + fast tests
+make ci-test       # Full CI pipeline
+
+# Security scanning
+make security      # Bandit + Safety checks
+```
 # Format code
 make format
 
