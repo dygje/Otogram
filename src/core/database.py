@@ -16,7 +16,7 @@ class Database:
         self.client: Optional[AsyncIOMotorClient] = None
         self.db: Optional[AsyncIOMotorDatabase] = None
 
-    async def connect(self):
+    async def connect(self) -> None:
         """Connect to MongoDB"""
         try:
             self.client = AsyncIOMotorClient(settings.MONGO_URL)
