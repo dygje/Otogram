@@ -1,13 +1,10 @@
-# 🤖 Otogram - Advanced Telegram Automation System
+# 🤖 Otogram - Telegram Automation System
 
-> **Production-ready Telegram mass messaging automation with intelligent blacklist management and comprehensive bot interface.**
+> **Telegram mass messaging automation with intelligent blacklist management and bot interface.**
 
 [![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Code Style](https://img.shields.io/badge/code%20style-ruff-D7FF64.svg)](https://github.com/astral-sh/ruff)
-[![Formatter](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Pyrofork](https://img.shields.io/badge/Pyrofork-2.3.68-green.svg)](https://github.com/Mayuri-Chan/pyrofork)
-[![Status](https://img.shields.io/badge/status-production--ready-brightgreen.svg)]()
 [![CI](https://img.shields.io/badge/CI-GitHub%20Actions-blue)](https://github.com/dygje/Otogram/actions)
 
 ## 🚀 Quick Start
