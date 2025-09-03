@@ -147,7 +147,7 @@ def check_python_version() -> bool:
         return False
 
 
-def check_dependencies():
+def check_dependencies() -> bool:
     """Check if all required packages are installed"""
     required_packages = [
         ("pyrogram", "pyrofork"),
