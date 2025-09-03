@@ -82,7 +82,7 @@ class MessageHandlers:
     async def add_message_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Start adding new message"""
         text = (
-            "➕ *Tambah Pesan Baru*\n\n"
+            "+ *Tambah Pesan Baru*\n\n"
             "Kirim pesan yang ingin Anda tambahkan untuk broadcast.\n\n"
             "⚠️ *Catatan:*\n"
             "• Hanya teks yang didukung (tanpa media)\n"
