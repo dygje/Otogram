@@ -73,22 +73,13 @@ config: ## Show current configuration
 	@echo "Version: $(shell grep '^version' pyproject.toml | cut -d'"' -f2)"
 
 # Documentation
-docs: ## Generate documentation (if docs tools installed)
-	@echo "📚 Generating documentation..."
-	@if command -v mkdocs >/dev/null 2>&1; then \
-		mkdocs build; \
-		echo "✅ Documentation generated"; \
-	else \
-		echo "ℹ️ Install docs dependencies: pip install -e '.[docs]'"; \
-	fi
-
-docs-serve: ## Serve documentation locally
-	@echo "📚 Serving documentation..."
-	@if command -v mkdocs >/dev/null 2>&1; then \
-		mkdocs serve; \
-	else \
-		echo "ℹ️ Install docs dependencies: pip install -e '.[docs]'"; \
-	fi
+docs: ## View documentation (simple markdown files in docs/)
+	@echo "📚 Documentation available in docs/ directory:"
+	@echo "  • CONTRIBUTING.md - Contribution guidelines"
+	@echo "  • CODE_OF_CONDUCT.md - Code of conduct"
+	@echo "  • SECURITY.md - Security policy"
+	@echo "  • CHANGELOG.md - Version history"
+	@echo "  • API.md - API reference"
 
 # Maintenance
 clean: ## Clean up temporary files
