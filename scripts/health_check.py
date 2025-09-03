@@ -18,6 +18,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 @dataclass
 class HealthCheckResult:
     """Result of a health check operation"""
+
     status: str  # ✅, ⚠️, or ❌
     message: str
     details: Optional[str] = None
@@ -28,74 +29,66 @@ async def check_mongodb_connection() -> HealthCheckResult:
     try:
         from motor.motor_asyncio import AsyncIOMotorClient
         from src.core.config import settings
-        
+
         client = AsyncIOMotorClient(settings.MONGO_URL)
         # Test connection
-        result = await client.admin.command('ping')
+        result = await client.admin.command("ping")
         client.close()  # Note: close() is not async in motor
-        
+
         return HealthCheckResult(
             status="✅",
             message="MongoDB connection successful",
-            details=f"Connected to: {settings.MONGO_URL}"
+            details=f"Connected to: {settings.MONGO_URL}",
         )
     except Exception as e:
-        return HealthCheckResult(
-            status="❌", 
-            message="MongoDB connection failed",
-            details=str(e)
-        )
+        return HealthCheckResult(status="❌", message="MongoDB connection failed", details=str(e))
 
 
 def check_telegram_credentials() -> HealthCheckResult:
     """Check if Telegram credentials are configured"""
     try:
         from src.core.config import settings
-        
+
         credentials = {
-            'API ID': settings.TELEGRAM_API_ID,
-            'API Hash': settings.TELEGRAM_API_HASH,
-            'Bot Token': settings.TELEGRAM_BOT_TOKEN,
-            'Phone Number': settings.TELEGRAM_PHONE_NUMBER
+            "API ID": settings.TELEGRAM_API_ID,
+            "API Hash": settings.TELEGRAM_API_HASH,
+            "Bot Token": settings.TELEGRAM_BOT_TOKEN,
+            "Phone Number": settings.TELEGRAM_PHONE_NUMBER,
         }
-        
+
         missing = [name for name, value in credentials.items() if not value]
-        
+
         if not missing:
             return HealthCheckResult(
                 status="✅",
                 message="All Telegram credentials configured",
-                details="Ready for Telegram operations"
+                details="Ready for Telegram operations",
             )
         else:
             return HealthCheckResult(
                 status="❌",
                 message="Missing Telegram credentials",
-                details=f"Missing: {', '.join(missing)}"
+                details=f"Missing: {', '.join(missing)}",
             )
     except Exception as e:
-        return HealthCheckResult(
-            status="❌",
-            message="Failed to check credentials",
-            details=str(e)
-        )
+        return HealthCheckResult(status="❌", message="Failed to check credentials", details=str(e))
 
 
 async def run_health_check() -> int:
     """Run all health checks"""
     checks = [
         ("Python Version", check_python_version),
-        ("Dependencies", check_dependencies), 
+        ("Dependencies", check_dependencies),
         ("File Structure", check_file_structure),
         ("Project Imports", check_imports),
         ("Configuration", check_configuration),
         ("Telegram Credentials", check_telegram_credentials),
         ("MongoDB Connection", check_mongodb_connection),
     ]
-    
+
     passed = 0
     total = len(checks)
-    
+
     for name, check_func in checks:
         print(f"\n🔍 Checking {name}...")
         try:
@@ -110,18 +103,18 @@ async def run_health_check() -> int:
                     success = result
             else:
                 success = check_func()
-            
+
             if success:
                 passed += 1
             else:
                 print(f"⚠️ {name} check failed")
         except Exception as e:
             print(f"❌ {name} check error: {e}")
-    
+
     print(f"\n📊 HEALTH CHECK SUMMARY")
     print(f"{'=' * 30}")
     print(f"Passed: {passed}/{total} checks")
-    
+
     if passed == total:
         print("🎉 System is HEALTHY and ready to run!")
         return 0
@@ -267,7 +260,7 @@ def main():
     """Run comprehensive health check"""
     print("🩺 TELEGRAM AUTOMATION SYSTEM - HEALTH CHECK")
     print("=" * 55)
-    
+
     # Run async health check
     return asyncio.run(run_health_check())
 
