@@ -47,8 +47,6 @@ ruff: ## Run ruff linting and formatting
 lint: ## Run all linting tools
 	@echo "🔍 Running linting..."
 	ruff check src/ scripts/ tests/
-	black --check --diff src/ scripts/ tests/
-	isort --check-only --diff src/ scripts/ tests/
 	mypy src/
 
 format: ## Format code with ruff
