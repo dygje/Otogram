@@ -460,7 +460,7 @@ class ManagementBot:
             if update.callback_query:
                 await update.callback_query.edit_message_text("❌ Error loading blacklist dashboard")
 
-    async def _show_settings_dashboard(self, update: Update, _context: ContextTypes.DEFAULT_TYPE):
+    async def _show_settings_dashboard(self, update: Update, _context: ContextTypes.DEFAULT_TYPE) -> None:
         """Show settings dashboard"""
         text = (
             "⚙️ *SYSTEM SETTINGS*\n"
