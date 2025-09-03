@@ -33,7 +33,7 @@ loguru==0.7.2              # Mature logging
 - **Pyrofork**: Community-maintained fork of pyrogram, actively developed with latest fixes
 - **python-telegram-bot**: 20.8 is latest stable with Python 3.11 support
 - **Motor/PyMongo**: 3.7.0/4.11.0 officially support Python 3.11
-- **TgCrypto**: Essential for Pyrogram performance optimization
+- **TgCrypto**: Essential for Pyrofork performance optimization
 
 ### Selection Criteria
 1. **Stability**: Proven track record in production
