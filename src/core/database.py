@@ -52,7 +52,7 @@ class Database:
             logger.error("Database not connected, cannot create indexes")
             return
 
-        try:
+        try:  # type: ignore[unreachable]
             # Messages collection
             await self.db.messages.create_index("is_active")
             await self.db.messages.create_index("created_at")
