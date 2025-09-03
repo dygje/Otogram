@@ -43,21 +43,23 @@ class MigrationTester:
             return False
     
     def test_pyrofork_installation(self) -> bool:
-        """Test that pyrofork is properly installed"""
+        """Test that pyrofork is properly installed and provides pyrogram namespace"""
         try:
-            import pyrofork
-            version = getattr(pyrofork, '__version__', 'Unknown')
-            print(f"   📦 Pyrofork version: {version}")
+            # Pyrofork doesn't expose itself as 'pyrofork' module
+            # Instead it provides the 'pyrogram' namespace
+            import pyrogram
+            version = getattr(pyrogram, '__version__', 'Unknown')
+            print(f"   📦 Pyrogram namespace version: {version}")
             
-            # Check if it's the expected version
+            # Check if it's the expected pyrofork version
             if version == "2.3.68":
-                print(f"   ✅ Correct pyrofork version installed")
+                print(f"   ✅ Pyrofork 2.3.68 providing pyrogram namespace")
                 return True
             else:
                 print(f"   ⚠️ Expected version 2.3.68, got {version}")
-                return True  # Still pass as long as it's installed
+                return False
         except ImportError as e:
-            print(f"   ❌ Pyrofork not installed: {e}")
+            print(f"   ❌ Pyrogram namespace not available: {e}")
             return False
     
     def test_pyrogram_namespace_import(self) -> bool:
