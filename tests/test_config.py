@@ -33,12 +33,12 @@ class TestSettings:
     def test_api_id_parsing(self):
         """Test API ID parsing from different formats"""
         # String number
-        settings = Settings(TELEGRAM_API_ID="12345678")
-        assert settings.TELEGRAM_API_ID == 12345678
+        settings = Settings(TELEGRAM_API_ID=str(TEST_API_ID))
+        assert settings.TELEGRAM_API_ID == TEST_API_ID
 
         # Integer
-        settings = Settings(TELEGRAM_API_ID=12345678)
-        assert settings.TELEGRAM_API_ID == 12345678
+        settings = Settings(TELEGRAM_API_ID=TEST_API_ID)
+        assert settings.TELEGRAM_API_ID == TEST_API_ID
 
         # Empty string
         settings = Settings(TELEGRAM_API_ID="")
