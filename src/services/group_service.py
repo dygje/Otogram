@@ -94,7 +94,7 @@ class GroupService:
 
     async def get_group_by_id(self, group_id: str) -> Group | None:
         """Get group by ID"""
-        doc = await self.collection.find_one({"id": group_id})
+        doc = await self.collection.find_one({"id": group_id})  # type: ignore[attr-defined]
 
         if doc:
             return Group(**doc)
