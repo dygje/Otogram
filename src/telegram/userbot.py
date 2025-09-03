@@ -285,7 +285,7 @@ class UserBot:
 
         # Random delay between cycles
         delay_hours = SecureRandom.uniform(min_hours, max_hours)
-        delay_seconds = delay_hours * 3600
+        delay_seconds = delay_hours * SECONDS_PER_HOUR
 
         logger.info(f"⏰ Next cycle in {delay_hours:.1f} hours")
 
