@@ -15,6 +15,7 @@ from scripts.health_check import (
     check_mongodb_connection,
     check_telegram_credentials,
     check_file_structure,
+    HealthCheckResult,
     run_health_check
 )
 
