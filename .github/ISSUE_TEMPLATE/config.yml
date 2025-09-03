@@ -1,11 +1,14 @@
 blank_issues_enabled: false
 contact_links:
-  - name: 💬 GitHub Discussions
-    url: https://github.com/your-org/telegram-automation-system/discussions
-    about: Ask questions, share ideas, and discuss with the community
   - name: 📚 Documentation
-    url: https://github.com/your-org/telegram-automation-system/tree/main/docs
-    about: Check our documentation for setup guides and API reference
+    url: https://github.com/dygje/Otogram/tree/main/docs
+    about: Check comprehensive documentation, setup guides, and API reference
   - name: 🩺 Health Check
-    url: https://github.com/your-org/telegram-automation-system/blob/main/scripts/health_check.py
-    about: Run system diagnostics before reporting issues
+    url: https://github.com/dygje/Otogram/blob/main/scripts/health_check.py
+    about: Run system diagnostics before reporting issues - helps identify common problems
+  - name: 📖 Getting Started Guide
+    url: https://github.com/dygje/Otogram/blob/main/docs/SETUP_GUIDE.md
+    about: Complete setup and installation guide for new users
+  - name: 🔧 Troubleshooting
+    url: https://github.com/dygje/Otogram/blob/main/README.md#-troubleshooting
+    about: Common issues and their solutions

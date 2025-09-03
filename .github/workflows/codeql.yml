@@ -1,18 +1,28 @@
-# CodeQL Security Analysis
-name: "CodeQL"
+# 🔒 CodeQL Security Analysis for Otogram
+# Advanced security scanning with GitHub's CodeQL
+
+name: "🔒 CodeQL Security"
 
 on:
   push:
     branches: [ main, develop ]
+    paths:
+      - '**/*.py'
+      - '.github/workflows/codeql.yml'
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main ]
+    paths:
+      - '**/*.py'
+      - '.github/workflows/codeql.yml'
   schedule:
-    - cron: '0 6 * * 1'  # Weekly on Monday at 6 AM UTC
+    # Run weekly on Monday at 6 AM UTC
+    - cron: '0 6 * * 1'
 
 jobs:
   analyze:
-    name: Analyze
+    name: "🔍 CodeQL Analysis"
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
       actions: read
       contents: read
@@ -24,18 +34,32 @@ jobs:
         language: [ 'python' ]
 
     steps:
-    - name: Checkout repository
+    - name: "📥 Checkout Repository"
       uses: actions/checkout@v4
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+    - name: "🔧 Initialize CodeQL"
+      uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
+        queries: security-extended,security-and-quality
+        config: |
+          name: "Otogram CodeQL Config"
+          disable-default-rules: false
+          queries:
+            - uses: security-extended
+            - uses: security-and-quality
 
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
+    - name: "🏗️ Autobuild"
+      uses: github/codeql-action/autobuild@v3
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+    - name: "🔍 Perform CodeQL Analysis"
+      uses: github/codeql-action/analyze@v3
       with:
         category: "/language:${{matrix.language}}"
+        upload: true
+
+    - name: "📊 Upload SARIF Results"
+      uses: github/codeql-action/upload-sarif@v3
+      if: always()
+      with:
+        sarif_file: ${{ runner.temp }}/results/python.sarif
