@@ -285,7 +285,7 @@ class UserBot:
         max_hours = await self.config_service.get_config_value("max_cycle_delay_hours", 1.3)
 
         # Random delay between cycles
-        delay_hours = random.uniform(min_hours, max_hours)
+        delay_hours = SecureRandom.uniform(min_hours, max_hours)
         delay_seconds = delay_hours * 3600
 
         logger.info(f"⏰ Next cycle in {delay_hours:.1f} hours")
