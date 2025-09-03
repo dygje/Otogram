@@ -43,7 +43,7 @@ class GroupCreate(BaseModel):
 
     @field_validator("group_identifier")
     @classmethod
-    def validate_identifier(cls, v):
+    def validate_identifier(cls, v: str) -> str:
         v = v.strip()
 
         # Group ID (negative number)
