@@ -129,7 +129,7 @@ class UserBot:
         start_time = datetime.utcnow()
 
         # Shuffle groups for randomness
-        random.shuffle(groups)
+        SecureRandom.shuffle(groups)
 
         for group in groups:
             if not self.is_running:
