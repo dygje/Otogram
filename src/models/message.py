@@ -2,7 +2,6 @@
 Message Models
 """
 
-
 from pydantic import BaseModel, Field
 
 from src.models.base import BaseDocument

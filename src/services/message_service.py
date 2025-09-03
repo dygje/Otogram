@@ -2,7 +2,6 @@
 Message Service - Handles message CRUD operations
 """
 
-
 from loguru import logger
 
 from src.core.database import database
@@ -52,9 +51,7 @@ class MessageService:
             return Message(**doc)
         return None
 
-    async def update_message(
-        self, message_id: str, update_data: MessageUpdate
-    ) -> Message | None:
+    async def update_message(self, message_id: str, update_data: MessageUpdate) -> Message | None:
         """Update a message"""
         update_dict = {k: v for k, v in update_data.dict().items() if v is not None}
 

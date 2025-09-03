@@ -1,6 +1,7 @@
 """
 Tests for data models
 """
+
 from datetime import datetime
 
 import pytest
@@ -32,6 +33,7 @@ class TestBaseDocument:
 
         # Small delay to ensure timestamp difference
         import time
+
         time.sleep(0.001)
 
         doc.update_timestamp()
@@ -87,9 +89,7 @@ class TestGroup:
     def test_group_creation(self):
         """Test group creation"""
         group = Group(
-            group_id="-1001234567890",
-            group_username="@testgroup",
-            group_title="Test Group"
+            group_id="-1001234567890", group_username="@testgroup", group_title="Test Group"
         )
 
         assert group.group_id == "-1001234567890"
@@ -149,7 +149,7 @@ class TestGroup:
             "@testgroup1",
             "@testgroup2",
             "https://t.me/testgroup3",
-            "@testgroup4"
+            "@testgroup4",
         ]
 
         assert identifiers_list == expected

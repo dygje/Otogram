@@ -2,7 +2,6 @@
 Group Models
 """
 
-
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from src.models.base import BaseDocument
@@ -75,7 +74,11 @@ class GroupBulkCreate(BaseModel):
             line = line.strip()
             if line:
                 # Process each identifier
-                if (line.startswith("-") and line[1:].isdigit()) or line.startswith("@") or "t.me/" in line:
+                if (
+                    (line.startswith("-") and line[1:].isdigit())
+                    or line.startswith("@")
+                    or "t.me/" in line
+                ):
                     result.append(line)
                 else:
                     result.append(f"@{line}")

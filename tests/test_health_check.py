@@ -1,6 +1,7 @@
 """
 Tests for health check functionality
 """
+
 import sys
 from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, patch
@@ -38,7 +39,7 @@ class TestHealthCheck:
         # Should return boolean
         assert isinstance(result, bool)
 
-    @patch('scripts.health_check.importlib.import_module')
+    @patch("scripts.health_check.importlib.import_module")
     def test_check_dependencies_success(self, mock_import):
         """Test dependency check with all dependencies available"""
         mock_import.return_value = MagicMock()
@@ -47,7 +48,7 @@ class TestHealthCheck:
 
         assert isinstance(result, bool)
 
-    @patch('scripts.health_check.importlib.import_module')
+    @patch("scripts.health_check.importlib.import_module")
     def test_check_dependencies_missing(self, mock_import):
         """Test dependency check with missing dependencies"""
         mock_import.side_effect = ImportError("Module not found")
@@ -58,7 +59,7 @@ class TestHealthCheck:
 
     def test_check_telegram_credentials_missing(self):
         """Test Telegram credentials check with missing credentials"""
-        with patch('scripts.health_check.settings') as mock_settings:
+        with patch("scripts.health_check.settings") as mock_settings:
             mock_settings.TELEGRAM_API_ID = None
             mock_settings.TELEGRAM_API_HASH = None
             mock_settings.TELEGRAM_BOT_TOKEN = None
@@ -72,7 +73,7 @@ class TestHealthCheck:
 
     def test_check_telegram_credentials_complete(self):
         """Test Telegram credentials check with complete credentials"""
-        with patch('scripts.health_check.settings') as mock_settings:
+        with patch("scripts.health_check.settings") as mock_settings:
             mock_settings.TELEGRAM_API_ID = 12345678
             mock_settings.TELEGRAM_API_HASH = "test_hash"
             mock_settings.TELEGRAM_BOT_TOKEN = "123456:test_token"
@@ -87,10 +88,10 @@ class TestHealthCheck:
     @pytest.mark.asyncio
     async def test_check_mongodb_connection_success(self):
         """Test MongoDB connection check success"""
-        with patch('scripts.health_check.AsyncIOMotorClient') as mock_client:
+        with patch("scripts.health_check.AsyncIOMotorClient") as mock_client:
             mock_instance = AsyncMock()
             mock_client.return_value = mock_instance
-            mock_instance.admin.command = AsyncMock(return_value={'ok': 1.0})
+            mock_instance.admin.command = AsyncMock(return_value={"ok": 1.0})
             mock_instance.close = AsyncMock()
 
             result = await check_mongodb_connection()
@@ -102,7 +103,7 @@ class TestHealthCheck:
     @pytest.mark.asyncio
     async def test_check_mongodb_connection_failure(self):
         """Test MongoDB connection check failure"""
-        with patch('scripts.health_check.AsyncIOMotorClient') as mock_client:
+        with patch("scripts.health_check.AsyncIOMotorClient") as mock_client:
             mock_instance = AsyncMock()
             mock_client.return_value = mock_instance
             mock_instance.admin.command = AsyncMock(side_effect=Exception("Connection failed"))
@@ -116,7 +117,7 @@ class TestHealthCheck:
     @pytest.mark.asyncio
     async def test_run_health_check(self):
         """Test complete health check run"""
-        with patch('scripts.health_check.check_mongodb_connection') as mock_mongo:
+        with patch("scripts.health_check.check_mongodb_connection") as mock_mongo:
             mock_result = HealthCheckResult(status="✅", message="MongoDB OK")
             mock_mongo.return_value = mock_result
 

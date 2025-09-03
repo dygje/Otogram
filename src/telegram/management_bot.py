@@ -124,12 +124,7 @@ class ManagementBot:
         # Get system stats (we'll implement this)
         stats_text = await self._get_system_stats()
 
-        text = (
-            "📊 *SYSTEM DASHBOARD*\n"
-            "═══════════════════\n\n"
-            f"{stats_text}\n"
-            "*🎛️ Control Center:*"
-        )
+        text = f"📊 *SYSTEM DASHBOARD*\n═══════════════════\n\n{stats_text}\n*🎛️ Control Center:*"
 
         keyboard = [
             [

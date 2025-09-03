@@ -3,6 +3,7 @@
 Health Check Script for Telegram Automation System
 Verifies all system components are working correctly
 """
+
 import asyncio
 import sys
 from dataclasses import dataclass
@@ -169,18 +170,13 @@ def check_imports():
     try:
         print("\n📦 Testing project imports...")
 
-
         print("✅ Core config - OK")
-
 
         print("✅ Database module - OK")
 
-
         print("✅ All services - OK")
 
-
         print("✅ Telegram components - OK")
-
 
         print("✅ Main application - OK")
 

@@ -1,6 +1,7 @@
 """
 Tests for configuration module
 """
+
 import pytest
 from pydantic import ValidationError
 
@@ -67,21 +68,17 @@ class TestSettings:
     def test_cycle_delay_validation(self):
         """Test cycle delay validation"""
         # Valid cycle delays
-        settings = Settings(
-            MIN_CYCLE_DELAY_HOURS=1.0,
-            MAX_CYCLE_DELAY_HOURS=2.0
-        )
+        settings = Settings(MIN_CYCLE_DELAY_HOURS=1.0, MAX_CYCLE_DELAY_HOURS=2.0)
         assert settings.MIN_CYCLE_DELAY_HOURS == 1.0
         assert settings.MAX_CYCLE_DELAY_HOURS == 2.0
 
         # Invalid cycle delays
         with pytest.raises(ValidationError) as exc_info:
-            Settings(
-                MIN_CYCLE_DELAY_HOURS=2.0,
-                MAX_CYCLE_DELAY_HOURS=1.0
-            )
+            Settings(MIN_CYCLE_DELAY_HOURS=2.0, MAX_CYCLE_DELAY_HOURS=1.0)
 
-        assert "MAX_CYCLE_DELAY_HOURS must be greater than MIN_CYCLE_DELAY_HOURS" in str(exc_info.value)
+        assert "MAX_CYCLE_DELAY_HOURS must be greater than MIN_CYCLE_DELAY_HOURS" in str(
+            exc_info.value
+        )
 
     def test_is_configured(self, mock_telegram_credentials):
         """Test configuration status check"""
@@ -105,19 +102,19 @@ class TestSettings:
 
         # No credentials
         status = settings.get_credentials_status()
-        assert status['all_configured'] is False
-        assert status['api_id'] is False
-        assert status['api_hash'] is False
-        assert status['bot_token'] is False
-        assert status['phone_number'] is False
+        assert status["all_configured"] is False
+        assert status["api_id"] is False
+        assert status["api_hash"] is False
+        assert status["bot_token"] is False
+        assert status["phone_number"] is False
 
         # Partial credentials
         settings.TELEGRAM_API_ID = 12345678
         settings.TELEGRAM_API_HASH = "test_hash"
 
         status = settings.get_credentials_status()
-        assert status['api_id'] is True
-        assert status['api_hash'] is True
-        assert status['bot_token'] is False
-        assert status['phone_number'] is False
-        assert status['all_configured'] is False
+        assert status["api_id"] is True
+        assert status["api_hash"] is True
+        assert status["bot_token"] is False
+        assert status["phone_number"] is False
+        assert status["all_configured"] is False

@@ -3,6 +3,7 @@
 Enhanced Setup Script for Telegram Automation System
 Membantu user mengkonfigurasi credentials dan menjalankan sistem
 """
+
 import sys
 from pathlib import Path
 

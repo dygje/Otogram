@@ -1,6 +1,7 @@
 """
 Tests for database functionality
 """
+
 import pytest
 
 from src.core.config import settings
@@ -22,8 +23,8 @@ class TestDatabase:
         assert db.db.name == settings.DB_NAME
 
         # Test ping
-        ping_result = await db.client.admin.command('ping')
-        assert ping_result['ok'] == 1.0
+        ping_result = await db.client.admin.command("ping")
+        assert ping_result["ok"] == 1.0
 
         # Disconnect
         await db.disconnect()
@@ -52,10 +53,7 @@ class TestDatabase:
         db = test_database
 
         # Check that collections exist and have indexes
-        collections_to_check = [
-            "messages", "groups", "blacklists",
-            "logs", "configurations"
-        ]
+        collections_to_check = ["messages", "groups", "blacklists", "logs", "configurations"]
 
         for collection_name in collections_to_check:
             collection = db.get_collection(collection_name)
@@ -65,7 +63,7 @@ class TestDatabase:
             assert len(indexes) >= 1
 
             # Check for specific indexes based on collection
-            index_names = [idx['name'] for idx in indexes]
+            index_names = [idx["name"] for idx in indexes]
 
             if collection_name == "messages":
                 # These might not exist if no documents, but structure should support them
@@ -89,10 +87,7 @@ class TestDatabase:
         assert found_doc["value"] == 123
 
         # Update
-        update_result = await collection.update_one(
-            {"name": "test"},
-            {"$set": {"value": 456}}
-        )
+        update_result = await collection.update_one({"name": "test"}, {"$set": {"value": 456}})
         assert update_result.modified_count == 1
 
         # Verify update

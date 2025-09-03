@@ -2,7 +2,6 @@
 Group Service - Handles group CRUD operations
 """
 
-
 from loguru import logger
 
 from src.core.database import database
