@@ -197,7 +197,8 @@ class ManagementBot:
             "📚 For detailed help, use /menu and explore!"
         )
 
-        await update.message.reply_text(help_text, parse_mode="Markdown")
+        if update.message:
+            await update.message.reply_text(help_text, parse_mode="Markdown")
 
     async def _get_system_stats(self) -> str:
         """Get system statistics for dashboard"""
