@@ -4,6 +4,13 @@ Message Handlers - Handle message management through bot
 
 from loguru import logger
 
+from src.core.constants import (
+    MAX_MESSAGES_DISPLAY,
+    PREVIEW_MESSAGE_LENGTH,
+    PREVIEW_MESSAGE_LENGTH_SHORT,
+    PREVIEW_MESSAGE_LENGTH_LONG,
+    TELEGRAM_MESSAGE_MAX_LENGTH,
+)
 from src.models.message import MessageCreate
 from src.services.message_service import MessageService
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
