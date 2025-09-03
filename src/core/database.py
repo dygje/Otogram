@@ -67,7 +67,7 @@ class Database:
         except Exception as e:
             logger.warning(f"⚠️ Index creation warning: {e}")
 
-    def get_collection(self, name: str):
+    def get_collection(self, name: str) -> AsyncIOMotorCollection:
         """Get a collection"""
         if self.db is None:
             raise RuntimeError("Database not connected")
