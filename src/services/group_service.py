@@ -52,7 +52,7 @@ class GroupService:
             logger.warning(f"Group already exists: {identifier}")
             return existing
 
-        await self.collection.insert_one(group.dict())
+        await self.collection.insert_one(group.dict())  # type: ignore[attr-defined]
         logger.info(f"Created group: {identifier}")
 
         return group
