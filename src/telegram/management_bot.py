@@ -315,13 +315,13 @@ class ManagementBot:
 
             if messages:
                 text += "*📋 Recent Messages:*\n"
-                for i, msg in enumerate(messages[:3], 1):
+                for i, msg in enumerate(messages[:MAX_RECENT_ITEMS_DISPLAY], 1):
                     status = "🟢" if msg.is_active else "🔴"
-                    preview = msg.content[:30] + "..." if len(msg.content) > 30 else msg.content
+                    preview = msg.content[:PREVIEW_MESSAGE_LENGTH] + "..." if len(msg.content) > PREVIEW_MESSAGE_LENGTH else msg.content
                     text += f"{i}. {status} {preview}\n"
 
-                if len(messages) > 3:
-                    text += f"... and {len(messages) - 3} more\n"
+                if len(messages) > MAX_RECENT_ITEMS_DISPLAY:
+                    text += f"... and {len(messages) - MAX_RECENT_ITEMS_DISPLAY} more\n"
             else:
                 text += "❌ *No messages found*\n"
 
