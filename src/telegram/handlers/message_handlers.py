@@ -107,9 +107,9 @@ class MessageHandlers:
                 await update.message.reply_text("❌ Pesan tidak boleh kosong. Coba lagi:")
                 return
 
-            if len(content) > 4096:
+            if len(content) > TELEGRAM_MESSAGE_MAX_LENGTH:
                 await update.message.reply_text(
-                    f"❌ Pesan terlalu panjang ({len(content)} karakter). Maksimal 4096 karakter. Coba lagi:"
+                    f"❌ Pesan terlalu panjang ({len(content)} karakter). Maksimal {TELEGRAM_MESSAGE_MAX_LENGTH} karakter. Coba lagi:"
                 )
                 return
 
