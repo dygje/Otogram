@@ -26,9 +26,9 @@ class TestSettings:
         assert settings.MONGO_URL == "mongodb://localhost:27017"
         assert settings.DB_NAME == "otogram"
         assert settings.LOG_LEVEL == "INFO"
-        assert settings.MIN_MESSAGE_DELAY == 5
-        assert settings.MAX_MESSAGE_DELAY == 10
-        assert settings.MAX_GROUPS_PER_CYCLE == 50
+        assert settings.MIN_MESSAGE_DELAY == DEFAULT_MIN_MESSAGE_DELAY
+        assert settings.MAX_MESSAGE_DELAY == DEFAULT_MAX_MESSAGE_DELAY
+        assert settings.MAX_GROUPS_PER_CYCLE == DEFAULT_MAX_GROUPS_PER_CYCLE
 
     def test_api_id_parsing(self):
         """Test API ID parsing from different formats"""
