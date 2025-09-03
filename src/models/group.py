@@ -19,7 +19,7 @@ class Group(BaseDocument):
 
     @field_validator("group_username")
     @classmethod
-    def validate_username(cls, v):
+    def validate_username(cls, v: str | None) -> str | None:
         if v and not v.startswith("@"):
             return f"@{v}"
         return v
