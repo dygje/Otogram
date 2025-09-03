@@ -350,12 +350,14 @@ class ManagementBot:
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
 
-            await update.callback_query.edit_message_text(
-                text, parse_mode="Markdown", reply_markup=reply_markup
-            )
+            if update.callback_query:
+                await update.callback_query.edit_message_text(
+                    text, parse_mode="Markdown", reply_markup=reply_markup
+                )
 
         except Exception:
-            await update.callback_query.edit_message_text("❌ Error loading messages dashboard")
+            if update.callback_query:
+                await update.callback_query.edit_message_text("❌ Error loading messages dashboard")
 
     async def _show_groups_dashboard(self, update: Update, _context: ContextTypes.DEFAULT_TYPE):
         """Show groups dashboard with modern layout"""
