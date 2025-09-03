@@ -87,7 +87,7 @@ repos:
         entry: python scripts/health_check.py
         language: system
         pass_filenames: false
-        stages: [commit]
+        stages: [pre-commit]
 
       # Check for TODO/FIXME in production code
       - id: check-todos
