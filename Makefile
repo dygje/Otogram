@@ -92,8 +92,8 @@ pre-commit-run: ## Run pre-commit on all files
 	pre-commit run --all-files
 
 # Application Management
-run: ## Run the application
-	@echo "🚀 Starting Telegram Automation System..."
+run: ## Run the Otogram system
+	@echo "🚀 Starting Otogram - Telegram Automation System..."
 	python main.py
 
 setup-wizard: ## Run interactive setup wizard
@@ -103,17 +103,18 @@ setup-wizard: ## Run interactive setup wizard
 config: ## Show current configuration
 	@echo "⚙️ Current configuration:"
 	@echo "Python: $(shell python --version)"
-	@echo "Project: $(shell grep '^name' pyproject.toml | cut -d'"' -f2)"
+	@echo "Project: otogram"
 	@echo "Version: $(shell grep '^version' pyproject.toml | cut -d'"' -f2)"
 
 # Documentation
-docs: ## View documentation (simple markdown files in docs/)
-	@echo "📚 Documentation available in docs/ directory:"
-	@echo "  • CONTRIBUTING.md - Contribution guidelines"
-	@echo "  • CODE_OF_CONDUCT.md - Code of conduct"
-	@echo "  • SECURITY.md - Security policy"
-	@echo "  • CHANGELOG.md - Version history"
-	@echo "  • API.md - API reference"
+docs: ## View documentation
+	@echo "📚 Documentation available:"
+	@echo "  • README.md - Main project documentation"
+	@echo "  • docs/CONTRIBUTING.md - Contribution guidelines"
+	@echo "  • docs/SECURITY.md - Security policy"
+	@echo "  • docs/CHANGELOG.md - Version history"
+	@echo "  • docs/API.md - API reference"
+	@echo "  • docs/GETTING_STARTED.md - Setup guide"
 
 # Maintenance
 clean: ## Clean up temporary files
