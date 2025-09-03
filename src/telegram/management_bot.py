@@ -272,7 +272,7 @@ class ManagementBot:
         elif data == "back_to_dashboard":
             await self.main_menu(update, context)
 
-    async def _show_quick_setup(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+    async def _show_quick_setup(self, update: Update, _context: ContextTypes.DEFAULT_TYPE):
         """Show quick setup wizard"""
         text = (
             "🚀 *QUICK SETUP WIZARD*\n"
