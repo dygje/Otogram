@@ -109,7 +109,7 @@ class Settings(BaseSettings):
             ]
         )
 
-    def get_credentials_status(self) -> dict:
+    def get_credentials_status(self) -> dict[str, bool]:
         """Get status of credential configuration"""
         return {
             "api_id": self.TELEGRAM_API_ID is not None,
