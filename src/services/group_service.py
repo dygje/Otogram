@@ -115,7 +115,7 @@ class GroupService:
         self, group_id: str, title: str | None = None, is_active: bool | None = None
     ) -> Group | None:
         """Update group information"""
-        update_dict = {}
+        update_dict: dict[str, any] = {}
 
         if title is not None:
             update_dict["group_title"] = title
