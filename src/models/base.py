@@ -17,6 +17,6 @@ class BaseDocument(BaseModel):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 
-    def update_timestamp(self):
+    def update_timestamp(self) -> None:
         """Update the updated_at field"""
         self.updated_at = datetime.utcnow()
