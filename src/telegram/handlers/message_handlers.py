@@ -162,7 +162,7 @@ class MessageHandlers:
     async def _show_add_message_prompt(self, update: Update):
         """Show add message prompt"""
         text = (
-            "➕ *Tambah Pesan Baru*\n\n"
+            "+ *Tambah Pesan Baru*\n\n"
             "Kirim pesan yang ingin Anda tambahkan untuk broadcast.\n\n"
             "⚠️ *Catatan:*\n"
             "• Hanya teks yang didukung\n"
