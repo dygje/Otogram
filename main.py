@@ -112,7 +112,9 @@ class TelegramAutomationApp:
     def signal_handler(self, signum, _frame):
         """Handle shutdown signals"""
         logger.info(f"📡 Received signal {signum}")
-        asyncio.create_task(self.stop())
+        # Store task reference to avoid RUF006 warning
+        task = asyncio.create_task(self.stop())
+        # We don't await here as this is a signal handler
 
 
 async def main():
