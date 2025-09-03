@@ -41,7 +41,7 @@ class Log(BaseDocument):
     user_id: str | None = Field(None, description="Related user ID")
 
     class Config:
-        json_schema_extra = {
+        json_schema_extra: ClassVar = {
             "example": {
                 "log_type": "message_sent",
                 "level": "info",
