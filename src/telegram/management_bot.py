@@ -170,7 +170,8 @@ class ManagementBot:
             "⏰ Siklus Berikutnya: Menunggu..."
         )
 
-        await update.message.reply_text(status_text, parse_mode="Markdown")
+        if update.message:
+            await update.message.reply_text(status_text, parse_mode="Markdown")
 
     async def help_command(self, update: Update, _context: ContextTypes.DEFAULT_TYPE):
         """Handle /help command"""
