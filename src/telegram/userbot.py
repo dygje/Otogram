@@ -116,7 +116,7 @@ class UserBot:
             except Exception as e:
                 logger.error(f"Error in broadcasting loop: {e}")
                 # Wait a bit before retrying
-                await asyncio.sleep(300)  # 5 minutes
+                await asyncio.sleep(BROADCASTING_ERROR_SLEEP_SECONDS)  # 5 minutes
 
     async def _broadcast_cycle(self, messages: list, groups: list):
         """Execute a single broadcasting cycle"""
