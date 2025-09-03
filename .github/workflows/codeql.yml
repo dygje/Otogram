@@ -42,12 +42,6 @@ jobs:
       with:
         languages: ${{ matrix.language }}
         queries: security-extended,security-and-quality
-        config: |
-          name: "Otogram CodeQL Config"
-          disable-default-rules: false
-          queries:
-            - uses: security-extended
-            - uses: security-and-quality
 
     - name: "🏗️ Autobuild"
       uses: github/codeql-action/autobuild@v3
@@ -56,10 +50,3 @@ jobs:
       uses: github/codeql-action/analyze@v3
       with:
         category: "/language:${{matrix.language}}"
-        upload: true
-
-    - name: "📊 Upload SARIF Results"
-      uses: github/codeql-action/upload-sarif@v3
-      if: always()
-      with:
-        sarif_file: ${{ runner.temp }}/results/python.sarif
