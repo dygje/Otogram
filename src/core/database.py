@@ -39,7 +39,7 @@ class Database:
             self.client.close()
             logger.info("✅ Database disconnected")
 
-    async def _create_indexes(self):
+    async def _create_indexes(self) -> None:
         """Create necessary database indexes"""
         try:
             # Messages collection
