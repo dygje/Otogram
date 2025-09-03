@@ -104,9 +104,9 @@ class TestSettings:
             TELEGRAM_API_HASH=None,
             TELEGRAM_BOT_TOKEN=None,
             TELEGRAM_PHONE_NUMBER=None,
-            _env_file=None  # Don't load from .env file
+            _env_file=None,  # Don't load from .env file
         )
-        
+
         status = settings.get_credentials_status()
         assert status["all_configured"] is False
         assert status["api_id"] is False
@@ -120,7 +120,7 @@ class TestSettings:
             TELEGRAM_API_HASH="test_hash",
             TELEGRAM_BOT_TOKEN="123456789:ABC-DEF...",
             TELEGRAM_PHONE_NUMBER="+1234567890",
-            _env_file=None
+            _env_file=None,
         )
 
         status = settings.get_credentials_status()

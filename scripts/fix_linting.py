@@ -4,7 +4,6 @@ Auto-fix common linting issues for Otogram project
 """
 
 import subprocess
-import sys
 from pathlib import Path
 
 
@@ -13,7 +12,7 @@ def run_command(cmd: list[str], description: str = "") -> bool:
     print(f"Running: {' '.join(cmd)}")
     if description:
         print(f"Description: {description}")
-    
+
     try:
         result = subprocess.run(cmd, check=True, capture_output=True, text=True)
         print("✅ Success")
@@ -32,44 +31,40 @@ def run_command(cmd: list[str], description: str = "") -> bool:
 def main():
     """Fix common linting issues"""
     print("🔧 Auto-fixing linting issues for Otogram...")
-    
+
     # Change to project root
     project_root = Path(__file__).parent.parent
     print(f"Working in: {project_root}")
-    
+
     # 1. Run ruff with --fix to auto-fix issues
     print("\n1. Running ruff --fix...")
-    success = run_command([
-        "ruff", "check", "--fix", 
-        "src/", "scripts/", "tests/",
-        "--config", "pyproject.toml"
-    ], "Auto-fix ruff issues")
-    
+    success = run_command(
+        ["ruff", "check", "--fix", "src/", "scripts/", "tests/", "--config", "pyproject.toml"],
+        "Auto-fix ruff issues",
+    )
+
     if not success:
         print("⚠️  Some ruff issues could not be auto-fixed")
-    
+
     # 2. Run ruff format
     print("\n2. Running ruff format...")
-    run_command([
-        "ruff", "format", 
-        "src/", "scripts/", "tests/"
-    ], "Format code with ruff")
-    
+    run_command(["ruff", "format", "src/", "scripts/", "tests/"], "Format code with ruff")
+
     # 3. Show remaining issues
     print("\n3. Checking for remaining issues...")
-    result = subprocess.run([
-        "ruff", "check", 
-        "src/", "scripts/", "tests/",
-        "--config", "pyproject.toml"
-    ], capture_output=True, text=True)
-    
+    result = subprocess.run(
+        ["ruff", "check", "src/", "scripts/", "tests/", "--config", "pyproject.toml"],
+        capture_output=True,
+        text=True,
+    )
+
     if result.returncode == 0:
         print("✅ All linting issues fixed!")
     else:
         print("⚠️  Some issues remain:")
         print(result.stdout)
         print("\nThese issues need manual review.")
-    
+
     print("\n🎉 Linting fix complete!")
 
 
