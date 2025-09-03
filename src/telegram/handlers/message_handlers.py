@@ -36,10 +36,10 @@ class MessageHandlers:
                 text = f"📝 *Daftar Pesan* ({stats['active']}/{stats['total']} aktif)\n\n"
 
                 keyboard = []
-                for i, msg in enumerate(messages[:10], 1):  # Show first 10
+                for i, msg in enumerate(messages[:MAX_MESSAGES_DISPLAY], 1):  # Show first 10
                     status = "✅" if msg.is_active else "❌"
                     content_preview = (
-                        msg.content[:30] + "..." if len(msg.content) > 30 else msg.content
+                        msg.content[:PREVIEW_MESSAGE_LENGTH] + "..." if len(msg.content) > PREVIEW_MESSAGE_LENGTH else msg.content
                     )
                     text += f"{i}. {status} {content_preview}\n   📊 Terpakai: {msg.usage_count} kali\n\n"
 
