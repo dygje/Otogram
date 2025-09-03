@@ -314,12 +314,21 @@ docker run -d -p 27017:27017 mongo:4.4
 
 ## 📚 Documentation
 
-| Resource | Description |
-|----------|-------------|
-| [**Full Documentation**](https://dygje.github.io/Otogram) | Complete user and API docs |
-| [Getting Started](docs/GETTING_STARTED.md) | Setup and basic usage |
-| [API Reference](docs/API.md) | Code interfaces |
-| [Contributing](docs/CONTRIBUTING.md) | Development guide |
+### 🚀 Quick Start
+- **[Getting Started](docs/GETTING_STARTED.md)** - 5-minute setup guide
+- **[Setup Guide](docs/SETUP_GUIDE.md)** - Detailed installation & configuration
+
+### 📖 Complete Documentation
+- **[📚 Documentation Hub](docs/README.md)** - Complete documentation index
+- **[🏗️ API Reference](docs/API.md)** - Complete API documentation  
+- **[🏛️ Architecture](docs/ARCHITECTURE.md)** - System design and patterns
+- **[🚀 Deployment](docs/DEPLOYMENT.md)** - Production deployment guide
+- **[💻 Development](docs/DEVELOPMENT.md)** - Contributing and development
+
+### 📋 Project Information
+- **[🔒 Security Policy](docs/SECURITY.md)** - Security guidelines
+- **[🤝 Contributing](docs/CONTRIBUTING.md)** - How to contribute
+- **[📝 Changelog](docs/CHANGELOG.md)** - Version history
 
 ## 🤝 Contributing
 
