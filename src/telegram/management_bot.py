@@ -375,7 +375,7 @@ class ManagementBot:
 
             keyboard = [
                 [
-                    InlineKeyboardButton("➕ Add Group", callback_data="groups_add"),
+                    InlineKeyboardButton("+ Add Group", callback_data="groups_add"),
                     InlineKeyboardButton("📋 Add Bulk", callback_data="groups_bulk"),
                 ],
                 [
