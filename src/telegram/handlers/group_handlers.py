@@ -200,8 +200,8 @@ class GroupHandlers:
                     )
                     text += f"{i}. {identifier}\n"
 
-                if success_count > 5:
-                    text += f"... dan {success_count - 5} grup lainnya\n"
+                if success_count > MAX_BULK_SUCCESS_DISPLAY:
+                    text += f"... dan {success_count - MAX_BULK_SUCCESS_DISPLAY} grup lainnya\n"
 
             if success_count < total_count:
                 text += (
