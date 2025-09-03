@@ -13,7 +13,7 @@ from src.models.message import Message, MessageCreate, MessageUpdate
 class MessageService:
     """Service for managing messages"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.collection = database.get_collection("messages")
 
     async def create_message(self, message_data: MessageCreate) -> Message:
