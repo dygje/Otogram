@@ -37,6 +37,16 @@ class GroupService:
                     username = f"@{username}"
                 group_dict["group_username"] = username
 
+        # Add required fields with defaults
+        group_dict.update({
+            "group_id": group_dict.get("group_id"),
+            "group_username": group_dict.get("group_username"), 
+            "group_link": group_dict.get("group_link"),
+            "group_title": None,
+            "is_active": True,
+            "message_count": 0
+        })
+        
         group = Group(**group_dict)
 
         # Check if group already exists
