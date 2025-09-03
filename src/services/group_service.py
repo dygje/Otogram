@@ -154,7 +154,7 @@ class GroupService:
 
     async def increment_message_count(self, group_telegram_id: str) -> None:
         """Increment message count for a group"""
-        await self.collection.update_one(
+        await self.collection.update_one(  # type: ignore[attr-defined]
             {"group_id": group_telegram_id}, {"$inc": {"message_count": 1}}
         )
 
