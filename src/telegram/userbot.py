@@ -144,7 +144,7 @@ class UserBot:
                 continue
 
             # Select random message
-            message = random.choice(messages)
+            message = SecureRandom.choice(messages)
 
             # Send message
             success = await self._send_message_to_group(group, message.content)
