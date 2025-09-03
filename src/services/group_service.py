@@ -134,7 +134,7 @@ class GroupService:
 
         update_dict["updated_at"] = datetime.utcnow()
 
-        result = await self.collection.update_one({"id": group_id}, {"$set": update_dict})
+        result = await self.collection.update_one({"id": group_id}, {"$set": update_dict})  # type: ignore[attr-defined]
 
         if result.modified_count > 0:
             logger.info(f"Updated group: {group_id}")
