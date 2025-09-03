@@ -196,7 +196,7 @@ def setup_credentials() -> bool:
     return False
 
 
-def run_health_check():
+def run_health_check() -> bool:
     """Run health check to verify setup"""
     print("\n🩺 MENJALANKAN HEALTH CHECK...\n")
 
