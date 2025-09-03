@@ -176,7 +176,7 @@ version: ## Show version information
 	@echo "Project Version: $(shell grep '^version' pyproject.toml | cut -d'"' -f2)"
 	@echo "Python Version: $(shell python --version)"
 	@echo "Dependencies:"
-	@pip list | grep -E "(pyrogram|telegram|motor|pymongo|pydantic)" || echo "Dependencies not installed"
+	@pip list | grep -E "(pyrofork|telegram|motor|pymongo|pydantic)" || echo "Dependencies not installed"
 
 # Help with setup
 first-time: ## First time setup guide
