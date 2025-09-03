@@ -33,7 +33,7 @@ class Database:
             logger.error(f"❌ Database connection failed: {e}")
             raise
 
-    async def disconnect(self):
+    async def disconnect(self) -> None:
         """Disconnect from MongoDB"""
         if self.client:
             self.client.close()
