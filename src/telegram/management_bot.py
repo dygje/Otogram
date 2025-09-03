@@ -266,15 +266,15 @@ class ManagementBot:
         elif data == "emergency_stop":
             await self._show_emergency_stop(update, context)
 
-        # Legacy routing for existing handlers
+        # Legacy routing for existing handlers  
         elif data.startswith("messages_"):
-            await self.message_handlers.handle_callback(update, context, data)
+            await self.message_handlers.handle_callback(update, context, str(data))
         elif data.startswith("groups_"):
-            await self.group_handlers.handle_callback(update, context, data)
+            await self.group_handlers.handle_callback(update, context, str(data))
         elif data.startswith("config_"):
-            await self.config_handlers.handle_callback(update, context, data)
+            await self.config_handlers.handle_callback(update, context, str(data))
         elif data.startswith("blacklist_"):
-            await self.blacklist_handlers.handle_callback(update, context, data)
+            await self.blacklist_handlers.handle_callback(update, context, str(data))
 
         # Back navigation
         elif data == "back_to_dashboard":
