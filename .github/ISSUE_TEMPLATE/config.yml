@@ -2,13 +2,7 @@ blank_issues_enabled: false
 contact_links:
   - name: 📚 Documentation
     url: https://github.com/dygje/Otogram/tree/main/docs
-    about: Check comprehensive documentation, setup guides, and API reference
+    about: Check setup guides and documentation
   - name: 🩺 Health Check
     url: https://github.com/dygje/Otogram/blob/main/scripts/health_check.py
-    about: Run system diagnostics before reporting issues - helps identify common problems
-  - name: 📖 Getting Started Guide
-    url: https://github.com/dygje/Otogram/blob/main/docs/SETUP_GUIDE.md
-    about: Complete setup and installation guide for new users
-  - name: 🔧 Troubleshooting
-    url: https://github.com/dygje/Otogram/blob/main/README.md#-troubleshooting
-    about: Common issues and their solutions
+    about: Run system diagnostics first
