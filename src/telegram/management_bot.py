@@ -116,9 +116,10 @@ class ManagementBot:
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
 
-        await update.message.reply_text(
-            welcome_text, parse_mode="Markdown", reply_markup=reply_markup
-        )
+        if update.message:
+            await update.message.reply_text(
+                welcome_text, parse_mode="Markdown", reply_markup=reply_markup
+            )
 
     async def main_menu(self, update: Update, _context: ContextTypes.DEFAULT_TYPE):
         """Show modern main menu dashboard"""
