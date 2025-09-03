@@ -60,31 +60,17 @@ theme:
 # Navigation
 nav:
   - Home: index.md
-  - Getting Started:
-    - Overview: getting-started/overview.md
-    - Installation: getting-started/installation.md
-    - Configuration: getting-started/configuration.md
-    - First Run: getting-started/first-run.md
-  - User Guide:
-    - Bot Commands: user-guide/bot-commands.md
-    - Message Management: user-guide/messages.md
-    - Group Management: user-guide/groups.md
-    - System Configuration: user-guide/configuration.md
-    - Monitoring: user-guide/monitoring.md
-  - API Reference:
-    - Overview: api/overview.md
-    - Models: api/models.md
-    - Services: api/services.md
-    - Core: api/core.md
+  - Getting Started: GETTING_STARTED.md
+  - API Reference: API.md
+  - Documentation: README.md
   - Development:
-    - Contributing: development/contributing.md
-    - Architecture: development/architecture.md
-    - Testing: development/testing.md
-    - Deployment: development/deployment.md
+    - Contributing: CONTRIBUTING.md
+    - Migration Guide: PYROGRAM_TO_PYROFORK_MIGRATION.md
+    - Architecture Decisions: decisions/README.md
   - About:
-    - Changelog: about/changelog.md
-    - License: about/license.md
-    - Security: about/security.md
+    - Changelog: CHANGELOG.md
+    - Security: SECURITY.md
+    - Code of Conduct: CODE_OF_CONDUCT.md
 
 # Plugins
 plugins:
