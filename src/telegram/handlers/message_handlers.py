@@ -7,8 +7,8 @@ from loguru import logger
 from src.core.constants import (
     MAX_MESSAGES_DISPLAY,
     PREVIEW_MESSAGE_LENGTH,
-    PREVIEW_MESSAGE_LENGTH_SHORT,
     PREVIEW_MESSAGE_LENGTH_LONG,
+    PREVIEW_MESSAGE_LENGTH_SHORT,
     TELEGRAM_MESSAGE_MAX_LENGTH,
 )
 from src.models.message import MessageCreate

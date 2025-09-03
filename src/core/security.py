@@ -3,7 +3,8 @@ Security utilities for cryptographically secure operations
 """
 
 import secrets
-from typing import Any, Sequence
+from collections.abc import Sequence
+from typing import Any
 
 
 class SecureRandom:
@@ -21,7 +22,7 @@ class SecureRandom:
         """Return a random integer N such that min_value <= N <= max_value"""
         if min_value > max_value:
             raise ValueError("min_value must be <= max_value")
-        
+
         # Use secrets.randbelow for secure random generation
         range_size = max_value - min_value + 1
         return min_value + secrets.randbelow(range_size)
@@ -31,11 +32,11 @@ class SecureRandom:
         """Return a random floating point number N such that min_value <= N <= max_value"""
         if min_value > max_value:
             raise ValueError("min_value must be <= max_value")
-        
+
         # Generate secure random bytes and convert to float in range [0, 1)
         random_bytes = secrets.randbits(32)
         random_float = random_bytes / (2**32)
-        
+
         # Scale to desired range
         return min_value + random_float * (max_value - min_value)
 

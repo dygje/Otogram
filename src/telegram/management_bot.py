@@ -3,6 +3,13 @@ Management Bot - Telegram bot for managing the system
 """
 
 from loguru import logger
+
+from src.core.config import settings
+from src.core.constants import MAX_RECENT_ITEMS_DISPLAY, PREVIEW_MESSAGE_LENGTH
+from src.telegram.handlers.blacklist_handlers import BlacklistHandlers
+from src.telegram.handlers.config_handlers import ConfigHandlers
+from src.telegram.handlers.group_handlers import GroupHandlers
+from src.telegram.handlers.message_handlers import MessageHandlers
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import (
     Application,
@@ -12,13 +19,6 @@ from telegram.ext import (
     MessageHandler,
     filters,
 )
-
-from src.core.config import settings
-from src.core.constants import MAX_RECENT_ITEMS_DISPLAY, PREVIEW_MESSAGE_LENGTH
-from src.telegram.handlers.blacklist_handlers import BlacklistHandlers
-from src.telegram.handlers.config_handlers import ConfigHandlers
-from src.telegram.handlers.group_handlers import GroupHandlers
-from src.telegram.handlers.message_handlers import MessageHandlers
 
 
 class ManagementBot:

@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 from loguru import logger
 
-from src.core.constants import DEFAULT_SLOWMODE_DURATION, DEFAULT_FLOOD_DURATION
+from src.core.constants import DEFAULT_FLOOD_DURATION, DEFAULT_SLOWMODE_DURATION
 from src.core.database import database
 from src.models.blacklist import (
     Blacklist,
