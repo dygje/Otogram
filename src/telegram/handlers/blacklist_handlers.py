@@ -16,7 +16,7 @@ class BlacklistHandlers:
     def __init__(self):
         self.blacklist_service = BlacklistService()
 
-    async def show_blacklist(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+    async def show_blacklist(self, update: Update, _context: ContextTypes.DEFAULT_TYPE):
         """Show blacklist entries"""
         try:
             blacklists = await self.blacklist_service.get_all_blacklists()
