@@ -16,7 +16,7 @@ class TestSettings:
         settings = Settings()
 
         assert settings.MONGO_URL == "mongodb://localhost:27017"
-        assert settings.DB_NAME == "telegram_automation"
+        assert settings.DB_NAME == "otogram"
         assert settings.LOG_LEVEL == "INFO"
         assert settings.MIN_MESSAGE_DELAY == 5
         assert settings.MAX_MESSAGE_DELAY == 10
