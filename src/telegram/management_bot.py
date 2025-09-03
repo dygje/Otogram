@@ -305,7 +305,7 @@ class ManagementBot:
                 text, parse_mode="Markdown", reply_markup=reply_markup
             )
 
-    async def _show_messages_dashboard(self, update: Update, _context: ContextTypes.DEFAULT_TYPE):
+    async def _show_messages_dashboard(self, update: Update, _context: ContextTypes.DEFAULT_TYPE) -> None:
         """Show messages dashboard with modern layout"""
         try:
             messages = await self.message_handlers.message_service.get_all_messages()
