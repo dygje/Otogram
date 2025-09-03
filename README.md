@@ -43,7 +43,7 @@ python main.py
 ## 🏗️ Modern Architecture
 
 - **Language**: Python 3.11+ with type hints
-- **Framework**: Pyrogram (MTProto) + python-telegram-bot
+- **Framework**: Pyrofork (MTProto) + python-telegram-bot
 - **Database**: MongoDB with optimized indexes
 - **Pattern**: Clean Architecture with separation of concerns
 
