@@ -14,6 +14,10 @@ from src.models.blacklist import (
     determine_blacklist_from_error,
 )
 
+# Default duration constants
+DEFAULT_SLOWMODE_DURATION = 60  # 1 minute default
+DEFAULT_FLOOD_DURATION = 3600  # 1 hour default
+
 
 class BlacklistService:
     """Service for managing blacklists"""
