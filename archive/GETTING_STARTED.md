@@ -170,8 +170,8 @@ curl "https://api.telegram.org/bot<TOKEN>/getMe"
 
 ## Next Steps
 
-- [API Reference](API.md) - Code interfaces
-- [Architecture Decisions](decisions/) - Technical rationale
+- [API Reference](../docs/API.md) - Code interfaces
+- [Architecture Decisions](../docs/decisions/) - Technical rationale
 - [Troubleshooting](../scripts/health_check.py) - System diagnostics
 
 ## Support
