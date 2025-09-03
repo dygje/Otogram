@@ -116,7 +116,7 @@ docs: ## View documentation
 	@echo "  • docs/API.md - API reference"
 	@echo "  • docs/GETTING_STARTED.md - Setup guide"
 
-# Maintenance
+# Maintenance & Cleanup
 clean: ## Clean up temporary files
 	@echo "🧹 Cleaning up..."
 	find . -type f -name "*.pyc" -delete
@@ -124,7 +124,9 @@ clean: ## Clean up temporary files
 	find . -type d -name "*.egg-info" -exec rm -rf {} +
 	find . -type d -name ".pytest_cache" -exec rm -rf {} +
 	find . -type d -name ".mypy_cache" -exec rm -rf {} +
-	rm -rf build/ dist/ site/
+	find . -type d -name ".ruff_cache" -exec rm -rf {} +
+	rm -rf build/ dist/ site/ htmlcov/
+	rm -f .coverage coverage.xml bandit-report.json safety-report.json
 	@echo "✅ Cleanup complete"
 
 clean-sessions: ## Clean Pyrofork session files
@@ -136,7 +138,11 @@ clean-sessions: ## Clean Pyrofork session files
 clean-logs: ## Clean application logs
 	@echo "🗑️ Cleaning log files..."
 	rm -f logs/*.log
+	mkdir -p logs
 	@echo "✅ Log files cleaned"
+
+clean-all: clean clean-sessions clean-logs ## Full cleanup
+	@echo "🧹 Complete cleanup finished"
 
 # Build and Distribution
 build: clean ## Build distribution packages
