@@ -82,7 +82,7 @@ class TestSettings:
 
         # Invalid cycle delays
         with pytest.raises(ValidationError) as exc_info:
-            Settings(MIN_CYCLE_DELAY_HOURS=2.0, MAX_CYCLE_DELAY_HOURS=1.0)
+            Settings(MIN_CYCLE_DELAY_HOURS=TEST_CYCLE_DELAY_MAX, MAX_CYCLE_DELAY_HOURS=TEST_CYCLE_DELAY_MIN)
 
         assert "MAX_CYCLE_DELAY_HOURS must be greater than MIN_CYCLE_DELAY_HOURS" in str(
             exc_info.value
