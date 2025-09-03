@@ -51,11 +51,9 @@ lint: ## Run all linting tools
 	isort --check-only --diff src/ scripts/ tests/
 	mypy src/
 
-format: ## Format code with ruff, black and isort
+format: ## Format code with ruff
 	@echo "🎨 Formatting code..."
 	ruff format src/ scripts/ tests/
-	black src/ scripts/ tests/
-	isort src/ scripts/ tests/
 	@echo "✅ Code formatted"
 
 quality: ## Run all quality checks
