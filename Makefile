@@ -20,8 +20,9 @@ install: ## Install production dependencies
 	pip install -e .
 	@echo "✅ Production dependencies installed"
 
-install-dev: ## Install development dependencies
+install-dev: ## Install development dependencies  
 	@echo "📦 Installing development dependencies..."
+	python -m pip install --upgrade pip
 	pip install -e ".[dev]"
 	@echo "✅ Development dependencies installed"
 
