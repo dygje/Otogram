@@ -43,7 +43,7 @@ class GroupService:
                 if not username.startswith("@"):
                     username = f"@{username}"
                 group_kwargs["group_username"] = username
-        
+
         group = Group(**group_kwargs)
 
         # Check if group already exists
