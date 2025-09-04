@@ -3,7 +3,7 @@ Tests for Message Service
 """
 
 import pytest
-from unittest.mock import AsyncMock, MagicMock
+from unittest.mock import AsyncMock, MagicMock, patch
 
 from src.services.message_service import MessageService
 from src.models.message import Message, MessageCreate, MessageUpdate
@@ -20,9 +20,10 @@ class TestMessageService:
     @pytest.fixture
     def message_service(self, mock_collection):
         """MessageService fixture with mocked collection"""
-        service = MessageService()
-        service.collection = mock_collection
-        return service
+        with patch('src.services.message_service.database') as mock_database:
+            mock_database.get_collection.return_value = mock_collection
+            service = MessageService()
+            return service
 
     @pytest.mark.asyncio
     async def test_create_message(self, message_service, mock_collection):
