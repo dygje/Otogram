@@ -209,7 +209,8 @@ class MessageHandlers:
             message = await self.message_service.get_message_by_id(message_id)
 
             if not message:
-                await update.callback_query.edit_message_text("❌ Pesan tidak ditemukan.")
+                if update.callback_query:
+                    await update.callback_query.edit_message_text("❌ Pesan tidak ditemukan.")
                 return
 
             status_text = "Aktif ✅" if message.is_active else "Nonaktif ❌"
