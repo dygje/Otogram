@@ -76,6 +76,9 @@ class ManagementBot:
         self.app.add_handler(CommandHandler("menu", self.main_menu))
         self.app.add_handler(CommandHandler("status", self.status_command))
 
+        # Authentication
+        self.app.add_handler(CommandHandler("auth", self.auth_handlers.show_auth_status))
+
         # Message management
         self.app.add_handler(CommandHandler("messages", self.message_handlers.list_messages))
         self.app.add_handler(
