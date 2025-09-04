@@ -50,7 +50,7 @@ src/
 
 ## 📋 Requirements
 
-- **Python**: 3.11+ 
+- **Python**: 3.11+ or 3.12 (recommended) 
 - **MongoDB**: 4.4+ (local or Docker)
 - **Telegram API**: Get from [my.telegram.org](https://my.telegram.org)
 - **Bot Token**: Create via [@BotFather](https://t.me/BotFather)
