@@ -102,7 +102,7 @@ def test_external_dependencies():
     print("\n🔍 Testing external dependencies...")
     
     dependencies = [
-        ("pyrofork", "pyrofork"),
+        ("pyrogram", "pyrofork"),
         ("telegram", "python-telegram-bot"),
         ("motor.motor_asyncio", "motor"),
         ("pymongo", "pymongo"),
