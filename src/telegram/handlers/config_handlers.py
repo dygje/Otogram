@@ -97,6 +97,7 @@ class ConfigHandlers:
 
                 # Validate and convert value based on type
                 try:
+                    converted_value: Any
                     if config.value_type == "int":
                         converted_value = int(new_value)
                     elif config.value_type == "float":
