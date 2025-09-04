@@ -61,13 +61,24 @@ class ConfigService:
 
         return default
 
-    async def set_config(self, key: str, value: Any) -> Configuration | None:
+    async def set_config(self, key: str, value: Any, description: str | None = None) -> Configuration | None:
         """Set configuration value"""
         config = await self.get_config(key)
 
         if not config:
-            logger.warning(f"Configuration not found: {key}")
-            return None
+            # Create new config if it doesn't exist
+            value_type = self._infer_value_type(value)
+            config = Configuration(
+                key=key,
+                value=value,
+                value_type=value_type,
+                description=description,
+                category="general",
+                is_editable=True,
+            )
+            await self.collection.insert_one(config.model_dump())
+            logger.info(f"Created new config {key}: {value}")
+            return config
 
         if not config.is_editable:
             logger.warning(f"Configuration not editable: {key}")
@@ -75,11 +86,34 @@ class ConfigService:
 
         # Update configuration
         config.value = value
+        if description is not None:
+            config.description = description
         config.update_timestamp()
 
         await self.collection.update_one({"key": key}, {"$set": config.model_dump()})
 
         logger.info(f"Updated config {key}: {value}")
+        return config
+
+    async def update_config(self, key: str, update_data: dict[str, Any]) -> Configuration | None:
+        """Update configuration with partial data"""
+        config = await self.get_config(key)
+        if not config:
+            return None
+
+        if not config.is_editable:
+            logger.warning(f"Configuration not editable: {key}")
+            return None
+
+        # Update fields
+        for field, value in update_data.items():
+            if hasattr(config, field):
+                setattr(config, field, value)
+
+        config.update_timestamp()
+        await self.collection.update_one({"key": key}, {"$set": config.model_dump()})
+
+        logger.info(f"Updated config {key} with partial data")
         return config
 
     async def get_all_configs(self) -> list[Configuration]:
@@ -101,6 +135,143 @@ class ConfigService:
             configs.append(Configuration(**doc))
 
         return configs
+
+    async def search_configs(self, search_term: str) -> list[Configuration]:
+        """Search configurations by key or description"""
+        query = {
+            "$or": [
+                {"key": {"$regex": search_term, "$options": "i"}},
+                {"description": {"$regex": search_term, "$options": "i"}},
+            ]
+        }
+        
+        cursor = self.collection.find(query)
+        configs = []
+
+        async for doc in cursor:
+            configs.append(Configuration(**doc))
+
+        return configs
+
+    async def bulk_update_configs(self, updates: dict[str, Any]) -> dict[str, bool]:
+        """Bulk update multiple configurations"""
+        results = {}
+        
+        for key, value in updates.items():
+            try:
+                config = await self.set_config(key, value)
+                results[key] = config is not None
+            except Exception as e:
+                logger.error(f"Failed to update config {key}: {e}")
+                results[key] = False
+
+        return results
+
+    async def reset_config_to_default(self, key: str) -> Configuration | None:
+        """Reset configuration to default value"""
+        # Find default config
+        default_config = None
+        for config_data in DEFAULT_CONFIGS:
+            if config_data["key"] == key:
+                default_config = config_data
+                break
+
+        if not default_config:
+            logger.warning(f"No default found for config: {key}")
+            return None
+
+        # Reset to default
+        return await self.set_config(
+            key,
+            default_config["value"],
+            default_config.get("description")
+        )
+
+    async def get_config_history(self, key: str, limit: int = 10) -> list[dict[str, Any]]:
+        """Get configuration change history"""
+        history_collection = self._get_history_collection()
+        cursor = history_collection.find({"key": key}).sort("timestamp", -1).limit(limit)
+        
+        history = []
+        async for doc in cursor:
+            history.append(doc)
+
+        return history
+
+    async def backup_all_configs(self) -> str:
+        """Backup all configurations"""
+        configs = await self.get_all_configs()
+        backup_data = {
+            "timestamp": datetime.utcnow(),
+            "configs": [config.model_dump() for config in configs]
+        }
+        
+        backup_collection = self._get_backup_collection()
+        result = await backup_collection.insert_one(backup_data)
+        
+        backup_id = str(result.inserted_id)
+        logger.info(f"Created config backup: {backup_id}")
+        return backup_id
+
+    async def restore_from_backup(self, backup_id: str) -> bool:
+        """Restore configurations from backup"""
+        from bson import ObjectId
+        
+        backup_collection = self._get_backup_collection()
+        backup = await backup_collection.find_one({"_id": ObjectId(backup_id)})
+        
+        if not backup:
+            logger.warning(f"Backup not found: {backup_id}")
+            return False
+
+        try:
+            # Clear current configs
+            await self.collection.delete_many({})
+            
+            # Restore from backup
+            configs_data = backup["configs"]
+            if configs_data:
+                await self.collection.insert_many(configs_data)
+            
+            logger.info(f"Restored {len(configs_data)} configs from backup: {backup_id}")
+            return True
+            
+        except Exception as e:
+            logger.error(f"Failed to restore backup {backup_id}: {e}")
+            return False
+
+    def _validate_config_value(self, value_type: str, value: Any) -> bool:
+        """Validate configuration value type"""
+        try:
+            if value_type == "int":
+                int(value)
+            elif value_type == "float":
+                float(value)
+            elif value_type == "bool":
+                if not isinstance(value, bool) and str(value).lower() not in ("true", "false", "1", "0"):
+                    return False
+            return True
+        except (ValueError, TypeError):
+            return False
+
+    def _infer_value_type(self, value: Any) -> str:
+        """Infer value type from value"""
+        if isinstance(value, bool):
+            return "bool"
+        elif isinstance(value, int):
+            return "int"
+        elif isinstance(value, float):
+            return "float"
+        else:
+            return "str"
+
+    def _get_history_collection(self):
+        """Get history collection"""
+        return database.get_collection("config_history")
+
+    def _get_backup_collection(self):
+        """Get backup collection"""
+        return database.get_collection("config_backups")
 
     async def get_config_by_id(self, config_id: str) -> Configuration | None:
         """Get configuration by ID"""
