@@ -77,3 +77,10 @@ class BotManager:
                 await self.userbot.stop()
                 self.userbot = None
             return False
+    def is_running(self) -> bool:
+        """Check if services are running"""
+        return self.running
+        
+    def is_userbot_running(self) -> bool:
+        """Check if userbot is running"""
+        return self.userbot is not None and self.userbot.is_running
