@@ -27,6 +27,7 @@ class ManagementBot:
 
     def __init__(self) -> None:
         self.app: Application | None = None
+        self.auth_handlers = AuthHandlers()
         self.message_handlers = MessageHandlers()
         self.group_handlers = GroupHandlers()
         self.config_handlers = ConfigHandlers()
