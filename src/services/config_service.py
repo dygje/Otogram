@@ -2,6 +2,7 @@
 Configuration Service - Handles system configuration
 """
 
+from datetime import datetime
 from typing import Any
 
 from loguru import logger
@@ -23,11 +24,13 @@ class ConfigService:
 
             if not existing:
                 config = Configuration(
-                    key=config_data["key"],
-                    created_at=config_data["created_at"],
+                    key=str(config_data["key"]),
+                    created_at=datetime.utcnow(),
                     value=config_data["value"],
+                    value_type=str(config_data["value_type"]),
                     description=config_data.get("description"),
-                    is_editable=config_data["is_editable"]
+                    category=str(config_data.get("category", "general")),
+                    is_editable=bool(config_data.get("is_editable", True))
                 )
                 await self.collection.insert_one(config.dict())
                 logger.info(f"Initialized config: {config_data['key']}")
