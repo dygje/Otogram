@@ -119,7 +119,7 @@ class TestBaseDocument:
         
         # Test dict() method (Pydantic v1 style)
         try:
-            doc_dict = doc.dict()
+            doc_dict = doc.model_dump()
             assert isinstance(doc_dict, dict)
             assert 'id' in doc_dict
             assert 'created_at' in doc_dict
