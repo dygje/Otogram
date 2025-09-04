@@ -34,8 +34,9 @@ make run
 ## ✨ Key Features
 
 - **📤 Mass Broadcasting** - Send messages to multiple Telegram groups automatically
+- **🔐 In-Bot Authentication** - Complete userbot setup through Telegram interface (NEW!)
 - **🛡️ Smart Blacklist Management** - Auto-handles FloodWait, SlowMode, and permanent errors
-- **🤖 Telegram Bot Interface** - Complete control through modern dashboard
+- **🤖 Modern Telegram Bot Interface** - Complete control through intuitive dashboard
 - **⚙️ Intelligent Scheduling** - Random delays for natural behavior
 - **🔒 Personal Project Ready** - Optimized for solo development and usage
 
