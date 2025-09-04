@@ -20,8 +20,8 @@ class Database:
     """Database connection manager"""
 
     def __init__(self) -> None:
-        self.client: AsyncIOMotorClient | None = None  # type: ignore[valid-type]
-        self.db: AsyncIOMotorDatabase | None = None  # type: ignore[valid-type]
+        self.client: AsyncIOMotorClient | None = None
+        self.db: AsyncIOMotorDatabase | None = None
 
     async def connect(self) -> None:
         """Connect to MongoDB"""
@@ -43,7 +43,7 @@ class Database:
     async def disconnect(self) -> None:
         """Disconnect from MongoDB"""
         if self.client:
-            self.client.close()  # type: ignore[unreachable]
+            self.client.close()
             logger.info("✅ Database disconnected")
 
     async def _create_indexes(self) -> None:
@@ -52,7 +52,7 @@ class Database:
             logger.error("Database not connected, cannot create indexes")
             return
 
-        try:  # type: ignore[unreachable]
+        try:
             # Messages collection
             await self.db.messages.create_index("is_active")
             await self.db.messages.create_index("created_at")
@@ -78,11 +78,11 @@ class Database:
         except Exception as e:
             logger.warning(f"⚠️ Index creation warning: {e}")
 
-    def get_collection(self, name: str) -> AsyncIOMotorCollection:  # type: ignore[valid-type]
+    def get_collection(self, name: str) -> AsyncIOMotorCollection:
         """Get a collection"""
         if self.db is None:
             raise RuntimeError("Database not connected")
-        return self.db[name]  # type: ignore[unreachable]
+        return self.db[name]
 
 
 # Global database instance
