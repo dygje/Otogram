@@ -21,7 +21,14 @@ class BlacklistService:
     """Service for managing blacklists"""
 
     def __init__(self) -> None:
-        self.collection: Any = database.get_collection("blacklists")
+        self._collection: Any = None
+
+    @property
+    def collection(self) -> Any:
+        """Lazy-load collection"""
+        if self._collection is None:
+            self._collection = database.get_collection("blacklists")
+        return self._collection
 
     async def add_to_blacklist(self, blacklist_data: BlacklistCreate) -> Blacklist:
         """Add group to blacklist"""
