@@ -118,8 +118,8 @@ class TelegramAutomationApp:
         # We don't await here as this is a signal handler
 
 
-async def main() -> None:
-    """Main entry point"""
+async def async_main() -> None:
+    """Async main entry point"""
     app = TelegramAutomationApp()
 
     # Setup signal handlers
@@ -134,5 +134,10 @@ async def main() -> None:
         await app.stop()
 
 
+def main() -> None:
+    """Sync entry point for setuptools"""
+    asyncio.run(async_main())
+
+
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
