@@ -119,7 +119,9 @@ class TestConfigServiceExtended:
         mock_collection.find_one.return_value = {
             "key": config_key,
             "value": "15",
-            "value_type": "int"
+            "value_type": "int",
+            "category": "general",
+            "is_editable": True
         }
         
         mock_collection.update_one.return_value = MagicMock(modified_count=1)
