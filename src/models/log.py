@@ -5,7 +5,7 @@ Log Models
 from enum import Enum
 from typing import Any, ClassVar
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 from src.models.base import BaseDocument
 
