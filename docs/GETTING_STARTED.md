@@ -144,6 +144,6 @@ make first-time    # First-time setup guide
 
 ---
 
-**Status**: Personal Project Ready 🟢 | **Version**: 2.0.3
+**Status**: Personal Project Ready 🟢 | **Version**: 2.0.3 | **Updated**: September 2025
 
 **💡 Quick tip**: Start with `make dev` for development or `make run` for usage!
