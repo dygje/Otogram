@@ -5,7 +5,7 @@ Data models tests - Key validation only
 import pytest
 from pydantic import ValidationError
 
-from src.models.blacklist import Blacklist, BlacklistType, BlacklistReason
+from src.models.blacklist import Blacklist, BlacklistReason, BlacklistType
 from src.models.group import Group
 from src.models.message import Message, MessageCreate
 
