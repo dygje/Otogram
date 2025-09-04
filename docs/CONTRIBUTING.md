@@ -1,20 +1,15 @@
-# Contributing Guide
+# Development Guide
 
-> **Simple contribution guidelines for personal project**
+> **Personal project development workflow**
 
-## 🚀 Quick Development Setup
+## 🚀 Development Setup
 
 ```bash
-# 1. Fork and clone
-git clone https://github.com/your-username/Otogram.git
+# Clone and setup
+git clone https://github.com/dygje/Otogram.git
 cd Otogram
-
-# 2. Development setup
 make setup
 make health
-
-# 3. Create feature branch
-git checkout -b feature/your-feature
 ```
 
 ## 📝 Code Standards
@@ -22,9 +17,9 @@ git checkout -b feature/your-feature
 - **Python 3.11+** with type hints
 - **Line length**: 100 characters
 - **Format with**: `make format` (uses ruff)
-- **Test with**: `make test`
+- **Test with**: `make test-fast` (quick testing)
 
-### Code Structure
+### Code Structure Example
 ```python
 """Clear module docstring."""
 from typing import Optional
@@ -42,61 +37,71 @@ class ExampleClass:
         return self.param if self.param else None
 ```
 
-## 🧪 Testing
+## 🧪 Testing & Quality
 
 ```bash
-# Run all tests
-make test
+# Quick development checks
+make format       # Format code
+make test-fast    # Run tests without coverage
+make quality      # Format + quick test
 
-# Run specific test
-pytest tests/test_specific.py -v
-
-# Quality checks
-make format
-make lint
+# Full testing (when needed)
+make test         # Full test with coverage
+make lint         # Detailed code checks
 ```
 
-## 📦 Pull Requests
+## 🐳 Docker Development
 
-### Before Submitting
-- [ ] Tests pass: `make test`
-- [ ] Code formatted: `make format`
-- [ ] Health check: `make health`
-- [ ] Clear commit messages
+```bash
+# Local development with Docker
+docker-compose up -d mongodb  # Just database
+make run                      # Run app locally
 
-### PR Template
-```markdown
-## What Changed
-Brief description of changes
-
-## Type
-- [ ] Bug fix
-- [ ] New feature
-- [ ] Documentation
-- [ ] Refactor
-
-## Testing
-- [ ] Tests added/updated
-- [ ] Manual testing done
-- [ ] Health check passes
+# Full Docker setup
+docker-compose up -d          # Everything in containers
 ```
 
-## 🐛 Bug Reports
+## 🛠️ Personal Development Tips
 
-Include in your issue:
-1. **Steps to reproduce**
-2. **Expected vs actual behavior**
-3. **System info** (OS, Python version)
-4. **Logs** from `logs/app.log`
-5. **Health check output**: `make health`
+### Quick Workflow
+1. Make changes to code
+2. Run `make format` (auto-format)
+3. Run `make test-fast` (quick validation)
+4. Commit changes
 
-## 💡 Feature Requests
+### Debugging
+- Check logs: `tail -f logs/app.log`
+- Health check: `make health`
+- Clean start: `make clean-all && make run`
 
-Consider:
-- Does it fit project scope?
-- Can it be implemented simply?
-- Is there a use case for personal automation?
+### Configuration
+- All settings in `.env` file
+- Test config: `make config`
+- Reset sessions: `make clean-sessions`
+
+## 🚨 Common Issues
+
+**Service not starting:**
+```bash
+make health           # Check system status
+make clean-sessions   # Clear Telegram sessions
+docker ps            # Check MongoDB
+```
+
+**Code formatting:**
+```bash
+make format          # Auto-fix most issues
+```
+
+**Database issues:**
+```bash
+# Docker MongoDB
+docker restart otogram-mongo
+
+# Local MongoDB
+sudo systemctl restart mongod
+```
 
 ---
 
-**Keep it simple** - This is a personal project focused on functionality over process.
+**Personal Project Focus**: Simple, functional, maintainable code over complex processes.

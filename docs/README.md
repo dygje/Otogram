@@ -1,30 +1,70 @@
 # 📚 Otogram Documentation
 
-> **Personal project documentation - Simple and focused**
-
-## 📖 Documentation Overview
-
-### For Users
-- **[🚀 Quick Setup](GETTING_STARTED.md)** - Get running in 5 minutes
-- **[🔒 Security Guidelines](SECURITY.md)** - Keep your system secure
-
-### For Development  
-- **[🏗️ Architecture Overview](ARCHITECTURE.md)** - Understand the system design
-- **[📝 Version History](CHANGELOG.md)** - Track changes and updates
+> **Personal Telegram automation - Simple and focused**
 
 ## 🎯 Quick Navigation
 
-### "I'm New to Otogram"
-Start with **[Getting Started Guide](GETTING_STARTED.md)** - everything you need to get running.
+### "I'm New Here"
+**[🚀 Getting Started](GETTING_STARTED.md)** - Get running in 5 minutes
 
-### "I Want to Understand the Code"
-Check **[Architecture Overview](ARCHITECTURE.md)** for system design.
+### "I Want to Develop/Customize"
+**[🛠️ Development Guide](CONTRIBUTING.md)** - Personal development workflow
 
-### "I Found a Bug"
-1. Check existing [GitHub Issues](https://github.com/dygje/Otogram/issues)
-2. Run health check: `make health`
-3. Create new issue with details
+### "I Want to Stay Safe"
+**[🔒 Security Guidelines](SECURITY.md)** - Essential safety practices
+
+### "I Want to Understand the System"
+**[🏗️ System Architecture](ARCHITECTURE.md)** - Technical deep dive
+
+## 📖 Documentation Overview
+
+| Document | Purpose | Who It's For |
+|----------|---------|--------------|
+| **Getting Started** | Quick setup & basic usage | New users |
+| **Development Guide** | Code, test, deploy workflow | Customization |
+| **Security Guidelines** | Safe automation practices | All users |
+| **Architecture** | Technical system design | Advanced users |
+| **Changelog** | Version history & updates | Everyone |
+
+## 🚨 Need Help?
+
+### Common Issues
+1. **Won't start**: Check `make health`
+2. **Bot not responding**: Verify token with @BotFather  
+3. **Database errors**: Ensure MongoDB is running
+4. **Authentication failed**: Try `make clean-sessions`
+
+### Check These First
+- **Logs**: `tail -f logs/app.log`
+- **Health**: `make health`
+- **Config**: `make config`
+- **Status**: Bot `/status` command
+
+### Getting Support
+- **GitHub Issues**: [Report bugs/issues](https://github.com/dygje/Otogram/issues)
+- **Discussions**: General questions and tips
+- **Documentation**: Most answers are in these docs
+
+## 🔄 Quick Reference
+
+### Essential Commands
+```bash
+make setup        # First-time setup
+make health       # Check system status
+make run         # Start Otogram
+make clean       # Clean temporary files
+make format      # Format code
+```
+
+### Bot Commands
+```
+/start           # Initialize bot
+/menu           # Main dashboard
+/status         # System status
+/messages       # Manage messages
+/groups         # Manage groups
+```
 
 ---
 
-**Status**: Personal Project | **Last Updated**: January 2025
+**Status**: Personal Project | **Version**: 2.0.2 | **Last Updated**: January 2025

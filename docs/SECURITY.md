@@ -1,116 +1,99 @@
-# Security Policy
+# Security Guidelines
 
-## Supported Versions
+> **Essential security practices for personal Telegram automation**
 
-We actively support the following versions of Otogram:
+## 🔒 Basic Security
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 2.0.x   | :white_check_mark: |
-| 1.x.x   | :x:                |
+### Credentials Protection
+- **Never commit** `.env` files to git
+- **Use strong passwords** for your Telegram account
+- **Enable 2FA** on Telegram account
+- **Keep API tokens secret** - never share or expose them
 
-## Reporting a Vulnerability
+### Environment Variables
+```env
+# Required - Keep these secret
+TELEGRAM_API_ID=your_api_id
+TELEGRAM_API_HASH=your_api_hash  
+TELEGRAM_BOT_TOKEN=your_bot_token
+TELEGRAM_PHONE_NUMBER=your_phone
 
-The Otogram team takes security bugs seriously. We appreciate your efforts to responsibly disclose your findings, and will make every effort to acknowledge your contributions.
+# Database - local/docker is fine for personal use
+MONGO_URL=mongodb://localhost:27017
+```
 
-### How to Report a Security Vulnerability?
+## 🛡️ Safe Usage Practices
 
-If you believe you have found a security vulnerability in Otogram, please report it to us through coordinated disclosure.
+### Telegram Automation
+- **Start with conservative settings** (slow delays, few groups)
+- **Monitor for restrictions** - check logs regularly
+- **Respect rate limits** - let the blacklist system work
+- **Don't spam** - use reasonable message content
 
-**Please do not report security vulnerabilities through public GitHub issues, discussions, or pull requests.**
+### Default Safe Settings
+```env
+# Conservative timing for personal use
+MIN_MESSAGE_DELAY=8
+MAX_MESSAGE_DELAY=15
+MIN_CYCLE_DELAY_HOURS=2.0
+MAX_CYCLE_DELAY_HOURS=3.0
+MAX_GROUPS_PER_CYCLE=20
+```
 
-Instead, please send an email to: **security@otogram.project** (or create a private security advisory on GitHub)
+## 🔧 System Security
 
-Please include as much of the information listed below as you can to help us better understand and resolve the issue:
+### Database
+- **Default MongoDB** (no auth needed for personal use)
+- **Docker isolation** recommended for production
+- **Regular backups** if data is important
 
-* Type of issue (e.g. buffer overflow, SQL injection, cross-site scripting, etc.)
-* Full paths of source file(s) related to the manifestation of the issue
-* The location of the affected source code (tag/branch/commit or direct URL)
-* Any special configuration required to reproduce the issue
-* Step-by-step instructions to reproduce the issue
-* Proof-of-concept or exploit code (if possible)
-* Impact of the issue, including how an attacker might exploit the issue
+### Application
+- **Input validation** (built-in with Pydantic)
+- **Error handling** (prevents crashes and data exposure)
+- **Logging** (monitor system behavior)
 
-This information will help us triage your report more quickly.
+## 🚨 If Things Go Wrong
 
-### What to Expect
+### Account Restrictions
+- **Temporary restrictions**: Wait it out, check blacklist
+- **Permanent restrictions**: Stop using that group/account
+- **FloodWait errors**: System handles automatically
 
-After you submit a report, we will:
+### Security Issues
+- **Compromised tokens**: Regenerate via @BotFather or my.telegram.org
+- **Account issues**: Check Telegram app, may need phone verification
 
-1. **Acknowledge** receipt of your vulnerability report within 48 hours
-2. **Confirm** the problem and determine the affected versions within 5 business days  
-3. **Audit** code to find any potential similar problems
-4. **Prepare** fixes for all supported releases
-5. **Release** new versions and publish security advisories
+### System Issues
+- **Check logs**: `tail -f logs/app.log`
+- **Health check**: `make health`
+- **Reset cleanly**: `make clean-all && make setup`
 
-## Security Best Practices
+## 📊 Monitoring
 
-When using Otogram, please follow these security best practices:
+### What to Watch
+- **Error logs** - Look for repeated failures
+- **Blacklist growth** - Too many = adjust settings
+- **Success rates** - Use bot `/status` command
 
-### Environment Security
-* **Never commit credentials** to version control
-* **Use strong passwords** for Telegram accounts
-* **Enable 2FA** on your Telegram account
-* **Keep dependencies updated** using dependabot alerts
-* **Run in isolated environments** (Docker/containers)
+### Warning Signs
+- Many FloodWait errors → Slow down
+- Many UserDeactivated → Clean group list
+- System crashes → Check logs and configuration
 
-### Telegram Security
-* **Use Bot tokens securely** - never share or expose them
-* **Validate all inputs** from Telegram messages
-* **Implement rate limiting** to prevent abuse
-* **Monitor for suspicious activity** in logs
-* **Use webhook URLs with SSL** if using webhooks
+## 🎯 Personal Use Guidelines
 
-### Database Security
-* **Secure MongoDB instance** with authentication
-* **Use connection strings** with credentials in environment variables
-* **Keep MongoDB updated** to latest stable version
-* **Enable MongoDB logging** for audit trails
-* **Backup data regularly** and test restore procedures
+### Good Practices
+- Use your own groups/channels
+- Send reasonable, non-spam content
+- Monitor system behavior
+- Keep backups of important data
 
-### Deployment Security
-* **Use HTTPS/TLS** for all communications
-* **Keep system updated** with security patches
-* **Use firewall rules** to restrict network access
-* **Monitor system logs** for security events
-* **Use secrets management** for production deployments
-
-## Security Features
-
-Otogram includes several built-in security features:
-
-* **Input validation** using Pydantic models
-* **Error handling** to prevent information disclosure  
-* **Rate limiting** and blacklist management
-* **Secure credential handling** through environment variables
-* **Logging and monitoring** capabilities
-* **Database connection security** with MongoDB authentication
-
-## Vulnerability Disclosure Timeline
-
-* **Day 0**: Security report received
-* **Day 1-2**: Initial response and acknowledgment
-* **Day 3-7**: Vulnerability confirmed and assessed
-* **Day 8-21**: Fix developed and tested
-* **Day 22-30**: Coordinated release and disclosure
-
-We aim to resolve critical vulnerabilities within 30 days of initial report.
-
-## Security Hall of Fame
-
-We recognize security researchers who help improve Otogram's security:
-
-<!-- Contributors who responsibly disclosed security issues will be listed here -->
-
-*No security issues have been reported yet.*
-
-## Contact
-
-For questions about this security policy, please contact:
-* **GitHub Issues**: For general security discussions (non-sensitive)
-* **Email**: security@otogram.project (for sensitive security matters)
-* **GitHub Security Advisories**: For private vulnerability reporting
+### Avoid
+- Mass adding random groups
+- Sending commercial spam
+- Ignoring Telegram restrictions
+- Running 24/7 without monitoring
 
 ---
 
-Thank you for helping keep Otogram and our users safe! 🔒
+**Remember**: This is for personal automation. Be responsible and respect Telegram's terms.
