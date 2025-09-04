@@ -15,7 +15,7 @@ class TestMessageService:
 
     async def test_create_message(self, test_database) -> None:
         """Test message creation service"""
-        service = MessageService()
+        service = MessageService(test_database)
 
         message_data = MessageCreate(content="Test content")
         message = await service.create_message(message_data)
@@ -24,7 +24,7 @@ class TestMessageService:
 
     async def test_get_active_messages(self, test_database) -> None:
         """Test getting active messages"""
-        service = MessageService()
+        service = MessageService(test_database)
 
         # Create test message
         message_data = MessageCreate(content="Active message")
