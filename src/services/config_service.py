@@ -110,6 +110,15 @@ class ConfigService:
             return Configuration(**doc)
         return None
 
+    async def delete_config(self, key: str) -> bool:
+        """Delete a configuration"""
+        result = await self.collection.delete_one({"key": key})
+        return result.deleted_count > 0
+
+    async def get_config_count(self) -> int:
+        """Get total configuration count"""
+        return await self.collection.count_documents({})
+
     async def get_messaging_config(self) -> dict[str, Any]:
         """Get messaging-related configurations"""
         messaging_configs = await self.get_configs_by_category("messaging")
