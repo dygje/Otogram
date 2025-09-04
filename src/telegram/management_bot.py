@@ -149,15 +149,15 @@ class ManagementBot:
                 InlineKeyboardButton("👥 Groups", callback_data="groups_dashboard"),
             ],
             [
+                InlineKeyboardButton("🔐 Userbot Auth", callback_data="auth_status"),
                 InlineKeyboardButton("🚫 Blacklist", callback_data="blacklist_dashboard"),
+            ],
+            [
                 InlineKeyboardButton("⚙️ Settings", callback_data="settings_dashboard"),
-            ],
-            [
                 InlineKeyboardButton("📊 Analytics", callback_data="analytics"),
-                InlineKeyboardButton("🔄 System Control", callback_data="system_control"),
             ],
             [
-                InlineKeyboardButton("🆘 Emergency Stop", callback_data="emergency_stop"),
+                InlineKeyboardButton("🔄 System Control", callback_data="system_control"),
                 InlineKeyboardButton("🔄 Refresh Stats", callback_data="dashboard"),
             ],
         ]
