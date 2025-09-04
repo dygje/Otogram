@@ -255,12 +255,12 @@ class UserBot:
 
     async def _add_to_blacklist(
         self,
-        group,
+        group: Any,
         blacklist_type: BlacklistType,
         reason: BlacklistReason,
         duration_seconds: int | None,
         error_message: str,
-    ):
+    ) -> None:
         """Add group to blacklist"""
 
         group_identifier = group.group_username or group.group_link
