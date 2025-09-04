@@ -317,7 +317,7 @@ class TestConfigHandlers:
         from src.models.config import Configuration
         
         # Mock config retrieval
-        mock_config = Configuration(key="test_setting", value="current_value", description="Test setting")
+        mock_config = Configuration(key="test_setting", value="current_value", value_type="str", description="Test setting")
         config_handlers.config_service.get_config = AsyncMock(return_value=mock_config)
         
         mock_callback_query = AsyncMock()
