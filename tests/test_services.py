@@ -2,7 +2,6 @@
 Business logic tests - Core functionality only
 """
 
-
 from src.models.blacklist import BlacklistType
 from src.services.blacklist_service import BlacklistService
 from src.services.group_service import GroupService
