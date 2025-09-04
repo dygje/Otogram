@@ -237,7 +237,7 @@ class TestUserBot:
         iteration_count = 0
         
         # Mock services to raise error on first call, succeed on second
-        def cleanup_side_effect():
+        async def cleanup_side_effect():
             nonlocal iteration_count
             iteration_count += 1
             if iteration_count == 1:
@@ -246,7 +246,7 @@ class TestUserBot:
                 userbot.is_running = False  # Stop after second iteration
                 return 0
                 
-        userbot.blacklist_service.cleanup_expired.side_effect = cleanup_side_effect
+        userbot.blacklist_service.cleanup_expired = AsyncMock(side_effect=cleanup_side_effect)
         
         # Mock asyncio.sleep to avoid actual delays
         with patch('asyncio.sleep', new_callable=AsyncMock):
