@@ -277,7 +277,8 @@ class TestConfigHandlers:
     @pytest.fixture
     def config_handlers(self):
         """ConfigHandlers fixture"""
-        return ConfigHandlers()
+        with patch('src.services.config_service.database'):
+            return ConfigHandlers()
 
     @pytest.mark.asyncio
     async def test_init(self, config_handlers):
