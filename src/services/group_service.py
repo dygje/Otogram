@@ -15,7 +15,14 @@ class GroupService:
     """Service for managing groups"""
 
     def __init__(self) -> None:
-        self.collection: Any = database.get_collection("groups")
+        self._collection: Any = None
+
+    @property
+    def collection(self) -> Any:
+        """Lazy-load collection"""
+        if self._collection is None:
+            self._collection = database.get_collection("groups")
+        return self._collection
 
     async def create_group(self, group_data: GroupCreate) -> Group:
         """Create a new group"""
