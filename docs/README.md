@@ -1,55 +1,44 @@
 # 📚 Otogram Documentation
 
-> **Personal Telegram automation - Simple and focused**
+> **Complete documentation for personal Telegram automation**
 
 ## 🎯 Quick Navigation
 
-### "I'm New Here"
-**[🚀 Getting Started](GETTING_STARTED.md)** - Get running in 5 minutes
+### New to Otogram?
+**[🚀 Getting Started](GETTING_STARTED.md)** - Setup and running in 5 minutes
 
-### "I Want to Develop/Customize"
+### Want to Develop/Customize?
 **[🛠️ Development Guide](CONTRIBUTING.md)** - Personal development workflow
 
-### "I Want to Stay Safe"
+### Need Security Guidelines?
 **[🔒 Security Guidelines](SECURITY.md)** - Essential safety practices
 
-### "I Want to Understand the System"
+### Want Technical Details?
 **[🏗️ System Architecture](ARCHITECTURE.md)** - Technical deep dive
+
+### Track Changes?
+**[📝 Changelog](CHANGELOG.md)** - Version history & updates
 
 ## 📖 Documentation Overview
 
-| Document | Purpose | Who It's For |
-|----------|---------|--------------|
+| Document | Purpose | Target User |
+|----------|---------|-------------|
 | **Getting Started** | Quick setup & basic usage | New users |
 | **Development Guide** | Code, test, deploy workflow | Customization |
 | **Security Guidelines** | Safe automation practices | All users |
 | **Architecture** | Technical system design | Advanced users |
 | **Changelog** | Version history & updates | Everyone |
 
-## 🚨 Need Help?
+## 🚨 Need Help Quick?
 
 ### Common Issues
-1. **Won't start**: Check `make health`
+1. **Won't start**: Run `make health` to diagnose
 2. **Bot not responding**: Verify token with @BotFather  
-3. **Database errors**: Run `make db-start`
-4. **Authentication failed**: Try `make clean-sessions`
-
-### Check These First
-- **Logs**: `tail -f logs/app.log`
-- **Health**: `make health`
-- **Config**: `make config`
-- **Status**: Bot `/status` command
-
-### Getting Support
-- **GitHub Issues**: [Report bugs/issues](https://github.com/dygje/Otogram/issues)
-- **Discussions**: General questions and tips
-- **Documentation**: Most answers are in these docs
-
-## 🔄 Quick Reference
+3. **Database errors**: Try `make db-start`
+4. **Authentication failed**: Run `make clean-sessions`
 
 ### Essential Commands
 ```bash
-make setup        # First-time setup
 make health       # Check system status
 make run         # Start Otogram
 make dev         # Development session
@@ -65,11 +54,11 @@ make quality     # Quick format + test
 /groups         # Manage groups
 ```
 
-## 🔧 Personal Project Features
+## 🔧 Personal Project Optimizations
 
-### Optimized for Solo Development
+### Solo Development Features
 - **Simplified Testing**: 5 essential tests vs 29 comprehensive
-- **Personal Makefile**: 25+ commands optimized for solo developer
+- **Personal Makefile**: 25+ commands optimized for single developer
 - **Quick Development**: `make dev` and `make quality` for fast workflow
 - **Essential Dependencies**: Core functionality only, optional extras
 
@@ -78,12 +67,10 @@ make quality     # Quick format + test
 # Daily development
 make dev          # Start development session (format + health)
 make quality      # Quick quality check (format + fast test)
-make test-fast    # Testing without coverage (super fast)
 
 # Project management  
 make clean-all    # Complete cleanup
 make docker-run   # Full Docker deployment
-make db-start     # MongoDB via Docker
 ```
 
 ---
