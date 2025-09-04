@@ -156,6 +156,137 @@ class GroupService:
 
         return None
 
+    async def toggle_group_status(self, group_id: str) -> Group | None:
+        """Toggle group active status"""
+        group = await self.get_group_by_id(group_id)
+        if not group:
+            return None
+
+        new_status = not group.is_active
+        updated = await self.update_group_info(group_id, is_active=new_status)
+        
+        if updated:
+            status_text = "activated" if new_status else "deactivated"
+            logger.info(f"Group {group_id} {status_text}")
+        
+        return updated
+
+    async def search_groups(self, search_term: str) -> list[Group]:
+        """Search groups by username, title, or ID"""
+        query = {
+            "$or": [
+                {"group_username": {"$regex": search_term, "$options": "i"}},
+                {"group_title": {"$regex": search_term, "$options": "i"}},
+                {"group_id": {"$regex": search_term, "$options": "i"}},
+            ]
+        }
+        
+        cursor = self.collection.find(query)
+        groups = []
+
+        async for doc in cursor:
+            groups.append(Group(**doc))
+
+        return groups
+
+    async def get_groups_by_status(self, is_active: bool) -> list[Group]:
+        """Get groups by active status"""
+        cursor = self.collection.find({"is_active": is_active})
+        groups = []
+
+        async for doc in cursor:
+            groups.append(Group(**doc))
+
+        return groups
+
+    async def batch_update_groups(self, group_ids: list[str], update_data: dict[str, Any]) -> dict[str, bool]:
+        """Batch update multiple groups"""
+        results = {}
+        
+        for group_id in group_ids:
+            try:
+                success = await self.update_group(group_id, update_data.copy())
+                results[group_id] = success
+            except Exception as e:
+                logger.error(f"Failed to update group {group_id}: {e}")
+                results[group_id] = False
+
+        return results
+
+    async def batch_delete_groups(self, group_ids: list[str]) -> dict[str, bool]:
+        """Batch delete multiple groups"""
+        results = {}
+        
+        for group_id in group_ids:
+            try:
+                success = await self.delete_group(group_id)
+                results[group_id] = success
+            except Exception as e:
+                logger.error(f"Failed to delete group {group_id}: {e}")
+                results[group_id] = False
+
+        return results
+
+    async def get_groups_with_message_count_filter(self, min_count: int = 0, max_count: int | None = None) -> list[Group]:
+        """Get groups filtered by message count"""
+        query = {"message_count": {"$gte": min_count}}
+        
+        if max_count is not None:
+            query["message_count"]["$lte"] = max_count
+        
+        cursor = self.collection.find(query)
+        groups = []
+
+        async for doc in cursor:
+            groups.append(Group(**doc))
+
+        return groups
+
+    async def reset_all_message_counts(self) -> int:
+        """Reset message count for all groups"""
+        result = await self.collection.update_many(
+            {},
+            {"$set": {"message_count": 0, "updated_at": datetime.utcnow()}}
+        )
+        
+        logger.info(f"Reset message count for {result.modified_count} groups")
+        return result.modified_count
+
+    async def get_group_activity_summary(self) -> dict[str, Any]:
+        """Get group activity summary with statistics"""
+        pipeline = [
+            {
+                "$group": {
+                    "_id": None,
+                    "total_groups": {"$sum": 1},
+                    "active_groups": {"$sum": {"$cond": ["$is_active", 1, 0]}},
+                    "total_messages": {"$sum": "$message_count"},
+                    "avg_messages": {"$avg": "$message_count"},
+                    "max_messages": {"$max": "$message_count"},
+                    "min_messages": {"$min": "$message_count"},
+                }
+            }
+        ]
+        
+        cursor = self.collection.aggregate(pipeline)
+        result = await cursor.to_list(length=1)
+        
+        if result:
+            summary = result[0]
+            summary.pop("_id", None)  # Remove _id field
+            summary["inactive_groups"] = summary["total_groups"] - summary["active_groups"]
+            return summary
+        
+        return {
+            "total_groups": 0,
+            "active_groups": 0,
+            "inactive_groups": 0,
+            "total_messages": 0,
+            "avg_messages": 0,
+            "max_messages": 0,
+            "min_messages": 0,
+        }
+
     async def delete_group(self, group_id: str) -> bool:
         """Delete a group"""
         result = await self.collection.delete_one({"id": group_id})
