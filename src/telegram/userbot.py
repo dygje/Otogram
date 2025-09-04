@@ -290,7 +290,7 @@ class UserBot:
         logger.info(f"⏰ Next cycle in {delay_hours:.1f} hours")
 
         # Sleep in chunks to allow for graceful shutdown
-        slept = 0
+        slept = 0.0
         chunk_size = SLEEP_CHUNK_SIZE  # 1 minute chunks
 
         while slept < delay_seconds and self.is_running:
