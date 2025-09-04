@@ -42,9 +42,9 @@ class TestGroupService:
         """Test group creation service"""
         service = GroupService()
 
-        group = await service.create_group("-1001234567890", "@testgroup")
+        group_data = GroupCreate(group_identifier="-1001234567890")
+        group = await service.create_group(group_data)
         assert group.group_id == "-1001234567890"
-        assert group.group_username == "@testgroup"
         assert group.is_active is True
 
     async def test_get_active_groups(self, test_database) -> None:
@@ -52,7 +52,8 @@ class TestGroupService:
         service = GroupService()
 
         # Create test group
-        await service.create_group("-1001234567890", "@testgroup")
+        group_data = GroupCreate(group_identifier="-1001234567890")
+        await service.create_group(group_data)
 
         groups = await service.get_active_groups()
         assert len(groups) >= 1
