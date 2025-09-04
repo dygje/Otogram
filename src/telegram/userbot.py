@@ -187,7 +187,11 @@ class UserBot:
                 return False
 
             # Send the message
-            await self.client.send_message(chat_id, message_content)
+            if self.client:
+                await self.client.send_message(chat_id, message_content)
+            else:
+                logger.error("Client not initialized")
+                return False
 
             logger.info(f"✅ Message sent to {chat_id}")
             return True
