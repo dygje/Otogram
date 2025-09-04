@@ -25,6 +25,15 @@ def test_imports():
     
     for module_name, package_name in imports_to_test:
         try:
+            # Special case untuk TgCrypto yang bisa diimport sebagai tgcrypto
+            if module_name == 'TgCrypto':
+                try:
+                    import tgcrypto
+                    print(f"✅ {package_name}")
+                    continue
+                except ImportError:
+                    pass
+            
             if importlib.util.find_spec(module_name) is not None:
                 print(f"✅ {package_name}")
             else:
