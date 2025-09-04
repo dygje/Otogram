@@ -31,7 +31,7 @@ class TestDatabase:
         await db.disconnect()
 
     @pytest.mark.asyncio
-    async def test_get_collection(self, test_database) -> None:
+    async def test_get_collection(self, test_database: Database) -> None:
         """Test getting collections"""
         db = test_database
 
