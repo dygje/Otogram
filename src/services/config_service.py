@@ -190,9 +190,7 @@ class ConfigService:
         # Reset to default
         description = default_config.get("description")
         description_str = str(description) if description is not None else None
-        return await self.set_config(
-            key, default_config["value"], description_str
-        )
+        return await self.set_config(key, default_config["value"], description_str)
 
     async def get_config_history(self, key: str, limit: int = 10) -> list[dict[str, Any]]:
         """Get configuration change history"""
