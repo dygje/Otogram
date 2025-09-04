@@ -28,8 +28,19 @@ jobs:
         python -m pip install --upgrade pip
         pip install -e ".[dev]"
 
-    - name: Run security checks
+    - name: Run security checks (optional for personal project)
       run: |
-        bandit -r src/ -f json -o bandit-report.json || true
-        safety check --json --output safety-report.json || true
-        echo "Security scan completed"
+        echo "Running security checks..."
+        if command -v bandit &> /dev/null; then
+          bandit -r src/ -f json -o bandit-report.json || echo "Bandit found issues (acceptable for personal project)"
+        else
+          echo "Bandit not available, skipping..."
+        fi
+        
+        if command -v safety &> /dev/null; then
+          safety check --json --output safety-report.json || echo "Safety found issues (acceptable for personal project)"
+        else
+          echo "Safety not available, skipping..."
+        fi
+        
+        echo "Security scan completed (failures allowed for personal project)"
