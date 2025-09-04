@@ -534,36 +534,43 @@ class InterfaceComponentTester:
     async def test_handler_integration(self):
         """Test integration between different handlers"""
         try:
-            from src.telegram.management_bot import ManagementBot
-            
-            bot = ManagementBot()
-            
-            # Check if all handlers are properly integrated
-            handlers = [
-                'auth_handlers',
-                'message_handlers', 
-                'group_handlers',
-                'config_handlers',
-                'blacklist_handlers'
-            ]
-            
-            for handler_name in handlers:
-                handler = getattr(bot, handler_name)
+            # Mock database and services
+            with patch('src.core.database.database', MockDatabase()), \
+                 patch('src.services.config_service.ConfigService', MockService), \
+                 patch('src.services.message_service.MessageService', MockService), \
+                 patch('src.services.group_service.GroupService', MockService), \
+                 patch('src.services.blacklist_service.BlacklistService', MockService):
                 
-                # Check if handler has required callback method
-                if hasattr(handler, 'handle_callback'):
-                    print(f"   {handler_name}: ✅ Callback integration ready")
-                else:
-                    print(f"   {handler_name}: ❌ Missing callback integration")
-                    return False
+                from src.telegram.management_bot import ManagementBot
                 
-                # Check if handler has text input method
-                if hasattr(handler, 'handle_text_input'):
-                    print(f"   {handler_name}: ✅ Text input integration ready")
-                else:
-                    print(f"   {handler_name}: ⚠️ No text input handling")
-            
-            return True
+                bot = ManagementBot()
+                
+                # Check if all handlers are properly integrated
+                handlers = [
+                    'auth_handlers',
+                    'message_handlers', 
+                    'group_handlers',
+                    'config_handlers',
+                    'blacklist_handlers'
+                ]
+                
+                for handler_name in handlers:
+                    handler = getattr(bot, handler_name)
+                    
+                    # Check if handler has required callback method
+                    if hasattr(handler, 'handle_callback'):
+                        print(f"   {handler_name}: ✅ Callback integration ready")
+                    else:
+                        print(f"   {handler_name}: ❌ Missing callback integration")
+                        return False
+                    
+                    # Check if handler has text input method
+                    if hasattr(handler, 'handle_text_input'):
+                        print(f"   {handler_name}: ✅ Text input integration ready")
+                    else:
+                        print(f"   {handler_name}: ⚠️ No text input handling")
+                
+                return True
             
         except Exception as e:
             print(f"   Handler integration error: {e}")
