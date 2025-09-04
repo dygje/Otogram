@@ -139,7 +139,7 @@ class BlacklistHandlers:
             if removed_count > 0:
                 text = f"🧹 Berhasil membersihkan {removed_count} entry blacklist yang kedaluwarsa."
             else:
-                text = "ℹ️ Tidak ada entry blacklist yang kedaluwarsa untuk dibersihkan."
+                text = "💡 Tidak ada entry blacklist yang kedaluwarsa untuk dibersihkan."
 
             keyboard = [
                 [InlineKeyboardButton("🚫 Lihat Blacklist", callback_data="blacklist_menu")]
