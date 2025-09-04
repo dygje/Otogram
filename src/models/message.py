@@ -2,7 +2,7 @@
 Message Models
 """
 
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from src.models.base import BaseDocument
 
