@@ -52,11 +52,13 @@ class Blacklist(BaseDocument):
     def __init__(self, **data):
         """Initialize blacklist with auto-calculated expires_at"""
         super().__init__(**data)
-        
+
         # Auto-calculate expires_at for temporary blacklists
-        if (self.blacklist_type == BlacklistType.TEMPORARY and 
-            self.duration_seconds and 
-            not self.expires_at):
+        if (
+            self.blacklist_type == BlacklistType.TEMPORARY
+            and self.duration_seconds
+            and not self.expires_at
+        ):
             self.expires_at = datetime.utcnow() + timedelta(seconds=self.duration_seconds)
 
     @property
