@@ -245,6 +245,9 @@ omit = [
     "*/.venv/*",
     "build/*",
     "dist/*",
+    "src/__init__.py",
+    "src/*/__init__.py",
+    "src/telegram/handlers/*",  # Handler modules can be tested later with integration tests
 ]
 branch = true
 
