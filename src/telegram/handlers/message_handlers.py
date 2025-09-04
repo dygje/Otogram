@@ -172,6 +172,9 @@ class MessageHandlers:
         elif data.startswith("messages_edit_"):
             message_id = data.replace("messages_edit_", "")
             await self._show_edit_message(update, message_id)
+        elif data.startswith("messages_toggle_"):
+            message_id = data.replace("messages_toggle_", "")
+            await self._toggle_message_status(update, message_id)
         elif data.startswith("messages_delete_"):
             message_id = data.replace("messages_delete_", "")
             await self._confirm_delete_message(update, message_id)
