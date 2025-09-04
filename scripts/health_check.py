@@ -138,7 +138,7 @@ def check_files() -> bool:
     
     # Check .env separately for CI - show as optional
     if is_ci and not Path(".env").exists():
-        print(f"⚠️ .env (optional in CI)")
+        print("⚠️ .env (optional in CI)")
 
     return len(missing) == 0
 
