@@ -27,7 +27,7 @@ class ConfigHandlers:
                 text = "⚙️ *Konfigurasi Sistem*\n\n"
 
                 # Group by category
-                categories = {}
+                categories: dict[str, list[Any]] = {}
                 for config in configs:
                     if config.category not in categories:
                         categories[config.category] = []
