@@ -309,7 +309,8 @@ class ManagementBot:
         text = (
             "🚀 *QUICK SETUP WIZARD*\n"
             "═══════════════════\n\n"
-            "Setup sistem dalam 3 langkah mudah:\n\n"
+            "Setup sistem dalam 4 langkah mudah:\n\n"
+            "0️⃣ **Setup Userbot** - Authenticate untuk broadcasting\n"
             "1️⃣ **Tambah Pesan** - Pesan untuk broadcast\n"
             "2️⃣ **Tambah Grup** - Target grup penerima\n"
             "3️⃣ **Mulai Broadcasting** - Sistem berjalan otomatis\n\n"
@@ -317,6 +318,7 @@ class ManagementBot:
         )
 
         keyboard = [
+            [InlineKeyboardButton("0️⃣ Setup Userbot", callback_data="auth_status")],
             [InlineKeyboardButton("1️⃣ Setup Pesan", callback_data="setup_messages")],
             [InlineKeyboardButton("2️⃣ Setup Grup", callback_data="setup_groups")],
             [InlineKeyboardButton("3️⃣ Setup Complete", callback_data="setup_complete")],
