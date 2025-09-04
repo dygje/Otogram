@@ -78,40 +78,7 @@ where = ["."]
 include = ["src*", "scripts*"]
 exclude = ["tests*", "docs*", "build*", "dist*"]
 
-# Ruff configuration - simplified for personal project
-[tool.ruff]
-line-length = 100
-src = ["src", "scripts", "tests"]
-target-version = "py311"
-
-[tool.ruff.lint]
-# Minimal essential rules for personal project
-select = [
-    "E",   # pycodestyle errors
-    "W",   # pycodestyle warnings  
-    "F",   # pyflakes
-    "I",   # isort
-    "B",   # flake8-bugbear (essential bugs)
-]
-
-# More lenient for personal development
-ignore = [
-    "E501",     # Line too long (handled by formatter)
-    "B008",     # Function calls in defaults (common pattern)
-    "W293",     # Blank line contains whitespace
-    "E203",     # Whitespace before ':'
-]
-
-[tool.ruff.lint.per-file-ignores]
-"tests/*" = ["B", "E"]      # Very lenient for tests
-"scripts/*" = ["T201"]      # Allow print statements
-
-[tool.ruff.lint.isort]
-known-first-party = ["src"]
-
-[tool.ruff.format]
-quote-style = "double"
-indent-style = "space"
+# Ruff configuration in ruff.toml file
 
 # MyPy - relaxed for personal project
 [tool.mypy]
