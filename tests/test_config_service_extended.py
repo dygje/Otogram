@@ -357,7 +357,7 @@ class TestConfigServiceExtended:
         
         # Mock finding default config
         with patch('src.services.config_service.DEFAULT_CONFIGS', [
-            Configuration(key=config_key, value="5", description="Default delay")
+            {"key": config_key, "value": "5", "value_type": "str", "description": "Default delay"}
         ]):
             mock_collection.update_one.return_value = MagicMock(modified_count=1)
             
