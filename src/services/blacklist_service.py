@@ -142,7 +142,7 @@ class BlacklistService:
         if result.deleted_count > 0:
             logger.info(f"Cleaned up {result.deleted_count} expired blacklist entries")
 
-        return result.deleted_count
+        return int(result.deleted_count)
 
     async def get_all_blacklists(self) -> list[Blacklist]:
         """Get all blacklist entries"""
