@@ -19,7 +19,7 @@ from src.models.blacklist import (
 class BlacklistService:
     """Service for managing blacklists"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.collection = database.get_collection("blacklists")
 
     async def add_to_blacklist(self, blacklist_data: BlacklistCreate) -> Blacklist:

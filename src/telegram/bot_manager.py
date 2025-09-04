@@ -11,13 +11,13 @@ from src.telegram.management_bot import ManagementBot
 class BotManager:
     """Manager for both management bot and userbot"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.management_bot = None
         self.userbot = None
         self.config_service = ConfigService()
         self.running = False
 
-    async def start(self):
+    async def start(self) -> None:
         """Start both bots"""
         try:
             logger.info("🤖 Starting Telegram services...")
@@ -43,7 +43,7 @@ class BotManager:
             await self.stop()
             raise
 
-    async def stop(self):
+    async def stop(self) -> None:
         """Stop both bots"""
         logger.info("🛑 Stopping Telegram services...")
         self.running = False

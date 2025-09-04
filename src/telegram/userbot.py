@@ -34,7 +34,7 @@ from src.services.message_service import MessageService
 class UserBot:
     """Telegram userbot for mass messaging"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.client: Client | None = None
         self.message_service = MessageService()
         self.group_service = GroupService()
@@ -43,7 +43,7 @@ class UserBot:
         self.is_running = False
         self.current_cycle_task = None
 
-    async def start(self):
+    async def start(self) -> None:
         """Start the userbot"""
         if not settings.TELEGRAM_API_ID or not settings.TELEGRAM_API_HASH:
             raise ValueError("TELEGRAM_API_ID and TELEGRAM_API_HASH must be set")
@@ -72,7 +72,7 @@ class UserBot:
             logger.error(f"Failed to start userbot: {e}")
             raise
 
-    async def stop(self):
+    async def stop(self) -> None:
         """Stop the userbot"""
         self.is_running = False
 
@@ -85,7 +85,7 @@ class UserBot:
             await self.client.stop()
             logger.info("🛑 Userbot stopped")
 
-    async def _broadcasting_loop(self):
+    async def _broadcasting_loop(self) -> None:
         """Main broadcasting loop"""
         logger.info("🔄 Broadcasting loop started")
 
@@ -118,7 +118,7 @@ class UserBot:
                 # Wait a bit before retrying
                 await asyncio.sleep(BROADCASTING_ERROR_SLEEP_SECONDS)  # 5 minutes
 
-    async def _broadcast_cycle(self, messages: list, groups: list):
+    async def _broadcast_cycle(self, messages: list, groups: list) -> None:
         """Execute a single broadcasting cycle"""
         logger.info(f"🚀 Starting broadcast cycle: {len(groups)} groups, {len(messages)} messages")
 
@@ -278,7 +278,7 @@ class UserBot:
 
         return SecureRandom.randint(min_delay, max_delay)
 
-    async def _wait_for_next_cycle(self):
+    async def _wait_for_next_cycle(self) -> None:
         """Wait for the next broadcasting cycle"""
         min_hours = await self.config_service.get_config_value("min_cycle_delay_hours", 1.1)
         max_hours = await self.config_service.get_config_value("max_cycle_delay_hours", 1.3)

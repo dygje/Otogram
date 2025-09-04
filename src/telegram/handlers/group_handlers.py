@@ -14,10 +14,10 @@ from telegram.ext import ContextTypes
 class GroupHandlers:
     """Handlers for group management"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.group_service = GroupService()
 
-    async def list_groups(self, update: Update, _context: ContextTypes.DEFAULT_TYPE):
+    async def list_groups(self, update: Update, _context: ContextTypes.DEFAULT_TYPE) -> None:
         """List all groups"""
         try:
             groups = await self.group_service.get_all_groups()
@@ -87,7 +87,7 @@ class GroupHandlers:
             logger.error(f"Error listing groups: {e}")
             await self._send_error_message(update, "Gagal memuat daftar grup")
 
-    async def add_group_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+    async def add_group_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         """Start adding single group"""
         text = (
             "+ *Tambah Grup Baru*\n\n"
@@ -106,7 +106,7 @@ class GroupHandlers:
 
         await update.message.reply_text(text, parse_mode="Markdown", reply_markup=reply_markup)
 
-    async def add_groups_bulk_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+    async def add_groups_bulk_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         """Start adding multiple groups"""
         text = (
             "📋 *Tambah Grup Massal*\n\n"
@@ -127,7 +127,7 @@ class GroupHandlers:
 
         await update.message.reply_text(text, parse_mode="Markdown", reply_markup=reply_markup)
 
-    async def handle_group_input(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+    async def handle_group_input(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         """Handle single group input"""
         try:
             identifier = update.message.text.strip()
@@ -166,7 +166,7 @@ class GroupHandlers:
             context.user_data.pop("waiting_for", None)
             await self._send_error_message(update, "Gagal menambahkan grup")
 
-    async def handle_bulk_input(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+    async def handle_bulk_input(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         """Handle bulk groups input"""
         try:
             identifiers_text = update.message.text.strip()
@@ -222,7 +222,7 @@ class GroupHandlers:
             context.user_data.pop("waiting_for", None)
             await self._send_error_message(update, "Gagal menambahkan grup massal")
 
-    async def handle_callback(self, update: Update, context: ContextTypes.DEFAULT_TYPE, data: str):
+    async def handle_callback(self, update: Update, context: ContextTypes.DEFAULT_TYPE, data: str) -> None:
         """Handle group-related callbacks"""
         if data == "groups_menu":
             await self.list_groups(update, context)
@@ -243,7 +243,7 @@ class GroupHandlers:
             group_id = data.replace("groups_toggle_", "")
             await self._toggle_group_status(update, group_id)
 
-    async def _show_add_group_prompt(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+    async def _show_add_group_prompt(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         """Show add group prompt"""
         text = (
             "+ *Tambah Grup Baru*\n\n"
@@ -262,7 +262,7 @@ class GroupHandlers:
         )
         context.user_data["waiting_for"] = "group_identifier"
 
-    async def _show_bulk_add_prompt(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+    async def _show_bulk_add_prompt(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         """Show bulk add prompt"""
         text = (
             "📋 *Tambah Grup Massal*\n\n"
@@ -278,7 +278,7 @@ class GroupHandlers:
         )
         context.user_data["waiting_for"] = "groups_bulk"
 
-    async def _show_edit_group(self, update: Update, group_id: str):
+    async def _show_edit_group(self, update: Update, group_id: str) -> None:
         """Show edit group options"""
         try:
             group = await self.group_service.get_group_by_id(group_id)
@@ -320,7 +320,7 @@ class GroupHandlers:
             logger.error(f"Error showing edit group: {e}")
             await update.callback_query.edit_message_text("❌ Gagal memuat grup.")
 
-    async def _toggle_group_status(self, update: Update, group_id: str):
+    async def _toggle_group_status(self, update: Update, group_id: str) -> None:
         """Toggle group active status"""
         try:
             group = await self.group_service.get_group_by_id(group_id)
@@ -348,7 +348,7 @@ class GroupHandlers:
             logger.error(f"Error toggling group status: {e}")
             await update.callback_query.edit_message_text("❌ Gagal mengubah status grup.")
 
-    async def _confirm_delete_group(self, update: Update, group_id: str):
+    async def _confirm_delete_group(self, update: Update, group_id: str) -> None:
         """Confirm group deletion"""
         text = (
             "🗑️ *Konfirmasi Hapus Grup*\n\n"
@@ -370,7 +370,7 @@ class GroupHandlers:
             text, parse_mode="Markdown", reply_markup=reply_markup
         )
 
-    async def _delete_group(self, update: Update, group_id: str):
+    async def _delete_group(self, update: Update, group_id: str) -> None:
         """Delete group"""
         try:
             success = await self.group_service.delete_group(group_id)
@@ -386,7 +386,7 @@ class GroupHandlers:
             logger.error(f"Error deleting group: {e}")
             await update.callback_query.edit_message_text("❌ Gagal menghapus grup.")
 
-    async def _send_error_message(self, update: Update, error_text: str):
+    async def _send_error_message(self, update: Update, error_text: str) -> None:
         """Send error message"""
         if update.message:
             await update.message.reply_text(f"❌ {error_text}")

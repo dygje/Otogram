@@ -13,10 +13,10 @@ from telegram.ext import ContextTypes
 class BlacklistHandlers:
     """Handlers for blacklist management"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.blacklist_service = BlacklistService()
 
-    async def show_blacklist(self, update: Update, _context: ContextTypes.DEFAULT_TYPE):
+    async def show_blacklist(self, update: Update, _context: ContextTypes.DEFAULT_TYPE) -> None:
         """Show blacklist entries"""
         try:
             blacklists = await self.blacklist_service.get_all_blacklists()
@@ -114,7 +114,7 @@ class BlacklistHandlers:
             logger.error(f"Error showing blacklist: {e}")
             await self._send_error_message(update, "Gagal memuat blacklist")
 
-    async def handle_callback(self, update: Update, context: ContextTypes.DEFAULT_TYPE, data: str):
+    async def handle_callback(self, update: Update, context: ContextTypes.DEFAULT_TYPE, data: str) -> None:
         """Handle blacklist-related callbacks"""
         if data == "blacklist_menu":
             await self.show_blacklist(update, context)
@@ -127,7 +127,7 @@ class BlacklistHandlers:
             blacklist_id = data.replace("blacklist_remove_confirm_", "")
             await self._remove_blacklist(update, blacklist_id)
 
-    async def _cleanup_expired(self, update: Update):
+    async def _cleanup_expired(self, update: Update) -> None:
         """Clean up expired blacklist entries"""
         try:
             removed_count = await self.blacklist_service.cleanup_expired()
@@ -148,7 +148,7 @@ class BlacklistHandlers:
             logger.error(f"Error cleaning up blacklist: {e}")
             await update.callback_query.edit_message_text("❌ Gagal membersihkan blacklist.")
 
-    async def _confirm_remove_blacklist(self, update: Update, blacklist_id: str):
+    async def _confirm_remove_blacklist(self, update: Update, blacklist_id: str) -> None:
         """Confirm blacklist removal"""
         try:
             blacklist = await self.blacklist_service.get_blacklist_entry_by_id(blacklist_id)
@@ -186,7 +186,7 @@ class BlacklistHandlers:
             logger.error(f"Error confirming blacklist removal: {e}")
             await update.callback_query.edit_message_text("❌ Gagal memuat entry blacklist.")
 
-    async def _remove_blacklist(self, update: Update, blacklist_id: str):
+    async def _remove_blacklist(self, update: Update, blacklist_id: str) -> None:
         """Remove blacklist entry"""
         try:
             blacklist = await self.blacklist_service.get_blacklist_entry_by_id(blacklist_id)
@@ -214,7 +214,7 @@ class BlacklistHandlers:
             logger.error(f"Error removing blacklist: {e}")
             await update.callback_query.edit_message_text("❌ Gagal menghapus entry blacklist.")
 
-    async def _send_error_message(self, update: Update, error_text: str):
+    async def _send_error_message(self, update: Update, error_text: str) -> None:
         """Send error message"""
         if update.message:
             await update.message.reply_text(f"❌ {error_text}")

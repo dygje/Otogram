@@ -12,10 +12,10 @@ from telegram.ext import ContextTypes
 class ConfigHandlers:
     """Handlers for configuration management"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.config_service = ConfigService()
 
-    async def show_config(self, update: Update, _context: ContextTypes.DEFAULT_TYPE):
+    async def show_config(self, update: Update, _context: ContextTypes.DEFAULT_TYPE) -> None:
         """Show system configuration"""
         try:
             configs = await self.config_service.get_all_configs()
@@ -70,7 +70,7 @@ class ConfigHandlers:
             logger.error(f"Error showing config: {e}")
             await self._send_error_message(update, "Gagal memuat konfigurasi")
 
-    async def handle_callback(self, update: Update, context: ContextTypes.DEFAULT_TYPE, data: str):
+    async def handle_callback(self, update: Update, context: ContextTypes.DEFAULT_TYPE, data: str) -> None:
         """Handle configuration-related callbacks"""
         if data == "config_menu":
             await self.show_config(update, context)
@@ -78,7 +78,7 @@ class ConfigHandlers:
             config_id = data.replace("config_edit_", "")
             await self._show_edit_config(update, context, config_id)
 
-    async def handle_config_input(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+    async def handle_config_input(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         """Handle configuration value input"""
         try:
             waiting_for = context.user_data.get("waiting_for", "")
@@ -185,7 +185,7 @@ class ConfigHandlers:
             logger.error(f"Error showing edit config: {e}")
             await update.callback_query.edit_message_text("❌ Gagal memuat konfigurasi.")
 
-    async def _send_error_message(self, update: Update, error_text: str):
+    async def _send_error_message(self, update: Update, error_text: str) -> None:
         """Send error message"""
         if update.message:
             await update.message.reply_text(f"❌ {error_text}")

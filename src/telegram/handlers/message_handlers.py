@@ -20,10 +20,10 @@ from telegram.ext import ContextTypes
 class MessageHandlers:
     """Handlers for message management"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.message_service = MessageService()
 
-    async def list_messages(self, update: Update, _context: ContextTypes.DEFAULT_TYPE):
+    async def list_messages(self, update: Update, _context: ContextTypes.DEFAULT_TYPE) -> None:
         """List all messages"""
         try:
             messages = await self.message_service.get_all_messages()
@@ -81,7 +81,7 @@ class MessageHandlers:
             logger.error(f"Error listing messages: {e}")
             await self._send_error_message(update, "Gagal memuat daftar pesan")
 
-    async def add_message_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+    async def add_message_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         """Start adding new message"""
         text = (
             "+ *Tambah Pesan Baru*\n\n"
@@ -100,7 +100,7 @@ class MessageHandlers:
 
         await update.message.reply_text(text, parse_mode="Markdown", reply_markup=reply_markup)
 
-    async def handle_message_input(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+    async def handle_message_input(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         """Handle message content input"""
         try:
             content = update.message.text.strip()
@@ -145,7 +145,7 @@ class MessageHandlers:
             context.user_data.pop("waiting_for", None)
             await self._send_error_message(update, "Gagal menambahkan pesan")
 
-    async def handle_callback(self, update: Update, context: ContextTypes.DEFAULT_TYPE, data: str):
+    async def handle_callback(self, update: Update, context: ContextTypes.DEFAULT_TYPE, data: str) -> None:
         """Handle message-related callbacks"""
         if data == "messages_menu":
             await self.list_messages(update, context)
@@ -161,7 +161,7 @@ class MessageHandlers:
             message_id = data.replace("messages_delete_confirm_", "")
             await self._delete_message(update, message_id)
 
-    async def _show_add_message_prompt(self, update: Update):
+    async def _show_add_message_prompt(self, update: Update) -> None:
         """Show add message prompt"""
         text = (
             "+ *Tambah Pesan Baru*\n\n"
@@ -184,7 +184,7 @@ class MessageHandlers:
         context.user_data = context._user_data  # Access user data properly
         context.user_data["waiting_for"] = "message_content"
 
-    async def _show_edit_message(self, update: Update, message_id: str):
+    async def _show_edit_message(self, update: Update, message_id: str) -> None:
         """Show edit message options"""
         try:
             message = await self.message_service.get_message_by_id(message_id)
@@ -229,7 +229,7 @@ class MessageHandlers:
             logger.error(f"Error showing edit message: {e}")
             await update.callback_query.edit_message_text("❌ Gagal memuat pesan.")
 
-    async def _confirm_delete_message(self, update: Update, message_id: str):
+    async def _confirm_delete_message(self, update: Update, message_id: str) -> None:
         """Confirm message deletion"""
         text = (
             "🗑️ *Konfirmasi Hapus Pesan*\n\n"
@@ -251,7 +251,7 @@ class MessageHandlers:
             text, parse_mode="Markdown", reply_markup=reply_markup
         )
 
-    async def _delete_message(self, update: Update, message_id: str):
+    async def _delete_message(self, update: Update, message_id: str) -> None:
         """Delete message"""
         try:
             success = await self.message_service.delete_message(message_id)
@@ -267,7 +267,7 @@ class MessageHandlers:
             logger.error(f"Error deleting message: {e}")
             await update.callback_query.edit_message_text("❌ Gagal menghapus pesan.")
 
-    async def _send_error_message(self, update: Update, error_text: str):
+    async def _send_error_message(self, update: Update, error_text: str) -> None:
         """Send error message"""
         if update.message:
             await update.message.reply_text(f"❌ {error_text}")
