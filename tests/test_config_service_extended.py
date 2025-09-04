@@ -366,7 +366,10 @@ class TestConfigServiceExtended:
                 "id": "config-1",
                 "key": config_key,
                 "value": "5",
+                "value_type": "str",
                 "description": "Default delay",
+                "category": "general",
+                "is_editable": True,
                 "created_at": "2023-01-01T00:00:00",
                 "updated_at": "2023-01-01T00:00:00"
             }
