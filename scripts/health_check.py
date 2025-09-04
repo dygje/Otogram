@@ -47,8 +47,6 @@ async def check_mongodb_connection() -> HealthCheckResult:
 def check_telegram_credentials() -> HealthCheckResult:
     """Check if Telegram credentials are configured"""
     try:
-        from src.core.config import settings
-
         credentials = {
             "API ID": settings.TELEGRAM_API_ID,
             "API Hash": settings.TELEGRAM_API_HASH,
