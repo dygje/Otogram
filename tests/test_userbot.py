@@ -21,7 +21,11 @@ class TestUserBot:
     @pytest.fixture
     def userbot(self):
         """UserBot fixture"""
-        return UserBot()
+        with patch('src.services.config_service.database'), \
+             patch('src.services.message_service.database'), \
+             patch('src.services.group_service.database'), \
+             patch('src.services.blacklist_service.database'):
+            return UserBot()
 
     @pytest.fixture
     def mock_telegram_credentials(self, monkeypatch):
