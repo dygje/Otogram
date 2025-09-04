@@ -82,7 +82,7 @@ exclude = ["tests*", "docs*", "build*", "dist*"]
 
 # MyPy - Personal project friendly
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.12"
 warn_return_any = false
 warn_unused_configs = true
 disallow_untyped_defs = false      # Relaxed for personal project
