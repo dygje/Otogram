@@ -40,7 +40,7 @@ class TestGroupService:
 
     async def test_create_group(self, test_database) -> None:
         """Test group creation service"""
-        service = GroupService()
+        service = GroupService(test_database)
 
         group_data = GroupCreate(group_identifier="-1001234567890")
         group = await service.create_group(group_data)
@@ -49,7 +49,7 @@ class TestGroupService:
 
     async def test_get_active_groups(self, test_database) -> None:
         """Test getting active groups"""
-        service = GroupService()
+        service = GroupService(test_database)
 
         # Create test group
         group_data = GroupCreate(group_identifier="-1001234567890")
