@@ -108,16 +108,23 @@ class MessageHandlers:
     ) -> None:
         """Handle message content input"""
         try:
-            content = update.message.text.strip()
+            if update.message and update.message.text:
+                content = update.message.text.strip()
+            else:
+                if update.message:
+                    await update.message.reply_text("❌ Pesan tidak boleh kosong. Coba lagi:")
+                return
 
             if not content:
-                await update.message.reply_text("❌ Pesan tidak boleh kosong. Coba lagi:")
+                if update.message:
+                    await update.message.reply_text("❌ Pesan tidak boleh kosong. Coba lagi:")
                 return
 
             if len(content) > TELEGRAM_MESSAGE_MAX_LENGTH:
-                await update.message.reply_text(
-                    f"❌ Pesan terlalu panjang ({len(content)} karakter). Maksimal {TELEGRAM_MESSAGE_MAX_LENGTH} karakter. Coba lagi:"
-                )
+                if update.message:
+                    await update.message.reply_text(
+                        f"❌ Pesan terlalu panjang ({len(content)} karakter). Maksimal {TELEGRAM_MESSAGE_MAX_LENGTH} karakter. Coba lagi:"
+                    )
                 return
 
             # Create message
@@ -125,7 +132,8 @@ class MessageHandlers:
             message = await self.message_service.create_message(message_data)
 
             # Clear waiting state
-            context.user_data.pop("waiting_for", None)
+            if context.user_data:
+                context.user_data.pop("waiting_for", None)
 
             text = (
                 f"✅ *Pesan Berhasil Ditambahkan*\n\n"
@@ -143,11 +151,13 @@ class MessageHandlers:
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
 
-            await update.message.reply_text(text, parse_mode="Markdown", reply_markup=reply_markup)
+            if update.message:
+                await update.message.reply_text(text, parse_mode="Markdown", reply_markup=reply_markup)
 
         except Exception as e:
             logger.error(f"Error adding message: {e}")
-            context.user_data.pop("waiting_for", None)
+            if context.user_data:
+                context.user_data.pop("waiting_for", None)
             await self._send_error_message(update, "Gagal menambahkan pesan")
 
     async def handle_callback(
