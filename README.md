@@ -88,6 +88,7 @@ make db-status     # Check MongoDB status
 |---------|-------------|
 | `/start` | Initialize bot dashboard |
 | `/menu` | Main control panel |
+| `/auth` | **NEW!** Userbot authentication setup |
 | `/messages` | Manage broadcast messages |
 | `/groups` | Manage target groups |
 | `/status` | System status & statistics |
