@@ -263,48 +263,55 @@ class InterfaceComponentTester:
     async def test_callback_routing(self):
         """Test callback routing functionality"""
         try:
-            from src.telegram.management_bot import ManagementBot
-            from telegram import Update, CallbackQuery, Message, Chat, User
-            from telegram.ext import ContextTypes
-            
-            # Create mock objects
-            bot = ManagementBot()
-            
-            # Mock update and context
-            mock_user = User(id=123, first_name="Test", is_bot=False)
-            mock_chat = Chat(id=123, type="private")
-            mock_message = Message(
-                message_id=1,
-                date=datetime.now(),
-                chat=mock_chat,
-                from_user=mock_user
-            )
-            
-            mock_callback_query = CallbackQuery(
-                id="test_callback",
-                from_user=mock_user,
-                chat_instance="test_instance",
-                message=mock_message,
-                data="dashboard"
-            )
-            
-            mock_update = Update(
-                update_id=1,
-                callback_query=mock_callback_query
-            )
-            
-            mock_context = MagicMock()
-            
-            # Mock the answer method
-            mock_callback_query.answer = AsyncMock()
-            mock_callback_query.edit_message_text = AsyncMock()
-            
-            # Test callback handling
-            with patch.object(bot, '_get_system_stats', return_value="Mock stats"):
-                await bot.handle_callback(mock_update, mock_context)
-            
-            print("   Callback routing test completed successfully")
-            return True
+            # Mock database and services
+            with patch('src.core.database.database', MockDatabase()), \
+                 patch('src.services.config_service.ConfigService', MockService), \
+                 patch('src.services.message_service.MessageService', MockService), \
+                 patch('src.services.group_service.GroupService', MockService), \
+                 patch('src.services.blacklist_service.BlacklistService', MockService):
+                
+                from src.telegram.management_bot import ManagementBot
+                from telegram import Update, CallbackQuery, Message, Chat, User
+                from telegram.ext import ContextTypes
+                
+                # Create mock objects
+                bot = ManagementBot()
+                
+                # Mock update and context
+                mock_user = User(id=123, first_name="Test", is_bot=False)
+                mock_chat = Chat(id=123, type="private")
+                mock_message = Message(
+                    message_id=1,
+                    date=datetime.now(),
+                    chat=mock_chat,
+                    from_user=mock_user
+                )
+                
+                mock_callback_query = CallbackQuery(
+                    id="test_callback",
+                    from_user=mock_user,
+                    chat_instance="test_instance",
+                    message=mock_message,
+                    data="dashboard"
+                )
+                
+                mock_update = Update(
+                    update_id=1,
+                    callback_query=mock_callback_query
+                )
+                
+                mock_context = MagicMock()
+                
+                # Mock the answer method
+                mock_callback_query.answer = AsyncMock()
+                mock_callback_query.edit_message_text = AsyncMock()
+                
+                # Test callback handling
+                with patch.object(bot, '_get_system_stats', return_value="Mock stats"):
+                    await bot.handle_callback(mock_update, mock_context)
+                
+                print("   Callback routing test completed successfully")
+                return True
             
         except Exception as e:
             print(f"   Callback routing error: {e}")
