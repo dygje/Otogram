@@ -73,9 +73,10 @@ class MessageHandlers:
                     text, parse_mode="Markdown", reply_markup=reply_markup
                 )
             else:
-                await update.callback_query.edit_message_text(
-                    text, parse_mode="Markdown", reply_markup=reply_markup
-                )
+                if update.callback_query:
+                    await update.callback_query.edit_message_text(
+                        text, parse_mode="Markdown", reply_markup=reply_markup
+                    )
 
         except Exception as e:
             logger.error(f"Error listing messages: {e}")
