@@ -30,11 +30,11 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = Field(default="INFO")
     ENABLE_DEBUG: bool = Field(default=False)
 
-    # Message Timing Settings
-    MIN_MESSAGE_DELAY: int = Field(default=5, ge=1, le=60)
-    MAX_MESSAGE_DELAY: int = Field(default=10, ge=1, le=60)
-    MIN_CYCLE_DELAY_HOURS: float = Field(default=1.1, ge=0.1, le=24.0)
-    MAX_CYCLE_DELAY_HOURS: float = Field(default=1.3, ge=0.1, le=24.0)
+    # Message Timing Settings - Match .env.example defaults
+    MIN_MESSAGE_DELAY: int = Field(default=8, ge=1, le=60)
+    MAX_MESSAGE_DELAY: int = Field(default=15, ge=1, le=60)
+    MIN_CYCLE_DELAY_HOURS: float = Field(default=2.0, ge=0.1, le=24.0)
+    MAX_CYCLE_DELAY_HOURS: float = Field(default=3.0, ge=0.1, le=24.0)
 
     # Safety & Limits
     MAX_GROUPS_PER_CYCLE: int = Field(default=50, ge=0, le=500)
