@@ -195,6 +195,7 @@ class ManagementBot:
             "📋 *Available Commands:*\n\n"
             "/start - Initialize bot interface\n"
             "/menu - Main dashboard with quick actions\n"
+            "/auth - Userbot authentication setup\n"
             "/status - Real-time system status & statistics\n"
             "/messages - Manage broadcast messages\n"
             "/addmessage - Add new broadcast message\n"
@@ -205,10 +206,11 @@ class ManagementBot:
             "/blacklist - View blacklist management\n"
             "/help - Show this help message\n\n"
             "🎯 *Quick Start:*\n"
-            "1. Add messages: /addmessage\n"
-            "2. Add groups: /addgroup or /addgroups\n"
-            "3. Configure: /config\n"
-            "4. Monitor: /status\n\n"
+            "1. Setup userbot: /auth\n"
+            "2. Add messages: /addmessage\n"
+            "3. Add groups: /addgroup or /addgroups\n"
+            "4. Configure: /config\n"
+            "5. Monitor: /status\n\n"
             "📚 For detailed help, use /menu and explore!"
         )
 
