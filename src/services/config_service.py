@@ -25,7 +25,7 @@ class ConfigService:
             if not existing:
                 # Type cast for proper types
                 value = config_data["value"]
-                if not isinstance(value, (str, int, float, bool)):
+                if not isinstance(value, str | int | float | bool):
                     value = str(value)
 
                 description = config_data.get("description")
