@@ -38,28 +38,28 @@ class ConfigUpdate(BaseModel):
 DEFAULT_CONFIGS = [
     {
         "key": "min_message_delay",
-        "value": 5,
+        "value": 8,
         "value_type": "int",
         "description": "Minimum delay between messages (seconds)",
         "category": "messaging",
     },
     {
         "key": "max_message_delay",
-        "value": 10,
+        "value": 15,
         "value_type": "int",
         "description": "Maximum delay between messages (seconds)",
         "category": "messaging",
     },
     {
         "key": "min_cycle_delay_hours",
-        "value": 1.1,
+        "value": 2.0,
         "value_type": "float",
         "description": "Minimum delay between cycles (hours)",
         "category": "messaging",
     },
     {
         "key": "max_cycle_delay_hours",
-        "value": 1.3,
+        "value": 3.0,
         "value_type": "float",
         "description": "Maximum delay between cycles (hours)",
         "category": "messaging",
