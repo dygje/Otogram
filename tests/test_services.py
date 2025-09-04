@@ -2,7 +2,9 @@
 Business logic tests - Core functionality only
 """
 
-from src.models.blacklist import BlacklistType
+from src.models.blacklist import BlacklistCreate, BlacklistReason, BlacklistType
+from src.models.group import GroupCreate
+from src.models.message import MessageCreate
 from src.services.blacklist_service import BlacklistService
 from src.services.group_service import GroupService
 from src.services.message_service import MessageService
