@@ -28,7 +28,7 @@ class BlacklistHandlers:
                     "✅ Tidak ada grup yang di-blacklist.\n\n"
                     "Blacklist otomatis akan terisi ketika ada error pengiriman pesan."
                 )
-                keyboard = []
+                keyboard: list[list[InlineKeyboardButton]] = []
             else:
                 text = (
                     f"🚫 *Blacklist* ({stats['total']} total)\n\n"
