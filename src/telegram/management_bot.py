@@ -121,12 +121,13 @@ class ManagementBot:
         keyboard = [
             [
                 InlineKeyboardButton("📋 Dashboard", callback_data="dashboard"),
-                InlineKeyboardButton("⚙️ Quick Setup", callback_data="quick_setup"),
+                InlineKeyboardButton("🔐 Setup Userbot", callback_data="auth_status"),
             ],
             [
+                InlineKeyboardButton("⚙️ Quick Setup", callback_data="quick_setup"),
                 InlineKeyboardButton("📚 Tutorial", callback_data="tutorial"),
-                InlineKeyboardButton("❓ Help Center", callback_data="help_center"),
             ],
+            [InlineKeyboardButton("❓ Help Center", callback_data="help_center")],
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
 
