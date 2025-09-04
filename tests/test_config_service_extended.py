@@ -153,7 +153,7 @@ class TestConfigServiceExtended:
         call_args = mock_collection.update_one.call_args
         assert call_args[0][0] == {"key": config_key}
         update_doc = call_args[0][1]["$set"]
-        assert update_doc["value"] == "30"
+        assert update_doc["value"] == 30  # Integer value
         assert update_doc["value_type"] == "int"
 
     @pytest.mark.asyncio
