@@ -1,6 +1,6 @@
-# Security Guidelines
+# 🔒 Security Guidelines
 
-> **Essential security practices for personal Telegram automation**
+> **Essential security practices for personal Telegram automation - Keep it safe and simple**
 
 ## 🔒 Basic Security
 
