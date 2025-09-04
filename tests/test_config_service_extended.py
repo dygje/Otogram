@@ -47,9 +47,9 @@ class TestConfigServiceExtended:
         
         # Import default configs for testing
         with patch('src.services.config_service.DEFAULT_CONFIGS', [
-            Configuration(key="min_message_delay", value="5", description="Min delay"),
-            Configuration(key="max_message_delay", value="10", description="Max delay"),
-            Configuration(key="new_config", value="30", description="New config"),
+            {"key": "min_message_delay", "value": "5", "value_type": "str", "description": "Min delay"},
+            {"key": "max_message_delay", "value": "10", "value_type": "str", "description": "Max delay"},
+            {"key": "new_config", "value": "30", "value_type": "str", "description": "New config"},
         ]):
             result = await config_service.initialize_default_configs()
         
