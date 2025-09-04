@@ -94,12 +94,14 @@ class MessageHandlers:
             "Ketik pesan Anda sekarang:"
         )
 
-        context.user_data["waiting_for"] = "message_content"
+        if context.user_data:
+            context.user_data["waiting_for"] = "message_content"
 
         keyboard = [[InlineKeyboardButton("❌ Batal", callback_data="messages_menu")]]
         reply_markup = InlineKeyboardMarkup(keyboard)
 
-        await update.message.reply_text(text, parse_mode="Markdown", reply_markup=reply_markup)
+        if update.message:
+            await update.message.reply_text(text, parse_mode="Markdown", reply_markup=reply_markup)
 
     async def handle_message_input(
         self, update: Update, context: ContextTypes.DEFAULT_TYPE
