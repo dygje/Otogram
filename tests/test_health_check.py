@@ -49,7 +49,7 @@ class TestHealthCheck:
         assert isinstance(result, bool)
 
     @patch("scripts.health_check.importlib.import_module")
-    def test_check_dependencies_missing(self, mock_import) -> None:
+    def test_check_dependencies_missing(self, mock_import: MagicMock) -> None:
         """Test dependency check with missing dependencies"""
         mock_import.side_effect = ImportError("Module not found")
 
