@@ -54,7 +54,7 @@ class OtogramSystemTester:
         try:
             from src.core.config import settings, Settings
             from src.core.database import Database, database
-            from src.core.constants import MessageType, BlacklistType
+            from src.core.constants import DEFAULT_MIN_MESSAGE_DELAY, TELEGRAM_MESSAGE_MAX_LENGTH
             print("   Core modules imported successfully")
             return True
         except ImportError as e:
