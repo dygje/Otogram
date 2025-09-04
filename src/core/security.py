@@ -41,6 +41,18 @@ class SecureRandom:
         return min_value + random_float * (max_value - min_value)
 
     @staticmethod
+    def random_float(min_value: float = 0.0, max_value: float = 1.0) -> float:
+        """Return a random floating point number N such that min_value <= N <= max_value"""
+        return SecureRandom.uniform(min_value, max_value)
+
+    @staticmethod
+    def random_delay(min_seconds: int, max_seconds: int) -> int:
+        """Return a random delay in seconds"""
+        if min_seconds > max_seconds:
+            raise ValueError("min_seconds must be <= max_seconds")
+        return SecureRandom.randint(min_seconds, max_seconds)
+
+    @staticmethod
     def shuffle(sequence: list) -> None:
         """Shuffle the sequence in place using cryptographically secure random"""
         # Fisher-Yates shuffle with secure random

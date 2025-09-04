@@ -21,7 +21,7 @@ class MessageService:
         """Create a new message"""
         message = Message(content=message_data.content)
 
-        await self.collection.insert_one(message.dict())
+        await self.collection.insert_one(message.model_dump())
         logger.info(f"Created message: {message.id}")
 
         return message
@@ -56,7 +56,7 @@ class MessageService:
 
     async def update_message(self, message_id: str, update_data: MessageUpdate) -> Message | None:
         """Update a message"""
-        update_dict: dict[str, Any] = {k: v for k, v in update_data.dict().items() if v is not None}
+        update_dict: dict[str, Any] = {k: v for k, v in update_data.model_dump().items() if v is not None}
 
         if not update_dict:
             return await self.get_message_by_id(message_id)
@@ -81,9 +81,17 @@ class MessageService:
 
         return False
 
-    async def increment_usage_count(self, message_id: str) -> None:
+    async def increment_usage_count(self, message_id: str) -> bool:
         """Increment usage count for a message"""
-        await self.collection.update_one({"id": message_id}, {"$inc": {"usage_count": 1}})
+        result = await self.collection.update_one(
+            {"id": message_id}, 
+            {"$inc": {"usage_count": 1}, "$set": {"updated_at": datetime.utcnow()}}
+        )
+        return result.matched_count > 0
+
+    async def get_active_message_count(self) -> int:
+        """Get active message count"""
+        return await self.collection.count_documents({"is_active": True})
 
     async def get_message_count(self) -> dict[str, int]:
         """Get message statistics"""

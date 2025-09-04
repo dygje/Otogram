@@ -52,12 +52,12 @@ class GroupService:
             logger.warning(f"Group already exists: {identifier}")
             return existing
 
-        await self.collection.insert_one(group.dict())
+        await self.collection.insert_one(group.model_dump())
         logger.info(f"Created group: {identifier}")
 
         return group
 
-    async def create_groups_bulk(self, bulk_data: GroupBulkCreate) -> list[Group]:
+    async def create_bulk_groups(self, bulk_data: GroupBulkCreate) -> list[Group]:
         """Create multiple groups"""
         identifiers = bulk_data.get_identifiers_list()
         created_groups = []
@@ -71,6 +71,10 @@ class GroupService:
                 logger.error(f"Failed to create group {identifier}: {e}")
 
         return created_groups
+
+    async def create_groups_bulk(self, bulk_data: GroupBulkCreate) -> list[Group]:
+        """Create multiple groups - alias for backward compatibility"""
+        return await self.create_bulk_groups(bulk_data)
 
     async def get_all_groups(self) -> list[Group]:
         """Get all groups"""
@@ -117,6 +121,16 @@ class GroupService:
             return Group(**doc)
         return None
 
+    async def update_group(self, group_id: str, update_data: dict[str, Any]) -> bool:
+        """Update group"""
+        if not update_data:
+            return False
+
+        update_data["updated_at"] = datetime.utcnow()
+        result = await self.collection.update_one({"id": group_id}, {"$set": update_data})
+        
+        return result.matched_count > 0
+
     async def update_group_info(
         self, group_id: str, title: str | None = None, is_active: bool | None = None
     ) -> Group | None:
@@ -152,11 +166,20 @@ class GroupService:
 
         return False
 
-    async def increment_message_count(self, group_telegram_id: str) -> None:
+    async def increment_message_count(self, group_id: str) -> bool:
         """Increment message count for a group"""
-        await self.collection.update_one(
-            {"group_id": group_telegram_id}, {"$inc": {"message_count": 1}}
+        result = await self.collection.update_one(
+            {"id": group_id}, {"$inc": {"message_count": 1}}
         )
+        return result.matched_count > 0
+
+    async def get_group_count(self) -> int:
+        """Get total group count"""
+        return await self.collection.count_documents({})
+
+    async def get_active_group_count(self) -> int:
+        """Get active group count"""
+        return await self.collection.count_documents({"is_active": True})
 
     async def get_group_stats(self) -> dict[str, int]:
         """Get group statistics"""
