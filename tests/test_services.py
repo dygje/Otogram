@@ -65,7 +65,7 @@ class TestBlacklistService:
 
     async def test_create_blacklist(self, test_database) -> None:
         """Test blacklist creation"""
-        service = BlacklistService()
+        service = BlacklistService(test_database)
 
         blacklist_data = BlacklistCreate(
             group_id="-1001234567890",
@@ -78,7 +78,7 @@ class TestBlacklistService:
 
     async def test_is_blacklisted(self, test_database) -> None:
         """Test blacklist checking"""
-        service = BlacklistService()
+        service = BlacklistService(test_database)
 
         # Add to blacklist
         blacklist_data = BlacklistCreate(
@@ -94,7 +94,7 @@ class TestBlacklistService:
 
     async def test_cleanup_expired(self, test_database) -> None:
         """Test cleanup of expired blacklists"""
-        service = BlacklistService()
+        service = BlacklistService(test_database)
 
         # This should not raise errors
         cleaned = await service.cleanup_expired()
