@@ -17,7 +17,11 @@ class TestManagementBot:
     @pytest.fixture
     def management_bot(self):
         """ManagementBot fixture"""
-        return ManagementBot()
+        with patch('src.services.config_service.database'), \
+             patch('src.services.message_service.database'), \
+             patch('src.services.group_service.database'), \
+             patch('src.services.blacklist_service.database'):
+            return ManagementBot()
 
     @pytest.fixture
     def mock_telegram_credentials(self, monkeypatch):
