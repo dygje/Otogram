@@ -47,7 +47,7 @@ dependencies = [
     "python-dotenv==1.0.0",
     "pydantic==2.8.2",
     "pydantic-settings==2.4.0",
-    "loguru==0.7.2",
+    "loguru==0.7.3",
     "aiofiles==24.1.0",
     
     # Utilities
