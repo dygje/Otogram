@@ -35,5 +35,5 @@ class MessageCreate(BaseModel):
 class MessageUpdate(BaseModel):
     """Model for updating messages"""
 
-    content: str | None = Field(None, min_length=1, max_length=4096)
-    is_active: bool | None = Field(None)
+    content: str | None = Field(default=None, min_length=1, max_length=4096)
+    is_active: bool | None = Field(default=None)
