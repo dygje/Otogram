@@ -132,7 +132,7 @@ class TestMessageHandlers:
         assert mock_context.user_data["waiting_for"] == "message_content"
         mock_message.reply_text.assert_called_once()
         call_args = mock_message.reply_text.call_args[0][0]
-        assert "invalid" in call_args.lower() or "tidak valid" in call_args.lower()
+        assert "kosong" in call_args.lower() or "empty" in call_args.lower()
 
     @pytest.mark.asyncio
     async def test_handle_callback_toggle_message(self, message_handlers):
