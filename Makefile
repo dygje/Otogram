@@ -143,11 +143,12 @@ quick-start: ## Quick start from fresh clone
 first-time: ## First time setup guide
 	@echo "🎯 Otogram - First Time Setup Guide"
 	@echo "===================================="
-	@echo "1. Install Python 3.11+ and MongoDB"
+	@echo "1. Install Python 3.11+ or 3.12 (recommended) and MongoDB"
 	@echo "2. Clone and setup: make setup"
 	@echo "3. Start database: make db-start"
 	@echo "4. Configure: cp .env.example .env && nano .env"
 	@echo "5. Health check: make health"
 	@echo "6. Run system: make run"
 	@echo ""
+	@echo "📚 Documentation: README.md and docs/ folder"
 	@echo "🚀 Quick start: make quick-start"
