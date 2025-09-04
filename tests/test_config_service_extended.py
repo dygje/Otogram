@@ -200,7 +200,9 @@ class TestConfigServiceExtended:
             "key": config_key,
             "value": "30",
             "value_type": "int",
-            "description": "API timeout in seconds"
+            "description": "API timeout in seconds",
+            "category": "general",
+            "is_editable": True
         }
         mock_collection.find_one.return_value = existing_doc
         mock_collection.update_one.return_value = MagicMock(modified_count=1)
