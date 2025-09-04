@@ -37,7 +37,7 @@ class BlacklistHandlers:
                     f"⏰ **Kedaluwarsa:** {stats['expired']}\n\n"
                 )
 
-                keyboard = []
+                keyboard: list[list[InlineKeyboardButton]] = []
 
                 # Show permanent blacklists first
                 permanent_count = 0
