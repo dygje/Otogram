@@ -292,8 +292,8 @@ class TestConfigHandlers:
         
         # Mock config data
         mock_configs = [
-            Configuration(key="min_delay", value="5", description="Min delay"),
-            Configuration(key="max_delay", value="10", description="Max delay"),
+            Configuration(key="min_delay", value="5", value_type="int", description="Min delay"),
+            Configuration(key="max_delay", value="10", value_type="int", description="Max delay"),
         ]
         
         config_handlers.config_service.get_all_configs = AsyncMock(return_value=mock_configs)
