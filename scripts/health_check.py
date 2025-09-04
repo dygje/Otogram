@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Health Check Script for Telegram Automation System
-Verifies all system components are working correctly
+Personal Health Check - Otogram System Verification
+Simple health check for personal Telegram automation
 """
 
 import asyncio
@@ -10,86 +10,149 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-# Add app directory to path - Updated untuk reorganisasi
+# Add app directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-# Import at module level for testing
 from motor.motor_asyncio import AsyncIOMotorClient
-
 from src.core.config import settings
 
 
 @dataclass
 class HealthCheckResult:
-    """Result of a health check operation"""
-
+    """Health check result"""
     status: str  # ✅, ⚠️, or ❌
     message: str
     details: str | None = None
 
 
-async def check_mongodb_connection() -> HealthCheckResult:
+async def check_mongodb() -> HealthCheckResult:
     """Check MongoDB connection"""
     try:
         client: AsyncIOMotorClient = AsyncIOMotorClient(settings.MONGO_URL)
-        # Test connection
         await client.admin.command("ping")
-        client.close()  # Note: close() is not async in motor
+        client.close()
 
         return HealthCheckResult(
             status="✅",
-            message="MongoDB connection successful",
-            details=f"Connected to: {settings.MONGO_URL}",
+            message="MongoDB connected",
+            details=f"URL: {settings.MONGO_URL}"
         )
     except Exception as e:
-        return HealthCheckResult(status="❌", message="MongoDB connection failed", details=str(e))
+        return HealthCheckResult(
+            status="❌", 
+            message="MongoDB connection failed", 
+            details=str(e)
+        )
 
 
-def check_telegram_credentials() -> HealthCheckResult:
-    """Check if Telegram credentials are configured"""
+def check_credentials() -> HealthCheckResult:
+    """Check Telegram credentials"""
     try:
-        credentials = {
+        creds = {
             "API ID": settings.TELEGRAM_API_ID,
             "API Hash": settings.TELEGRAM_API_HASH,
             "Bot Token": settings.TELEGRAM_BOT_TOKEN,
-            "Phone Number": settings.TELEGRAM_PHONE_NUMBER,
+            "Phone": settings.TELEGRAM_PHONE_NUMBER,
         }
 
-        missing = [name for name, value in credentials.items() if not value]
+        missing = [name for name, value in creds.items() if not value]
 
         if not missing:
             return HealthCheckResult(
                 status="✅",
-                message="All Telegram credentials configured",
-                details="Ready for Telegram operations",
+                message="All credentials configured",
+                details="Ready for automation"
             )
         else:
             return HealthCheckResult(
                 status="❌",
-                message="Missing Telegram credentials",
-                details=f"Missing: {', '.join(missing)}",
+                message="Missing credentials",
+                details=f"Need: {', '.join(missing)}"
             )
     except Exception as e:
-        return HealthCheckResult(status="❌", message="Failed to check credentials", details=str(e))
+        return HealthCheckResult(
+            status="❌", 
+            message="Credential check failed", 
+            details=str(e)
+        )
 
 
-async def run_health_check() -> int:
+def check_python() -> bool:
+    """Check Python version"""
+    version = sys.version_info
+    if version.major >= 3 and version.minor >= 11:
+        print(f"✅ Python {version.major}.{version.minor} - Perfect")
+        return True
+    elif version.major >= 3 and version.minor >= 8:
+        print(f"⚠️ Python {version.major}.{version.minor} - Works (3.11+ recommended)")
+        return True
+    else:
+        print(f"❌ Python {version.major}.{version.minor} - Too old (need 3.11+)")
+        return False
+
+
+def check_packages() -> bool:
+    """Check essential packages"""
+    packages = [
+        ("pyrogram", "pyrofork"), 
+        ("telegram", "python-telegram-bot"),
+        ("motor", "motor"),
+        ("pydantic", "pydantic"),
+        ("loguru", "loguru"),
+    ]
+
+    missing = []
+    for import_name, display_name in packages:
+        try:
+            importlib.import_module(import_name)
+            print(f"✅ {display_name}")
+        except ImportError:
+            print(f"❌ {display_name} - Missing")
+            missing.append(display_name)
+
+    return len(missing) == 0
+
+
+def check_files() -> bool:
+    """Check essential files exist"""
+    essential_files = [
+        "main.py",
+        "pyproject.toml", 
+        ".env",
+        "src/core/config.py",
+        "src/telegram/bot_manager.py",
+    ]
+
+    missing = []
+    for file_path in essential_files:
+        if Path(file_path).exists():
+            print(f"✅ {file_path}")
+        else:
+            print(f"❌ {file_path}")
+            missing.append(file_path)
+
+    return len(missing) == 0
+
+
+async def run_checks() -> int:
     """Run all health checks"""
     checks = [
-        ("Python Version", check_python_version),
-        ("Dependencies", check_dependencies),
-        ("File Structure", check_file_structure),
-        ("Project Imports", check_imports),
-        ("Configuration", check_configuration),
-        ("Telegram Credentials", check_telegram_credentials),
-        ("MongoDB Connection", check_mongodb_connection),
+        ("Python Version", check_python),
+        ("Essential Packages", check_packages), 
+        ("Project Files", check_files),
+        ("Telegram Credentials", check_credentials),
+        ("MongoDB Connection", check_mongodb),
     ]
 
     passed = 0
     total = len(checks)
 
+    print("🩺 OTOGRAM HEALTH CHECK")
+    print("=" * 30)
+
     for name, check_func in checks:
-        print(f"\n🔍 Checking {name}...")
+        print(f"\n🔍 {name}...")
+        
         try:
             if asyncio.iscoroutinefunction(check_func):
                 result = await check_func()
@@ -97,166 +160,40 @@ async def run_health_check() -> int:
                     print(f"{result.status} {result.message}")
                     if result.details:
                         print(f"   {result.details}")
-                    success = result.status == "✅"
+                    if result.status == "✅":
+                        passed += 1
                 else:
-                    success = bool(result)
+                    if result:
+                        passed += 1
             else:
-                result = check_func()
-                success = bool(result)
-
-            if success:
-                passed += 1
-            else:
-                print(f"⚠️ {name} check failed")
+                if check_func():
+                    passed += 1
+                    
         except Exception as e:
-            print(f"❌ {name} check error: {e}")
+            print(f"❌ Error: {e}")
 
-    print("\n📊 HEALTH CHECK SUMMARY")
-    print(f"{'=' * 30}")
-    print(f"Passed: {passed}/{total} checks")
+    print(f"\n📊 RESULTS: {passed}/{total} checks passed")
 
     if passed == total:
-        print("🎉 System is HEALTHY and ready to run!")
+        print("🎉 System HEALTHY - Ready to run!")
+        print("\n💡 Next steps:")
+        print("   1. Run: python main.py")
+        print("   2. Find your bot on Telegram")
+        print("   3. Send /start command")
         return 0
     else:
-        print("⚠️ Some issues found. Please fix before running.")
+        print("⚠️ Issues found - Please fix before running")
+        if passed < total // 2:
+            print("\n🔧 Quick fixes:")
+            print("   - Install deps: pip install -e .")
+            print("   - Setup creds: python scripts/setup.py")
+            print("   - Start MongoDB: make db-start")
         return 1
 
 
-def check_python_version() -> bool:
-    """Check Python version compatibility"""
-    # Constants for Python version requirements
-    PYTHON_MAJOR_REQUIRED = 3
-    PYTHON_MINOR_RECOMMENDED = 11
-    PYTHON_MINOR_MINIMUM = 8
-
-    version = sys.version_info
-    if version.major >= PYTHON_MAJOR_REQUIRED and version.minor >= PYTHON_MINOR_RECOMMENDED:
-        print(f"✅ Python {version.major}.{version.minor}.{version.micro} - OK")
-        return True
-    elif version.major >= PYTHON_MAJOR_REQUIRED and version.minor >= PYTHON_MINOR_MINIMUM:
-        print(
-            f"⚠️ Python {version.major}.{version.minor}.{version.micro} - "
-            f"Works but 3.11+ recommended"
-        )
-        return True
-    else:
-        print(
-            f"❌ Python {version.major}.{version.minor}.{version.micro} - "
-            f"Requires 3.11+ (minimum 3.8)"
-        )
-        return False
-
-
-def check_dependencies() -> bool:
-    """Check if all required packages are installed"""
-    required_packages = [
-        ("pyrogram", "pyrofork"),
-        ("telegram", "python-telegram-bot"),
-        ("motor", "motor"),
-        ("pymongo", "pymongo"),
-        ("pydantic", "pydantic"),
-        ("pydantic_settings", "pydantic-settings"),
-        ("loguru", "loguru"),
-        ("dotenv", "python-dotenv"),
-    ]
-
-    missing = []
-    for import_name, package_name in required_packages:
-        try:
-            importlib.import_module(import_name)
-            print(f"✅ {package_name} - Installed")
-        except ImportError:
-            print(f"❌ {package_name} - Missing")
-            missing.append(package_name)
-
-    return len(missing) == 0
-
-
-def check_imports() -> bool:
-    """Check if all project modules can be imported"""
-    try:
-        print("\n📦 Testing project imports...")
-
-        print("✅ Core config - OK")
-
-        print("✅ Database module - OK")
-
-        print("✅ All services - OK")
-
-        print("✅ Telegram components - OK")
-
-        print("✅ Main application - OK")
-
-        return True
-
-    except Exception as e:
-        print(f"❌ Import error: {e}")
-        return False
-
-
-def check_configuration() -> bool:
-    """Check configuration status"""
-    try:
-        from src.core.config import settings
-
-        print("\n⚙️ Configuration status:")
-        print(f"📊 Database: {settings.DB_NAME}")
-        print(f"📝 Log Level: {settings.LOG_LEVEL}")
-
-        # Check if Telegram credentials are set
-        has_api_id = settings.TELEGRAM_API_ID is not None
-        has_api_hash = settings.TELEGRAM_API_HASH is not None
-        has_bot_token = settings.TELEGRAM_BOT_TOKEN is not None
-        has_phone = settings.TELEGRAM_PHONE_NUMBER is not None
-
-        if all([has_api_id, has_api_hash, has_bot_token, has_phone]):
-            print("✅ All Telegram credentials configured")
-        else:
-            print("⚠️ Telegram credentials not configured (expected for first setup)")
-            print("   Run: python setup.py to configure")
-
-        return True
-
-    except Exception as e:
-        print(f"❌ Configuration error: {e}")
-        return False
-
-
-def check_file_structure() -> bool:
-    """Check if all required files exist"""
-    required_files = [
-        "main.py",
-        "pyproject.toml",
-        "scripts/setup.py",
-        ".env",
-        "src/core/config.py",
-        "src/core/database.py",
-        "src/services/message_service.py",
-        "src/telegram/bot_manager.py",
-        "tests/",
-        "docs/",
-        ".github/workflows/",
-    ]
-
-    missing = []
-    for file_path in required_files:
-        if Path(file_path).exists():
-            print(f"✅ {file_path}")
-        else:
-            print(f"❌ {file_path} - Missing")
-            missing.append(file_path)
-
-    return len(missing) == 0
-
-
 def main() -> int:
-    """Run comprehensive health check"""
-    print("🩺 TELEGRAM AUTOMATION SYSTEM - HEALTH CHECK")
-    print("=" * 55)
-
-    # Run async health check
-    return asyncio.run(run_health_check())
+    """Main health check entry"""
+    return asyncio.run(run_checks())
 
 
 if __name__ == "__main__":

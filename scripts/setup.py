@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Simple Setup Script for Personal Telegram Automation
-Quick credential setup and system verification
+Personal Setup Wizard - Otogram Configuration
+Simple credential setup for personal Telegram automation
 """
 
 import sys
@@ -9,118 +9,130 @@ from pathlib import Path
 
 
 def print_banner() -> None:
-    """Print simple banner"""
-    print("\n" + "=" * 50)
+    """Simple setup banner"""
+    print("\n" + "=" * 40)
     print("🤖 OTOGRAM - PERSONAL SETUP")
-    print("=" * 50)
-    print("Simple Telegram automation for personal use")
-    print("=" * 50 + "\n")
+    print("=" * 40)
+    print("Quick setup for Telegram automation")
+    print("=" * 40 + "\n")
 
 
 def check_env_file() -> bool:
-    """Check if .env file exists and has basic credentials"""
+    """Ensure .env file exists"""
     env_path = Path(__file__).parent.parent / ".env"
 
     if not env_path.exists():
-        print("❌ File .env tidak ditemukan!")
-        print("💡 Menyalin dari .env.example...")
-
+        print("❌ No .env file found!")
+        
+        # Try to copy from example
         example_path = env_path.parent / ".env.example"
         if example_path.exists():
             import shutil
             shutil.copy2(example_path, env_path)
-            print("✅ File .env berhasil dibuat!")
+            print("✅ Created .env from example")
         else:
-            print("❌ File .env.example tidak ditemukan!")
+            print("❌ No .env.example found either!")
+            print("💡 Create .env file manually with your credentials")
             return False
 
-    print("✅ File .env ditemukan")
+    print("✅ .env file exists")
     return True
 
 
 def setup_credentials() -> bool:
-    """Simple credential setup"""
-    print("🔧 SETUP CREDENTIALS\n")
+    """Interactive credential setup"""
+    print("🔧 CREDENTIAL SETUP\n")
     
-    print("📋 Yang dibutuhkan:")
-    print("1. Telegram API ID & Hash dari https://my.telegram.org")
-    print("2. Bot Token dari @BotFather")
-    print("3. Nomor telepon Anda\n")
+    print("📋 You need:")
+    print("1. API ID & Hash from https://my.telegram.org")
+    print("2. Bot Token from @BotFather") 
+    print("3. Your phone number\n")
 
-    # Simple input
+    # Get credentials
     api_id = input("TELEGRAM_API_ID: ").strip()
     api_hash = input("TELEGRAM_API_HASH: ").strip()
     bot_token = input("TELEGRAM_BOT_TOKEN: ").strip()
-    phone = input("TELEGRAM_PHONE_NUMBER (contoh: +628123456789): ").strip()
+    phone = input("PHONE NUMBER (+country code): ").strip()
 
     if not all([api_id, api_hash, bot_token, phone]):
-        print("\n❌ Semua field harus diisi!")
+        print("\n❌ All fields required!")
         return False
+
+    # Validate phone format
+    if not phone.startswith("+"):
+        print("⚠️ Adding + to phone number")
+        phone = "+" + phone.lstrip("+")
 
     # Update .env file
     env_path = Path(__file__).parent.parent / ".env"
     try:
         env_content = env_path.read_text()
         
-        # Simple replacements
-        env_content = env_content.replace("TELEGRAM_API_ID=12345678", f"TELEGRAM_API_ID={api_id}")
-        env_content = env_content.replace("TELEGRAM_API_HASH=abcdef1234567890abcdef1234567890", f"TELEGRAM_API_HASH={api_hash}")
-        env_content = env_content.replace("TELEGRAM_BOT_TOKEN=123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11", f"TELEGRAM_BOT_TOKEN={bot_token}")
-        env_content = env_content.replace("TELEGRAM_PHONE_NUMBER=+628123456789", f"TELEGRAM_PHONE_NUMBER={phone}")
+        # Simple find/replace
+        replacements = {
+            "TELEGRAM_API_ID=12345678": f"TELEGRAM_API_ID={api_id}",
+            "TELEGRAM_API_HASH=your_api_hash": f"TELEGRAM_API_HASH={api_hash}",
+            "TELEGRAM_BOT_TOKEN=your_bot_token": f"TELEGRAM_BOT_TOKEN={bot_token}",
+            "TELEGRAM_PHONE_NUMBER=+628123456789": f"TELEGRAM_PHONE_NUMBER={phone}",
+        }
+        
+        for old, new in replacements.items():
+            env_content = env_content.replace(old, new)
         
         env_path.write_text(env_content)
-        print("\n✅ Credentials berhasil disimpan!")
+        print("\n✅ Credentials saved to .env!")
         return True
         
     except Exception as e:
-        print(f"\n❌ Error: {e}")
+        print(f"\n❌ Failed to update .env: {e}")
+        print("💡 Please edit .env file manually")
         return False
 
 
-def run_health_check() -> bool:
-    """Simple health check"""
-    print("\n🩺 Menjalankan health check...")
+def run_health_check() -> None:
+    """Run health check if available"""
+    print("\n🩺 Running health check...")
     
     try:
         health_script = Path(__file__).parent / "health_check.py"
         if health_script.exists():
             import subprocess
-            result = subprocess.run([sys.executable, str(health_script)], check=False)
-            return result.returncode == 0
+            result = subprocess.run([sys.executable, str(health_script)])
+            if result.returncode != 0:
+                print("⚠️ Some issues found - check output above")
         else:
-            print("⚠️ Health check script tidak ditemukan")
-            return True
+            print("⚠️ Health check script not found")
     except Exception as e:
-        print(f"❌ Error: {e}")
-        return False
+        print(f"❌ Health check error: {e}")
 
 
 def main() -> None:
-    """Simple main setup"""
+    """Main setup wizard"""
     print_banner()
 
-    # Check .env
+    # Check/create .env
     if not check_env_file():
         sys.exit(1)
 
-    # Ask for credential setup
-    choice = input("Setup credentials sekarang? (y/n): ").strip().lower()
+    # Credential setup
+    setup_choice = input("Setup credentials now? (y/n): ").strip().lower()
     
-    if choice == "y":
+    if setup_choice == "y":
         if not setup_credentials():
-            print("\n❌ Setup gagal. Edit file .env secara manual.")
+            print("\n❌ Setup failed - edit .env manually")
             sys.exit(1)
     else:
-        print("\n📝 Edit file .env secara manual dengan credentials Anda.")
+        print("\n📝 Remember to edit .env with your credentials!")
 
     # Health check
-    if run_health_check():
-        print("\n🎉 Setup selesai!")
-        print("\n📚 Langkah selanjutnya:")
-        print("1. Jalankan: python main.py")
-        print("2. Buka bot di Telegram dan kirim /start")
-    else:
-        print("\n⚠️ Ada masalah dalam setup. Periksa konfigurasi.")
+    run_health_check()
+
+    print("\n🎉 Setup complete!")
+    print("\n📚 Next steps:")
+    print("1. Start system: python main.py")
+    print("2. Find your bot on Telegram")  
+    print("3. Send /start to begin")
+    print("\n💡 Use 'make health' to check system anytime")
 
 
 if __name__ == "__main__":
