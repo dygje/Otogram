@@ -161,7 +161,9 @@ class BlacklistHandlers:
 
             if not blacklist:
                 if update.callback_query:
-                    await update.callback_query.edit_message_text("❌ Entry blacklist tidak ditemukan.")
+                    await update.callback_query.edit_message_text(
+                        "❌ Entry blacklist tidak ditemukan."
+                    )
                 return
 
             identifier = blacklist.group_identifier or blacklist.group_id
@@ -202,7 +204,9 @@ class BlacklistHandlers:
 
             if not blacklist:
                 if update.callback_query:
-                    await update.callback_query.edit_message_text("❌ Entry blacklist tidak ditemukan.")
+                    await update.callback_query.edit_message_text(
+                        "❌ Entry blacklist tidak ditemukan."
+                    )
                 return
 
             success = await self.blacklist_service.remove_from_blacklist(blacklist.group_id)

@@ -151,7 +151,9 @@ class MessageHandlers:
             reply_markup = InlineKeyboardMarkup(keyboard)
 
             if update.message:
-                await update.message.reply_text(text, parse_mode="Markdown", reply_markup=reply_markup)
+                await update.message.reply_text(
+                    text, parse_mode="Markdown", reply_markup=reply_markup
+                )
 
         except Exception as e:
             logger.error(f"Error adding message: {e}")
@@ -197,7 +199,7 @@ class MessageHandlers:
             )
 
             # Set waiting state - proper access to context
-            if hasattr(update.callback_query, 'user') and update.callback_query.user:
+            if hasattr(update.callback_query, "user") and update.callback_query.user:
                 # We need to get the context properly, this is a simplified approach
                 # In practice, this should be handled differently in the callback flow
                 pass

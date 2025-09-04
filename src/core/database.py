@@ -19,7 +19,7 @@ class Database:
 
     def __init__(self) -> None:
         self.client: Any = None  # AsyncIOMotorClient | None
-        self.db: Any = None      # AsyncIOMotorDatabase | None
+        self.db: Any = None  # AsyncIOMotorDatabase | None
 
     async def connect(self) -> None:
         """Connect to MongoDB"""

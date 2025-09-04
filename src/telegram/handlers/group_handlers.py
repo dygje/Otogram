@@ -140,12 +140,16 @@ class GroupHandlers:
                 identifier = update.message.text.strip()
             else:
                 if update.message:
-                    await update.message.reply_text("❌ Identifier grup tidak boleh kosong. Coba lagi:")
+                    await update.message.reply_text(
+                        "❌ Identifier grup tidak boleh kosong. Coba lagi:"
+                    )
                 return
 
             if not identifier:
                 if update.message:
-                    await update.message.reply_text("❌ Identifier grup tidak boleh kosong. Coba lagi:")
+                    await update.message.reply_text(
+                        "❌ Identifier grup tidak boleh kosong. Coba lagi:"
+                    )
                 return
 
             # Create group
@@ -173,7 +177,9 @@ class GroupHandlers:
             reply_markup = InlineKeyboardMarkup(keyboard)
 
             if update.message:
-                await update.message.reply_text(text, parse_mode="Markdown", reply_markup=reply_markup)
+                await update.message.reply_text(
+                    text, parse_mode="Markdown", reply_markup=reply_markup
+                )
 
         except Exception as e:
             logger.error(f"Error adding group: {e}")
@@ -238,7 +244,9 @@ class GroupHandlers:
             reply_markup = InlineKeyboardMarkup(keyboard)
 
             if update.message:
-                await update.message.reply_text(text, parse_mode="Markdown", reply_markup=reply_markup)
+                await update.message.reply_text(
+                    text, parse_mode="Markdown", reply_markup=reply_markup
+                )
 
         except Exception as e:
             logger.error(f"Error adding bulk groups: {e}")
