@@ -228,26 +228,33 @@ class InterfaceComponentTester:
     def test_handler_initialization(self):
         """Test individual handler initialization"""
         try:
-            from src.telegram.handlers.auth_handlers import AuthHandlers
-            from src.telegram.handlers.message_handlers import MessageHandlers
-            from src.telegram.handlers.group_handlers import GroupHandlers
-            
-            # Test each handler initialization
-            handlers = [
-                ("AuthHandlers", AuthHandlers),
-                ("MessageHandlers", MessageHandlers),
-                ("GroupHandlers", GroupHandlers)
-            ]
-            
-            for name, handler_class in handlers:
-                try:
-                    handler = handler_class()
-                    print(f"   {name}: ✅ Initialized successfully")
-                except Exception as e:
-                    print(f"   {name}: ❌ Failed to initialize - {e}")
-                    return False
-            
-            return True
+            # Mock database and services for handler initialization
+            with patch('src.core.database.database', MockDatabase()), \
+                 patch('src.services.config_service.ConfigService', MockService), \
+                 patch('src.services.message_service.MessageService', MockService), \
+                 patch('src.services.group_service.GroupService', MockService), \
+                 patch('src.services.blacklist_service.BlacklistService', MockService):
+                
+                from src.telegram.handlers.auth_handlers import AuthHandlers
+                from src.telegram.handlers.message_handlers import MessageHandlers
+                from src.telegram.handlers.group_handlers import GroupHandlers
+                
+                # Test each handler initialization
+                handlers = [
+                    ("AuthHandlers", AuthHandlers),
+                    ("MessageHandlers", MessageHandlers),
+                    ("GroupHandlers", GroupHandlers)
+                ]
+                
+                for name, handler_class in handlers:
+                    try:
+                        handler = handler_class()
+                        print(f"   {name}: ✅ Initialized successfully")
+                    except Exception as e:
+                        print(f"   {name}: ❌ Failed to initialize - {e}")
+                        return False
+                
+                return True
             
         except Exception as e:
             print(f"   Handler initialization error: {e}")
