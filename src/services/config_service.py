@@ -41,7 +41,7 @@ class ConfigService:
                     category=str(config_data.get("category", "general")),
                     is_editable=bool(config_data.get("is_editable", True)),
                 )
-                await self.collection.insert_one(config.dict())
+                await self.collection.insert_one(config.model_dump())
                 logger.info(f"Initialized config: {config_data['key']}")
 
     async def get_config(self, key: str) -> Configuration | None:
