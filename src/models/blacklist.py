@@ -73,8 +73,8 @@ class Blacklist(BaseDocument):
 
         return self.expires_at - now
 
-    class Config:
-        json_schema_extra: ClassVar = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "group_id": "-1001234567890",
                 "blacklist_type": "temporary",
@@ -82,6 +82,7 @@ class Blacklist(BaseDocument):
                 "duration_seconds": 3600,
             }
         }
+    )
 
 
 class BlacklistCreate(BaseModel):
