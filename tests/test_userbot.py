@@ -265,6 +265,9 @@ class TestUserBot:
         messages = [mock_message]
         groups = [mock_group]
         
+        # Ensure userbot is running
+        userbot.is_running = True
+        
         # Mock services
         userbot.blacklist_service.is_blacklisted = AsyncMock(return_value=False)
         userbot._send_message_to_group = AsyncMock(return_value=True)
