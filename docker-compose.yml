@@ -1,19 +1,19 @@
+# Docker Compose for Personal Project
+# Simple setup for single user
+
 version: '3.8'
 
 services:
   otogram:
     build: .
     container_name: otogram
-    env_file:
-      - .env
+    env_file: .env
     volumes:
       - ./logs:/app/logs
       - ./sessions:/app/sessions
     depends_on:
       - mongodb
     restart: unless-stopped
-    networks:
-      - otogram-net
 
   mongodb:
     image: mongo:7.0
@@ -22,16 +22,9 @@ services:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
-      - ./mongodb_data:/data/db
     environment:
       MONGO_INITDB_DATABASE: otogram
     restart: unless-stopped
-    networks:
-      - otogram-net
 
 volumes:
   mongodb_data:
-
-networks:
-  otogram-net:
-    driver: bridge
