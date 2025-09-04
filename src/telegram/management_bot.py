@@ -738,7 +738,7 @@ class ManagementBot:
         """Handle text input for various operations"""
         user_data = context.user_data
 
-        if "waiting_for" in user_data:
+        if user_data and "waiting_for" in user_data:
             waiting_for = user_data["waiting_for"]
 
             if waiting_for == "message_content":
@@ -751,11 +751,14 @@ class ManagementBot:
                 await self.config_handlers.handle_config_input(update, context)
             else:
                 # Clear waiting state
-                user_data.pop("waiting_for", None)
-                await update.message.reply_text(
-                    "❌ Input tidak dikenali. Gunakan /menu untuk memulai."
-                )
+                if user_data:
+                    user_data.pop("waiting_for", None)
+                if update.message:
+                    await update.message.reply_text(
+                        "❌ Input tidak dikenali. Gunakan /menu untuk memulai."
+                    )
         else:
-            await update.message.reply_text(
-                "❓ Saya tidak mengerti. Gunakan /menu untuk melihat pilihan yang tersedia."
-            )
+            if update.message:
+                await update.message.reply_text(
+                    "❓ Saya tidak mengerti. Gunakan /menu untuk melihat pilihan yang tersedia."
+                )
