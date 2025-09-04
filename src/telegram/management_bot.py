@@ -62,6 +62,8 @@ class ManagementBot:
 
     def _add_handlers(self) -> None:
         """Add command and callback handlers"""
+        if not self.app:
+            raise RuntimeError("Application not initialized")
 
         # Main commands
         self.app.add_handler(CommandHandler("start", self.start_command))
