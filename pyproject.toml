@@ -45,7 +45,7 @@ dependencies = [
     
     # Core Dependencies
     "python-dotenv==1.0.0",
-    "pydantic==2.8.2",
+    "pydantic==2.11.7",
     "pydantic-settings==2.4.0",
     "loguru==0.7.2",
     "aiofiles==24.1.0",
