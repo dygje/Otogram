@@ -284,11 +284,13 @@ class MessageHandlers:
             keyboard = [[InlineKeyboardButton("📝 Lihat Pesan", callback_data="messages_menu")]]
             reply_markup = InlineKeyboardMarkup(keyboard)
 
-            await update.callback_query.edit_message_text(text, reply_markup=reply_markup)
+            if update.callback_query:
+                await update.callback_query.edit_message_text(text, reply_markup=reply_markup)
 
         except Exception as e:
             logger.error(f"Error deleting message: {e}")
-            await update.callback_query.edit_message_text("❌ Gagal menghapus pesan.")
+            if update.callback_query:
+                await update.callback_query.edit_message_text("❌ Gagal menghapus pesan.")
 
     async def _send_error_message(self, update: Update, error_text: str) -> None:
         """Send error message"""
