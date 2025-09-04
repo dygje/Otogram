@@ -14,7 +14,7 @@ make health
 
 ## 📝 Code Standards
 
-- **Python 3.11+** with type hints
+- **Python 3.11+ or 3.12** (recommended) with type hints
 - **Line length**: 100 characters
 - **Format with**: `make format` (uses ruff)
 - **Test with**: `make test-fast` (quick testing)
