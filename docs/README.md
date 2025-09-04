@@ -31,7 +31,7 @@
 ### Common Issues
 1. **Won't start**: Check `make health`
 2. **Bot not responding**: Verify token with @BotFather  
-3. **Database errors**: Ensure MongoDB is running
+3. **Database errors**: Run `make db-start`
 4. **Authentication failed**: Try `make clean-sessions`
 
 ### Check These First
@@ -52,8 +52,8 @@
 make setup        # First-time setup
 make health       # Check system status
 make run         # Start Otogram
-make clean       # Clean temporary files
-make format      # Format code
+make dev         # Development session
+make quality     # Quick format + test
 ```
 
 ### Bot Commands
@@ -65,6 +65,27 @@ make format      # Format code
 /groups         # Manage groups
 ```
 
+## 🔧 Personal Project Features
+
+### Optimized for Solo Development
+- **Simplified Testing**: 5 essential tests vs 29 comprehensive
+- **Personal Makefile**: 25+ commands optimized for solo developer
+- **Quick Development**: `make dev` and `make quality` for fast workflow
+- **Essential Dependencies**: Core functionality only, optional extras
+
+### Development Workflow
+```bash
+# Daily development
+make dev          # Start development session (format + health)
+make quality      # Quick quality check (format + fast test)
+make test-fast    # Testing without coverage (super fast)
+
+# Project management  
+make clean-all    # Complete cleanup
+make docker-run   # Full Docker deployment
+make db-start     # MongoDB via Docker
+```
+
 ---
 
-**Status**: Personal Project | **Version**: 2.0.2 | **Last Updated**: January 2025
+**Status**: Personal Project | **Version**: 2.0.3 | **Last Updated**: September 2025

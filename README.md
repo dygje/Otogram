@@ -1,4 +1,4 @@
-# 🤖 Otogram - Telegram Automation System
+# 🤖 Otogram - Personal Telegram Automation
 
 > **Personal Telegram mass messaging automation with intelligent blacklist management**
 
@@ -15,9 +15,9 @@ cd Otogram
 make setup
 
 # 2. Setup MongoDB
-docker run -d -p 27017:27017 --name otogram-mongo mongo:7.0
+make db-start
 
-# 3. Configure credentials
+# 3. Configure credentials  
 cp .env.example .env
 nano .env  # Add your Telegram API credentials
 
@@ -32,7 +32,7 @@ make run
 - **🛡️ Smart Blacklist Management** - Auto-handles FloodWait, SlowMode, and permanent errors
 - **🤖 Telegram Bot Interface** - Complete control through modern dashboard
 - **⚙️ Intelligent Scheduling** - Random delays for natural behavior
-- **🔒 Production Ready** - Built with clean architecture and modern Python
+- **🔒 Personal Project Ready** - Optimized for solo development and usage
 
 ## 🏗️ Architecture
 
@@ -57,6 +57,16 @@ src/
 
 ## 🎮 Usage
 
+### Personal Development Commands
+```bash
+make help          # Show all available commands
+make setup         # Complete development setup
+make health        # System health check
+make dev           # Start development session
+make quality       # Quick format + test
+make run           # Start Otogram system
+```
+
 ### Bot Commands
 | Command | Description |
 |---------|-------------|
@@ -65,15 +75,6 @@ src/
 | `/messages` | Manage broadcast messages |
 | `/groups` | Manage target groups |
 | `/status` | System status & statistics |
-
-### Development Commands
-```bash
-make help          # Show all commands
-make health        # System health check
-make test          # Run test suite
-make format        # Format code
-make clean         # Clean temporary files
-```
 
 ## 🔧 Configuration
 
@@ -89,7 +90,7 @@ TELEGRAM_PHONE_NUMBER=+628123456789
 # Database
 MONGO_URL=mongodb://localhost:27017
 
-# Safety settings (recommended for beginners)
+# Safety settings (recommended for personal use)
 MIN_MESSAGE_DELAY=8
 MAX_MESSAGE_DELAY=15
 MIN_CYCLE_DELAY_HOURS=2.0
@@ -102,26 +103,26 @@ MAX_GROUPS_PER_CYCLE=20
 ```bash
 # Copy and edit environment
 cp .env.example .env
+nano .env
 
 # Start full stack
-docker-compose up -d
+make docker-run
 
 # Check status
-docker-compose ps
+make docker-logs
 ```
 
 ## 🚨 Troubleshooting
 
 **Database Error:**
 ```bash
-# Check MongoDB
-sudo systemctl status mongod
-# Or Docker: docker ps | grep mongo
+make db-status      # Check MongoDB status
+make db-start       # Start MongoDB container
 ```
 
 **Authentication Failed:**
 ```bash
-make clean-sessions
+make clean-sessions # Clear Telegram sessions
 make run
 ```
 
@@ -133,15 +134,15 @@ make run
 ## 📚 Documentation
 
 - **[🚀 Getting Started](docs/GETTING_STARTED.md)** - Complete setup guide
+- **[🛠️ Development Guide](docs/CONTRIBUTING.md)** - Personal development workflow
+- **[🔒 Security Guidelines](docs/SECURITY.md)** - Essential safety practices
 - **[🏗️ Architecture](docs/ARCHITECTURE.md)** - System design overview
-- **[🔒 Security](docs/SECURITY.md)** - Security guidelines
-- **[📝 Contributing](docs/CONTRIBUTING.md)** - Development guide
 
-## 📊 System Features
+## 📊 Personal Project Features
 
 ### 🎯 Broadcasting System
 - MTProto integration via Pyrofork for maximum reliability
-- Random delays (5-10s messages, 1.1-1.3h cycles) for natural behavior
+- Random delays (8-15s messages, 2-3h cycles) for natural behavior
 - Real-time dashboard with complete system control
 
 ### 🛡️ Intelligent Error Handling
@@ -157,16 +158,22 @@ make run
 - Real-time configuration without restart
 - Analytics dashboard with success rates
 
+### 🔧 Personal Development
+- Simplified testing suite (5 essential tests vs 29 extensive)
+- Personal-focused documentation and workflows
+- Optimized Makefile with 25+ development commands
+- Essential dependencies only (optional security tools)
+
 ## 📄 License
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
 ## 🤖 About
 
-**Otogram** is a personal project built with modern Python practices and clean architecture principles. 
+**Otogram** is a personal project built with modern Python practices and clean architecture principles, optimized for solo developers and personal use.
 
-**Status**: Active Development | **Version**: 2.0.2
+**Status**: Personal Project Ready | **Version**: 2.0.3
 
 ---
 
-**⚠️ Disclaimer**: Use responsibly and in compliance with Telegram's Terms of Service.
+**⚠️ Disclaimer**: Use responsibly and in compliance with Telegram's Terms of Service. This is for personal automation only.
