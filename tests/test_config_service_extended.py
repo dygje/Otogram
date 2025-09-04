@@ -97,7 +97,9 @@ class TestConfigServiceExtended:
             "key": config_key,
             "value": "true",
             "value_type": "bool",
-            "description": "Enable logging"
+            "description": "Enable logging",
+            "category": "general",
+            "is_editable": True
         }
         mock_collection.find_one.return_value = mock_doc
         
