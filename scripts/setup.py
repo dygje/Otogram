@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Enhanced Setup Script for Telegram Automation System
-Membantu user mengkonfigurasi credentials dan menjalankan sistem
+Simple Setup Script for Personal Telegram Automation
+Quick credential setup and system verification
 """
 
 import sys
@@ -9,320 +9,118 @@ from pathlib import Path
 
 
 def print_banner() -> None:
-    """Print welcome banner"""
-    print("\n" + "=" * 70)
-    print("🤖 TELEGRAM AUTOMATION SYSTEM - SETUP WIZARD")
-    print("=" * 70)
-    print("Sistema otomatisasi pengiriman pesan massal ke grup Telegram")
-    print("dengan manajemen lengkap melalui Telegram Bot.")
-    print("=" * 70 + "\n")
+    """Print simple banner"""
+    print("\n" + "=" * 50)
+    print("🤖 OTOGRAM - PERSONAL SETUP")
+    print("=" * 50)
+    print("Simple Telegram automation for personal use")
+    print("=" * 50 + "\n")
 
 
-def check_env_file() -> list[str]:
-    """Check if .env file exists and validate required fields"""
+def check_env_file() -> bool:
+    """Check if .env file exists and has basic credentials"""
     env_path = Path(__file__).parent.parent / ".env"
 
     if not env_path.exists():
         print("❌ File .env tidak ditemukan!")
         print("💡 Menyalin dari .env.example...")
 
-        # Copy from .env.example
         example_path = env_path.parent / ".env.example"
         if example_path.exists():
             import shutil
-
             shutil.copy2(example_path, env_path)
-            print("✅ File .env berhasil dibuat dari template!")
+            print("✅ File .env berhasil dibuat!")
         else:
-            print("❌ File .env.example juga tidak ditemukan!")
-            return []
+            print("❌ File .env.example tidak ditemukan!")
+            return False
 
-    # Read .env file
-    env_content = env_path.read_text()
-
-    required_fields = [
-        "TELEGRAM_API_ID",
-        "TELEGRAM_API_HASH",
-        "TELEGRAM_BOT_TOKEN",
-        "TELEGRAM_PHONE_NUMBER",
-    ]
-
-    missing_fields = []
-
-    for field in required_fields:
-        # Check if field exists and has value
-        field_found = False
-        for line in env_content.split("\n"):
-            if line.strip().startswith(f"{field}="):
-                value = line.split("=", 1)[1].strip()
-                if value and not value.startswith("#"):
-                    field_found = True
-                break
-
-        if not field_found:
-            missing_fields.append(field)
-
-    return missing_fields
-
-
-def validate_credentials(
-    api_id: str, api_hash: str, bot_token: str, phone_number: str
-) -> tuple[bool, str]:
-    """Validate credential formats"""
-
-    # Constants for validation
-    API_ID_LENGTH = 8
-    API_HASH_LENGTH = 32
-    BOT_TOKEN_MIN_LENGTH = 8
-    PHONE_NUMBER_MIN_LENGTH = 10
-
-    # Collect all validation errors
-    errors = []
-
-    # Validate API ID
-    if not api_id.isdigit():
-        errors.append("API ID harus berupa angka (8 digit)")
-    elif len(api_id) != API_ID_LENGTH:
-        errors.append("API ID harus 8 digit")
-
-    # Validate API Hash
-    if len(api_hash) != API_HASH_LENGTH:
-        errors.append("API Hash harus 32 karakter")
-
-    # Validate Bot Token format
-    if ":" not in bot_token or len(bot_token.split(":")[0]) < BOT_TOKEN_MIN_LENGTH:
-        errors.append("Format Bot Token tidak valid (harus seperti: 123456789:ABC-DEF...)")
-
-    # Validate Phone Number
-    if not phone_number.startswith("+"):
-        errors.append("Nomor telepon harus dimulai dengan + (format internasional)")
-    elif len(phone_number) < PHONE_NUMBER_MIN_LENGTH:
-        errors.append("Nomor telepon terlalu pendek")
-
-    # Return result
-    if errors:
-        return False, "; ".join(errors)
-
-    return True, "Valid"
+    print("✅ File .env ditemukan")
+    return True
 
 
 def setup_credentials() -> bool:
-    """Setup Telegram credentials interactively"""
-    print("🔧 SETUP CREDENTIALS TELEGRAM\n")
+    """Simple credential setup"""
+    print("🔧 SETUP CREDENTIALS\n")
+    
+    print("📋 Yang dibutuhkan:")
+    print("1. Telegram API ID & Hash dari https://my.telegram.org")
+    print("2. Bot Token dari @BotFather")
+    print("3. Nomor telepon Anda\n")
 
-    print("📋 Untuk menggunakan sistem ini, Anda membutuhkan:")
-    print("1. 📱 Telegram API ID & Hash dari https://my.telegram.org")
-    print("   - Login dengan nomor telepon Anda")
-    print("   - Pilih 'API Development Tools'")
-    print("   - Buat aplikasi baru dan catat API ID & Hash")
-    print("")
-    print("2. 🤖 Bot Token dari @BotFather")
-    print("   - Kirim /newbot ke @BotFather di Telegram")
-    print("   - Ikuti instruksi dan catat Bot Token")
-    print("")
-    print("3. 📞 Nomor telepon untuk userbot (sama dengan yang digunakan untuk API)")
-    print("")
+    # Simple input
+    api_id = input("TELEGRAM_API_ID: ").strip()
+    api_hash = input("TELEGRAM_API_HASH: ").strip()
+    bot_token = input("TELEGRAM_BOT_TOKEN: ").strip()
+    phone = input("TELEGRAM_PHONE_NUMBER (contoh: +628123456789): ").strip()
 
-    max_attempts = 3
-    for attempt in range(max_attempts):
-        print(f"📝 Percobaan {attempt + 1}/{max_attempts}")
-        print("-" * 40)
+    if not all([api_id, api_hash, bot_token, phone]):
+        print("\n❌ Semua field harus diisi!")
+        return False
 
-        # Get credentials
-        api_id = input("Masukkan TELEGRAM_API_ID (8 digit): ").strip()
-        api_hash = input("Masukkan TELEGRAM_API_HASH (32 karakter): ").strip()
-        bot_token = input("Masukkan TELEGRAM_BOT_TOKEN: ").strip()
-        phone_number = input("Masukkan TELEGRAM_PHONE_NUMBER (format: +628123456789): ").strip()
-
-        # Validate inputs
-        if not all([api_id, api_hash, bot_token, phone_number]):
-            print("\n❌ Semua field harus diisi!")
-            if attempt < max_attempts - 1:
-                print("Silakan coba lagi...\n")
-                continue
-            else:
-                return False
-
-        # Validate formats
-        is_valid, error_msg = validate_credentials(api_id, api_hash, bot_token, phone_number)
-
-        if not is_valid:
-            print(f"\n❌ {error_msg}")
-            if attempt < max_attempts - 1:
-                print("Silakan coba lagi...\n")
-                continue
-            else:
-                return False
-
-        # Update .env file
-        env_path = Path(__file__).parent.parent / ".env"
-
-        try:
-            # Read current content
-            env_content = env_path.read_text()
-
-            # Replace credentials
-            replacements = {
-                "TELEGRAM_API_ID": api_id,
-                "TELEGRAM_API_HASH": api_hash,
-                "TELEGRAM_BOT_TOKEN": bot_token,
-                "TELEGRAM_PHONE_NUMBER": phone_number,
-            }
-
-            for key, value in replacements.items():
-                # Find the line and replace it
-                lines = env_content.split("\n")
-                for i, line in enumerate(lines):
-                    if line.strip().startswith(f"{key}="):
-                        lines[i] = f"{key}={value}"
-                        break
-                env_content = "\n".join(lines)
-
-            env_path.write_text(env_content)
-
-            print("\n✅ Credentials berhasil disimpan ke .env file!")
-            print("\n📋 Ringkasan konfigurasi:")
-            print(f"  • API ID: {api_id}")
-            print(f"  • API Hash: {api_hash[:8]}...{api_hash[-4:]}")
-            print(f"  • Bot Token: {bot_token[:15]}...")
-            print(f"  • Phone: {phone_number}")
-
-            return True
-
-        except Exception as e:
-            print(f"\n❌ Error menyimpan ke .env file: {e}")
-            return False
-
-    return False
+    # Update .env file
+    env_path = Path(__file__).parent.parent / ".env"
+    try:
+        env_content = env_path.read_text()
+        
+        # Simple replacements
+        env_content = env_content.replace("TELEGRAM_API_ID=12345678", f"TELEGRAM_API_ID={api_id}")
+        env_content = env_content.replace("TELEGRAM_API_HASH=abcdef1234567890abcdef1234567890", f"TELEGRAM_API_HASH={api_hash}")
+        env_content = env_content.replace("TELEGRAM_BOT_TOKEN=123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11", f"TELEGRAM_BOT_TOKEN={bot_token}")
+        env_content = env_content.replace("TELEGRAM_PHONE_NUMBER=+628123456789", f"TELEGRAM_PHONE_NUMBER={phone}")
+        
+        env_path.write_text(env_content)
+        print("\n✅ Credentials berhasil disimpan!")
+        return True
+        
+    except Exception as e:
+        print(f"\n❌ Error: {e}")
+        return False
 
 
 def run_health_check() -> bool:
-    """Run health check to verify setup"""
-    print("\n🩺 MENJALANKAN HEALTH CHECK...\n")
-
+    """Simple health check"""
+    print("\n🩺 Menjalankan health check...")
+    
     try:
-        # Run health check script
         health_script = Path(__file__).parent / "health_check.py"
-
         if health_script.exists():
             import subprocess
-
-            result = subprocess.run(
-                [sys.executable, str(health_script)], check=False, capture_output=True, text=True
-            )
-
-            print(result.stdout)
-            if result.stderr:
-                print("⚠️ Warnings/Errors:")
-                print(result.stderr)
-
+            result = subprocess.run([sys.executable, str(health_script)], check=False)
             return result.returncode == 0
         else:
             print("⚠️ Health check script tidak ditemukan")
             return True
-
     except Exception as e:
-        print(f"❌ Error running health check: {e}")
+        print(f"❌ Error: {e}")
         return False
 
 
-def run_system() -> None:
-    """Run the telegram automation system"""
-    print("\n🚀 MENJALANKAN SISTEM...\n")
-    print("Sistem akan:")
-    print("1. 🔗 Koneksi ke database MongoDB")
-    print("2. 🤖 Start management bot")
-    print("3. 📱 Start userbot (akan minta OTP jika pertama kali)")
-    print("4. 🔄 Mulai broadcasting loop")
-    print("\n⚠️ PENTING:")
-    print("- Pastikan MongoDB sudah running (mongod)")
-    print("- Siapkan kode OTP dari Telegram")
-    print("- Jika ada 2FA, siapkan password nya")
-    print("")
-
-    choice = input("Lanjutkan menjalankan sistem? (y/n): ").strip().lower()
-
-    if choice != "y":
-        print("Setup selesai. Jalankan sistem dengan: python main.py")
-        return
-
-    try:
-        sys.path.insert(0, str(Path(__file__).parent.parent))
-        import asyncio
-
-        from main import main
-
-        print("\n" + "=" * 50)
-        print("🚀 STARTING TELEGRAM AUTOMATION SYSTEM...")
-        print("=" * 50 + "\n")
-
-        asyncio.run(main())
-
-    except KeyboardInterrupt:
-        print("\n👋 Sistem dihentikan oleh user")
-    except Exception as e:
-        print(f"\n❌ Error menjalankan sistem: {e}")
-        print("\n🔍 Troubleshooting:")
-        print("- Pastikan MongoDB running: sudo systemctl status mongod")
-        print("- Periksa credentials di .env file")
-        print("- Install dependencies: pip install -r requirements.txt")
-        print("- Jalankan health check: python scripts/health_check.py")
-
-
 def main() -> None:
-    """Main setup function"""
+    """Simple main setup"""
     print_banner()
 
-    # Check if .env exists and validate fields
-    missing_fields = check_env_file()
+    # Check .env
+    if not check_env_file():
+        sys.exit(1)
 
-    if missing_fields:
-        print("❌ Field berikut masih kosong di .env:")
-        for field in missing_fields:
-            print(f"  • {field}")
-        print("")
-
-        choice = input("Ingin setup credentials sekarang? (y/n): ").strip().lower()
-
-        if choice == "y":
-            if not setup_credentials():
-                print("\n❌ Setup credentials gagal. Silakan coba lagi.")
-                sys.exit(1)
-        else:
-            print("\n📝 Silakan isi file .env secara manual dengan credentials Telegram Anda.")
-            print("\n📋 Format yang dibutuhkan:")
-            print("TELEGRAM_API_ID=12345678")
-            print("TELEGRAM_API_HASH=abcdef1234567890abcdef1234567890")
-            print("TELEGRAM_BOT_TOKEN=123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11")
-            print("TELEGRAM_PHONE_NUMBER=+628123456789")
-            print("\n💡 Lihat .env.example untuk referensi lengkap")
-            sys.exit(0)
-    else:
-        print("✅ File .env sudah lengkap!\n")
-
-    # Run health check
-    print("🔍 Memverifikasi setup...")
-    health_ok = run_health_check()
-
-    if not health_ok:
-        print("\n⚠️ Ada beberapa masalah dalam setup. Periksa error di atas.")
-        choice = input("Tetap lanjutkan menjalankan sistem? (y/n): ").strip().lower()
-        if choice != "y":
-            print("Setup dibatalkan. Perbaiki masalah terlebih dahulu.")
-            sys.exit(1)
-
-    # Ask if user wants to run the system
-    choice = input("\nIngin menjalankan sistem sekarang? (y/n): ").strip().lower()
-
+    # Ask for credential setup
+    choice = input("Setup credentials sekarang? (y/n): ").strip().lower()
+    
     if choice == "y":
-        run_system()
+        if not setup_credentials():
+            print("\n❌ Setup gagal. Edit file .env secara manual.")
+            sys.exit(1)
     else:
+        print("\n📝 Edit file .env secara manual dengan credentials Anda.")
+
+    # Health check
+    if run_health_check():
         print("\n🎉 Setup selesai!")
         print("\n📚 Langkah selanjutnya:")
-        print("1. Jalankan sistem: python main.py")
+        print("1. Jalankan: python main.py")
         print("2. Buka bot di Telegram dan kirim /start")
-        print("3. Gunakan /menu untuk mengelola sistem")
-        print("\n📖 Baca README.md untuk panduan lengkap")
+    else:
+        print("\n⚠️ Ada masalah dalam setup. Periksa konfigurasi.")
 
 
 if __name__ == "__main__":
