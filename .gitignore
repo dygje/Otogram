@@ -166,3 +166,18 @@ coverage.xml
 # Security reports
 bandit-report.json
 safety-report.json
+
+# Personal project - additional ignores
+*_backup/
+*_extensive_backup/
+test_*.py
+*_test_*.py
+backend_test_*.py
+*.tgz
+*.tar.gz
+*.zip
+*.tmp
+*.temp
+*_old.*
+*_orig.*
+*.bak
