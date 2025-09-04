@@ -15,7 +15,7 @@ class GroupService:
     """Service for managing groups"""
 
     def __init__(self) -> None:
-        self.collection = database.get_collection("groups")
+        self.collection: Any = database.get_collection("groups")
 
     async def create_group(self, group_data: GroupCreate) -> Group:
         """Create a new group"""
@@ -52,7 +52,7 @@ class GroupService:
             logger.warning(f"Group already exists: {identifier}")
             return existing
 
-        await self.collection.insert_one(group.dict())
+        await self.collection.insert_one(group.dict())  # type: ignore
         logger.info(f"Created group: {identifier}")
 
         return group
@@ -74,7 +74,7 @@ class GroupService:
 
     async def get_all_groups(self) -> list[Group]:
         """Get all groups"""
-        cursor = self.collection.find()
+        cursor = self.collection.find()  # type: ignore
         groups = []
 
         async for doc in cursor:
@@ -84,7 +84,7 @@ class GroupService:
 
     async def get_active_groups(self) -> list[Group]:
         """Get only active groups"""
-        cursor = self.collection.find({"is_active": True})
+        cursor = self.collection.find({"is_active": True})  # type: ignore
         groups = []
 
         async for doc in cursor:
@@ -94,7 +94,7 @@ class GroupService:
 
     async def get_group_by_id(self, group_id: str) -> Group | None:
         """Get group by ID"""
-        doc = await self.collection.find_one({"id": group_id})
+        doc = await self.collection.find_one({"id": group_id})  # type: ignore
 
         if doc:
             return Group(**doc)
@@ -111,7 +111,7 @@ class GroupService:
             ]
         }
 
-        doc = await self.collection.find_one(query)
+        doc = await self.collection.find_one(query)  # type: ignore
 
         if doc:
             return Group(**doc)
@@ -134,7 +134,7 @@ class GroupService:
 
         update_dict["updated_at"] = datetime.utcnow()
 
-        result = await self.collection.update_one({"id": group_id}, {"$set": update_dict})
+        result = await self.collection.update_one({"id": group_id}, {"$set": update_dict})  # type: ignore
 
         if result.modified_count > 0:
             logger.info(f"Updated group: {group_id}")
@@ -144,7 +144,7 @@ class GroupService:
 
     async def delete_group(self, group_id: str) -> bool:
         """Delete a group"""
-        result = await self.collection.delete_one({"id": group_id})
+        result = await self.collection.delete_one({"id": group_id})  # type: ignore
 
         if result.deleted_count > 0:
             logger.info(f"Deleted group: {group_id}")
@@ -154,13 +154,13 @@ class GroupService:
 
     async def increment_message_count(self, group_telegram_id: str) -> None:
         """Increment message count for a group"""
-        await self.collection.update_one(
+        await self.collection.update_one(  # type: ignore
             {"group_id": group_telegram_id}, {"$inc": {"message_count": 1}}
         )
 
     async def get_group_stats(self) -> dict[str, int]:
         """Get group statistics"""
-        total = await self.collection.count_documents({})
-        active = await self.collection.count_documents({"is_active": True})
+        total = await self.collection.count_documents({})  # type: ignore
+        active = await self.collection.count_documents({"is_active": True})  # type: ignore
 
         return {"total": total, "active": active, "inactive": total - active}
