@@ -146,7 +146,7 @@ class TestConfigServiceExtended:
         result = await config_service.set_config(config_key, new_value)
         
         assert result is not None
-        assert result.value == "30"
+        assert result.value == 30  # Integer value, not string
         assert result.value_type == "int"
         
         # Verify update was called
