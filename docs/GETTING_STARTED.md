@@ -9,7 +9,7 @@
 # Clone and install
 git clone https://github.com/dygje/Otogram.git
 cd Otogram
-make install-dev
+make setup
 
 # Setup MongoDB (choose one)
 docker run -d -p 27017:27017 --name otogram-mongo mongo:7.0
