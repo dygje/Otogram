@@ -205,9 +205,10 @@ For detailed information, see the [`docs/`](docs/) folder:
 
 ### First Time Setup
 1. **Get Credentials**: Visit [my.telegram.org](https://my.telegram.org) and [@BotFather](https://t.me/BotFather)
-2. **Start Small**: Add 5-10 groups first, test thoroughly
-3. **Monitor**: Check `logs/app.log` regularly
-4. **Conservative Settings**: Use default timing, increase gradually if needed
+2. **Run System**: Follow Quick Start guide above
+3. **Authenticate Userbot**: Use `/auth` command in your bot (NEW - No terminal needed!)
+4. **Start Small**: Add 5-10 groups first, test thoroughly
+5. **Monitor**: Check `logs/app.log` regularly
 
 ### Daily Workflow
 ```bash
