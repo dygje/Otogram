@@ -220,6 +220,15 @@ class Database:
 
         return health
 
+    async def health_check(self) -> bool:
+        """Simple health check - returns True if database is connected and responding"""
+        try:
+            if self.client is None or self.db is None:
+                return False
+            return await self.ping()
+        except Exception:
+            return False
+
     def get_collection(self, name: str) -> Any:  # AsyncIOMotorCollection
         """Get a collection"""
         if self.db is None:
