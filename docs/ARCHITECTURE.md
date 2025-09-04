@@ -972,7 +972,7 @@ class ErrorHandler:
 
 ---
 
-**Last Updated**: January 2025 | **Version**: 2.0.3  
-**Status**: 🟢 Production Ready
+**Last Updated**: September 2025 | **Version**: 2.0.3  
+**Status**: 🟢 Production Ready | **Python**: 3.11 | 3.12
 
 This architecture documentation provides a comprehensive overview of Otogram's design principles, implementation patterns, and scalability considerations. The system is built for maintainability, performance, and production reliability.
