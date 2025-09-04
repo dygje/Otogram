@@ -198,7 +198,7 @@ class ConfigService:
 
         return history
 
-    async def backup_all_configs(self) -> str:
+    async def backup_all_configs(self) -> dict[str, Any]:
         """Backup all configurations"""
         configs = await self.get_all_configs()
         backup_data = {
@@ -211,7 +211,12 @@ class ConfigService:
         
         backup_id = str(result.inserted_id)
         logger.info(f"Created config backup: {backup_id}")
-        return backup_id
+        
+        return {
+            "backup_id": backup_id,
+            "timestamp": backup_data["timestamp"],
+            "config_count": len(configs)
+        }
 
     async def restore_from_backup(self, backup_id: str) -> bool:
         """Restore configurations from backup"""
