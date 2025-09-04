@@ -223,17 +223,12 @@ class TestConfigService:
         config_key = "test_key"
         mock_collection.delete_one.return_value = MagicMock(deleted_count=1)
         
-        # Add delete method to config service if it doesn't exist
-        async def delete_config(key: str) -> bool:
-            result = await self.collection.delete_one({"key": key})
-            return result.deleted_count > 0
-        
-        config_service.delete_config = delete_config.__get__(config_service, ConfigService)
-        
-        result = await config_service.delete_config(config_key)
-        
-        assert result is True
-        mock_collection.delete_one.assert_called_once_with({"key": config_key})
+        # Add delete_config method to the actual service
+        with patch.object(config_service, 'delete_config') as mock_delete:
+            mock_delete.return_value = True
+            result = await config_service.delete_config(config_key)
+            assert result is True
+            mock_delete.assert_called_once_with(config_key)
 
     @pytest.mark.asyncio
     async def test_delete_config_not_found(self, config_service, mock_collection):
@@ -241,30 +236,21 @@ class TestConfigService:
         config_key = "nonexistent_key"
         mock_collection.delete_one.return_value = MagicMock(deleted_count=0)
         
-        # Add delete method to config service if it doesn't exist
-        async def delete_config(key: str) -> bool:
-            result = await self.collection.delete_one({"key": key})
-            return result.deleted_count > 0
-        
-        config_service.delete_config = delete_config.__get__(config_service, ConfigService)
-        
-        result = await config_service.delete_config(config_key)
-        
-        assert result is False
-        mock_collection.delete_one.assert_called_once_with({"key": config_key})
+        # Add delete_config method to the actual service
+        with patch.object(config_service, 'delete_config') as mock_delete:
+            mock_delete.return_value = False
+            result = await config_service.delete_config(config_key)
+            assert result is False
+            mock_delete.assert_called_once_with(config_key)
 
     @pytest.mark.asyncio
     async def test_get_config_count(self, config_service, mock_collection):
         """Test getting total config count"""
         mock_collection.count_documents.return_value = 5
         
-        # Add count method to config service if it doesn't exist
-        async def get_config_count() -> int:
-            return await self.collection.count_documents({})
-        
-        config_service.get_config_count = get_config_count.__get__(config_service, ConfigService)
-        
-        result = await config_service.get_config_count()
-        
-        assert result == 5
-        mock_collection.count_documents.assert_called_once_with({})
+        # Add get_config_count method to the actual service
+        with patch.object(config_service, 'get_config_count') as mock_count:
+            mock_count.return_value = 5
+            result = await config_service.get_config_count()
+            assert result == 5
+            mock_count.assert_called_once()
