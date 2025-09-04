@@ -165,7 +165,7 @@ def check_dependencies() -> bool:
     missing = []
     for import_name, package_name in required_packages:
         try:
-            __import__(import_name)
+            importlib.import_module(import_name)
             print(f"✅ {package_name} - Installed")
         except ImportError:
             print(f"❌ {package_name} - Missing")
