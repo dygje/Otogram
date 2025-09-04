@@ -390,7 +390,7 @@ class TestBlacklistHandlers:
         # Verify response was sent
         mock_message.reply_text.assert_called_once()
         call_args = mock_message.reply_text.call_args[0][0]
-        assert "No blacklisted" in call_args or "Tidak ada yang diblokir" in call_args
+        assert "tidak ada grup yang di-blacklist" in call_args.lower() or "no blacklisted" in call_args.lower()
 
     @pytest.mark.asyncio
     async def test_show_blacklist_with_data(self, blacklist_handlers):
