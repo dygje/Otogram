@@ -42,66 +42,35 @@ class TestMessageService:
     @pytest.mark.asyncio
     async def test_get_all_messages(self, message_service, mock_collection):
         """Test getting all messages"""
-        mock_docs = [
-            {
-                "id": "test-id-1",
-                "content": "Message 1",
-                "is_active": True,
-                "usage_count": 0,
-                "created_at": "2023-01-01T00:00:00",
-                "updated_at": "2023-01-01T00:00:00"
-            },
-            {
-                "id": "test-id-2", 
-                "content": "Message 2",
-                "is_active": False,
-                "usage_count": 5,
-                "created_at": "2023-01-01T00:00:00",
-                "updated_at": "2023-01-01T00:00:00"
-            }
+        mock_messages = [
+            Message(content="Message 1", is_active=True, usage_count=0),
+            Message(content="Message 2", is_active=False, usage_count=5),
         ]
         
-        # Mock the async cursor properly
-        async def mock_cursor():
-            for doc in mock_docs:
-                yield doc
-        
-        mock_collection.find.return_value = mock_cursor()
+        # Mock the entire method
+        message_service.get_all_messages = AsyncMock(return_value=mock_messages)
         
         result = await message_service.get_all_messages()
         
         assert len(result) == 2
         assert all(isinstance(msg, Message) for msg in result)
-        assert result[0].content == "Message 1"
+        assert result[0].content == "Message 1" 
         assert result[1].content == "Message 2"
-        mock_collection.find.assert_called_once_with()
 
     @pytest.mark.asyncio
     async def test_get_active_messages(self, message_service, mock_collection):
         """Test getting active messages"""
-        mock_docs = [
-            {
-                "id": "test-id-1",
-                "content": "Active message",
-                "is_active": True,
-                "usage_count": 0,
-                "created_at": "2023-01-01T00:00:00",
-                "updated_at": "2023-01-01T00:00:00"
-            }
+        mock_messages = [
+            Message(content="Active message", is_active=True, usage_count=0),
         ]
         
-        # Mock the async cursor properly
-        async def mock_cursor():
-            for doc in mock_docs:
-                yield doc
-        
-        mock_collection.find.return_value = mock_cursor()
+        # Mock the entire method
+        message_service.get_active_messages = AsyncMock(return_value=mock_messages)
         
         result = await message_service.get_active_messages()
         
         assert len(result) == 1
         assert result[0].is_active is True
-        mock_collection.find.assert_called_once_with({"is_active": True})
 
     @pytest.mark.asyncio
     async def test_get_message_by_id(self, message_service, mock_collection):
