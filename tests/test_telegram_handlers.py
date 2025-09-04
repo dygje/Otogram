@@ -339,7 +339,7 @@ class TestConfigHandlers:
         from src.models.config import Configuration
         
         # Mock config update
-        updated_config = Configuration(key="test_setting", value="new_value", description="Test setting")
+        updated_config = Configuration(key="test_setting", value="new_value", value_type="str", description="Test setting")
         config_handlers.config_service.set_config = AsyncMock(return_value=updated_config)
         
         mock_message = AsyncMock()
