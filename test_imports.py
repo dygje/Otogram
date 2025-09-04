@@ -48,7 +48,7 @@ def test_model_imports():
         from src.models.config import Configuration, ConfigUpdate
         print("✅ src.models.config")
         
-        from src.models.log import LogEntry
+        from src.models.log import Log, LogCreate
         print("✅ src.models.log")
         
         return True
