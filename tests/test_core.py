@@ -51,5 +51,4 @@ class TestDatabase:
     async def test_health_check(self, test_database: Database) -> None:
         """Test database health check"""
         health = await test_database.health_check()
-        assert health["status"] == "healthy"
-        assert health["connected"] is True
+        assert health is True
