@@ -564,5 +564,5 @@ class TestConfigServiceExtended:
         assert config_service._infer_value_type(3.14) == "float"
         assert config_service._infer_value_type(True) == "bool"
         assert config_service._infer_value_type(False) == "bool"
-        assert config_service._infer_value_type("hello") == "string"
-        assert config_service._infer_value_type([1, 2, 3]) == "string"  # Fallback
+        assert config_service._infer_value_type("hello") == "str"
+        assert config_service._infer_value_type([1, 2, 3]) == "str"  # Fallback
