@@ -26,6 +26,9 @@ nano .env  # Add your Telegram API credentials
 # 4. Verify and run
 make health
 make run
+
+# 5. Setup userbot authentication via Telegram bot
+# Open Telegram → Find your bot → Type /auth
 ```
 
 ## ✨ Key Features
