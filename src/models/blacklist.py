@@ -49,6 +49,16 @@ class Blacklist(BaseDocument):
     duration_seconds: int | None = Field(None, description="Duration in seconds")
     error_message: str | None = Field(None, description="Original error message")
 
+    def __init__(self, **data):
+        """Initialize blacklist with auto-calculated expires_at"""
+        super().__init__(**data)
+        
+        # Auto-calculate expires_at for temporary blacklists
+        if (self.blacklist_type == BlacklistType.TEMPORARY and 
+            self.duration_seconds and 
+            not self.expires_at):
+            self.expires_at = datetime.utcnow() + timedelta(seconds=self.duration_seconds)
+
     @property
     def is_expired(self) -> bool:
         """Check if temporary blacklist expired"""
