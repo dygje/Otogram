@@ -4,9 +4,8 @@ Blacklist Models
 
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import ClassVar
 
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from src.models.base import BaseDocument
 

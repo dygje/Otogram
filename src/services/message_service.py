@@ -2,7 +2,7 @@
 Message Service - Handles message CRUD operations
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any
 
 from loguru import logger
@@ -39,23 +39,25 @@ class MessageService:
     async def get_active_messages(self, limit: int | None = None) -> list[Message]:
         """Get only active messages"""
         cursor = self.collection.find({"is_active": True})
-        
+
         if limit:
             cursor = cursor.limit(limit)
-        
+
         messages = []
         async for doc in cursor:
             messages.append(Message(**doc))
 
         return messages
 
-    async def get_messages_by_usage_count(self, min_count: int = 0, max_count: int | None = None) -> list[Message]:
+    async def get_messages_by_usage_count(
+        self, min_count: int = 0, max_count: int | None = None
+    ) -> list[Message]:
         """Get messages filtered by usage count"""
         query = {"usage_count": {"$gte": min_count}}
-        
+
         if max_count is not None:
             query["usage_count"]["$lte"] = max_count
-        
+
         cursor = self.collection.find(query)
         messages = []
 
@@ -67,7 +69,7 @@ class MessageService:
     async def search_messages(self, search_term: str) -> list[Message]:
         """Search messages by content"""
         query = {"content": {"$regex": search_term, "$options": "i"}}
-        
+
         cursor = self.collection.find(query)
         messages = []
 
@@ -84,19 +86,21 @@ class MessageService:
 
         new_status = not message.is_active
         update_data = MessageUpdate(is_active=new_status)
-        
+
         updated = await self.update_message(message_id, update_data)
-        
+
         if updated:
             status_text = "activated" if new_status else "deactivated"
             logger.info(f"Message {message_id} {status_text}")
-        
+
         return updated
 
-    async def batch_update_messages(self, message_ids: list[str], update_data: MessageUpdate) -> dict[str, bool]:
+    async def batch_update_messages(
+        self, message_ids: list[str], update_data: MessageUpdate
+    ) -> dict[str, bool]:
         """Batch update multiple messages"""
         results = {}
-        
+
         for message_id in message_ids:
             try:
                 updated = await self.update_message(message_id, update_data)
@@ -110,7 +114,7 @@ class MessageService:
     async def batch_delete_messages(self, message_ids: list[str]) -> dict[str, bool]:
         """Batch delete multiple messages"""
         results = {}
-        
+
         for message_id in message_ids:
             try:
                 success = await self.delete_message(message_id)
@@ -124,10 +128,9 @@ class MessageService:
     async def reset_all_usage_counts(self) -> int:
         """Reset usage count for all messages"""
         result = await self.collection.update_many(
-            {},
-            {"$set": {"usage_count": 0, "updated_at": datetime.utcnow()}}
+            {}, {"$set": {"usage_count": 0, "updated_at": datetime.utcnow()}}
         )
-        
+
         logger.info(f"Reset usage count for {result.modified_count} messages")
         return result.modified_count
 
@@ -146,16 +149,16 @@ class MessageService:
                 }
             }
         ]
-        
+
         cursor = self.collection.aggregate(pipeline)
         result = await cursor.to_list(length=1)
-        
+
         if result:
             stats = result[0]
             stats.pop("_id", None)  # Remove _id field
             stats["inactive_messages"] = stats["total_messages"] - stats["active_messages"]
             return stats
-        
+
         return {
             "total_messages": 0,
             "active_messages": 0,
@@ -191,15 +194,12 @@ class MessageService:
         existing = await self.collection.find_one({"content": content})
         return existing is not None
 
-    async def get_messages_by_date_range(self, start_date: datetime, end_date: datetime) -> list[Message]:
+    async def get_messages_by_date_range(
+        self, start_date: datetime, end_date: datetime
+    ) -> list[Message]:
         """Get messages created within date range"""
-        query = {
-            "created_at": {
-                "$gte": start_date,
-                "$lte": end_date
-            }
-        }
-        
+        query = {"created_at": {"$gte": start_date, "$lte": end_date}}
+
         cursor = self.collection.find(query)
         messages = []
 
@@ -212,23 +212,20 @@ class MessageService:
         """Validate message content"""
         if not content or not content.strip():
             return False
-        
+
         # Check length limits (from Telegram limits)
         if len(content) > 4096:
             return False
-        
+
         return True
 
     async def archive_old_messages(self, cutoff_date: datetime) -> int:
         """Archive messages older than cutoff date"""
         result = await self.collection.update_many(
-            {
-                "created_at": {"$lt": cutoff_date},
-                "is_active": True
-            },
-            {"$set": {"is_active": False, "updated_at": datetime.utcnow()}}
+            {"created_at": {"$lt": cutoff_date}, "is_active": True},
+            {"$set": {"is_active": False, "updated_at": datetime.utcnow()}},
         )
-        
+
         logger.info(f"Archived {result.modified_count} old messages")
         return result.modified_count
 
@@ -242,7 +239,9 @@ class MessageService:
 
     async def update_message(self, message_id: str, update_data: MessageUpdate) -> Message | None:
         """Update a message"""
-        update_dict: dict[str, Any] = {k: v for k, v in update_data.model_dump().items() if v is not None}
+        update_dict: dict[str, Any] = {
+            k: v for k, v in update_data.model_dump().items() if v is not None
+        }
 
         if not update_dict:
             return await self.get_message_by_id(message_id)
@@ -270,8 +269,8 @@ class MessageService:
     async def increment_usage_count(self, message_id: str) -> bool:
         """Increment usage count for a message"""
         result = await self.collection.update_one(
-            {"id": message_id}, 
-            {"$inc": {"usage_count": 1}, "$set": {"updated_at": datetime.utcnow()}}
+            {"id": message_id},
+            {"$inc": {"usage_count": 1}, "$set": {"updated_at": datetime.utcnow()}},
         )
         return result.matched_count > 0
 

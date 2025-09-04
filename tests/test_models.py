@@ -5,9 +5,9 @@ Data models tests - Key validation only
 import pytest
 from pydantic import ValidationError
 
-from src.models.message import Message, MessageCreate
-from src.models.group import Group, GroupCreate
 from src.models.blacklist import Blacklist, BlacklistType
+from src.models.group import Group
+from src.models.message import Message, MessageCreate
 
 
 class TestMessage:
@@ -41,9 +41,7 @@ class TestGroup:
     def test_group_creation(self) -> None:
         """Test group creation works"""
         group = Group(
-            group_id="-1001234567890",
-            group_username="@testgroup",
-            group_title="Test Group"
+            group_id="-1001234567890", group_username="@testgroup", group_title="Test Group"
         )
         assert group.group_id == "-1001234567890"
         assert group.group_username == "@testgroup"
@@ -68,7 +66,7 @@ class TestBlacklist:
         blacklist = Blacklist(
             group_id="-1001234567890",
             blacklist_type=BlacklistType.PERMANENT,
-            reason="UserDeactivated"
+            reason="UserDeactivated",
         )
         assert blacklist.group_id == "-1001234567890"
         assert blacklist.blacklist_type == BlacklistType.PERMANENT
@@ -80,7 +78,7 @@ class TestBlacklist:
             group_id="-1001234567890",
             blacklist_type=BlacklistType.TEMPORARY,
             reason="FloodWait",
-            duration_seconds=3600
+            duration_seconds=3600,
         )
         assert blacklist.expires_at is not None
         assert not blacklist.is_expired()

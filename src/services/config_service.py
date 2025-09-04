@@ -20,7 +20,7 @@ class ConfigService:
     async def initialize_default_configs(self) -> int:
         """Initialize default configurations"""
         initialized_count = 0
-        
+
         for config_data in DEFAULT_CONFIGS:
             existing = await self.collection.find_one({"key": config_data["key"]})
 
@@ -46,7 +46,7 @@ class ConfigService:
                 await self.collection.insert_one(config.model_dump())
                 logger.info(f"Initialized config: {config_data['key']}")
                 initialized_count += 1
-        
+
         return initialized_count
 
     async def get_config(self, key: str) -> Configuration | None:
@@ -66,7 +66,9 @@ class ConfigService:
 
         return default
 
-    async def set_config(self, key: str, value: Any, description: str | None = None) -> Configuration | None:
+    async def set_config(
+        self, key: str, value: Any, description: str | None = None
+    ) -> Configuration | None:
         """Set configuration value"""
         config = await self.get_config(key)
 
@@ -149,7 +151,7 @@ class ConfigService:
                 {"description": {"$regex": search_term, "$options": "i"}},
             ]
         }
-        
+
         cursor = self.collection.find(query)
         configs = []
 
@@ -161,7 +163,7 @@ class ConfigService:
     async def bulk_update_configs(self, updates: dict[str, Any]) -> dict[str, bool]:
         """Bulk update multiple configurations"""
         results = {}
-        
+
         for key, value in updates.items():
             try:
                 config = await self.set_config(key, value)
@@ -187,16 +189,14 @@ class ConfigService:
 
         # Reset to default
         return await self.set_config(
-            key,
-            default_config["value"],
-            default_config.get("description")
+            key, default_config["value"], default_config.get("description")
         )
 
     async def get_config_history(self, key: str, limit: int = 10) -> list[dict[str, Any]]:
         """Get configuration change history"""
         history_collection = self._get_history_collection()
         cursor = history_collection.find({"key": key}).sort("timestamp", -1).limit(limit)
-        
+
         history = []
         async for doc in cursor:
             history.append(doc)
@@ -208,28 +208,28 @@ class ConfigService:
         configs = await self.get_all_configs()
         backup_data = {
             "timestamp": datetime.utcnow(),
-            "configs": [config.model_dump() for config in configs]
+            "configs": [config.model_dump() for config in configs],
         }
-        
+
         backup_collection = self._get_backup_collection()
         result = await backup_collection.insert_one(backup_data)
-        
+
         backup_id = str(result.inserted_id)
         logger.info(f"Created config backup: {backup_id}")
-        
+
         return {
             "backup_id": backup_id,
             "timestamp": backup_data["timestamp"],
-            "config_count": len(configs)
+            "config_count": len(configs),
         }
 
     async def restore_from_backup(self, backup_id: str) -> bool:
         """Restore configurations from backup"""
         from bson import ObjectId
-        
+
         backup_collection = self._get_backup_collection()
         backup = await backup_collection.find_one({"_id": ObjectId(backup_id)})
-        
+
         if not backup:
             logger.warning(f"Backup not found: {backup_id}")
             return False
@@ -237,15 +237,15 @@ class ConfigService:
         try:
             # Clear current configs
             await self.collection.delete_many({})
-            
+
             # Restore from backup
             configs_data = backup["configs"]
             if configs_data:
                 await self.collection.insert_many(configs_data)
-            
+
             logger.info(f"Restored {len(configs_data)} configs from backup: {backup_id}")
             return True
-            
+
         except Exception as e:
             logger.error(f"Failed to restore backup {backup_id}: {e}")
             return False
@@ -258,7 +258,12 @@ class ConfigService:
             elif value_type == "float":
                 float(value)
             elif value_type == "bool":
-                if not isinstance(value, bool) and str(value).lower() not in ("true", "false", "1", "0"):
+                if not isinstance(value, bool) and str(value).lower() not in (
+                    "true",
+                    "false",
+                    "1",
+                    "0",
+                ):
                     return False
             return True
         except (ValueError, TypeError):

@@ -14,12 +14,14 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from motor.motor_asyncio import AsyncIOMotorClient
+
 from src.core.config import settings
 
 
 @dataclass
 class HealthCheckResult:
     """Health check result"""
+
     status: str  # ✅, ⚠️, or ❌
     message: str
     details: str | None = None
@@ -33,16 +35,10 @@ async def check_mongodb() -> HealthCheckResult:
         client.close()
 
         return HealthCheckResult(
-            status="✅",
-            message="MongoDB connected",
-            details=f"URL: {settings.MONGO_URL}"
+            status="✅", message="MongoDB connected", details=f"URL: {settings.MONGO_URL}"
         )
     except Exception as e:
-        return HealthCheckResult(
-            status="❌", 
-            message="MongoDB connection failed", 
-            details=str(e)
-        )
+        return HealthCheckResult(status="❌", message="MongoDB connection failed", details=str(e))
 
 
 def check_credentials() -> HealthCheckResult:
@@ -59,22 +55,14 @@ def check_credentials() -> HealthCheckResult:
 
         if not missing:
             return HealthCheckResult(
-                status="✅",
-                message="All credentials configured",
-                details="Ready for automation"
+                status="✅", message="All credentials configured", details="Ready for automation"
             )
         else:
             return HealthCheckResult(
-                status="❌",
-                message="Missing credentials",
-                details=f"Need: {', '.join(missing)}"
+                status="❌", message="Missing credentials", details=f"Need: {', '.join(missing)}"
             )
     except Exception as e:
-        return HealthCheckResult(
-            status="❌", 
-            message="Credential check failed", 
-            details=str(e)
-        )
+        return HealthCheckResult(status="❌", message="Credential check failed", details=str(e))
 
 
 def check_python() -> bool:
@@ -94,7 +82,7 @@ def check_python() -> bool:
 def check_packages() -> bool:
     """Check essential packages"""
     packages = [
-        ("pyrogram", "pyrofork"), 
+        ("pyrogram", "pyrofork"),
         ("telegram", "python-telegram-bot"),
         ("motor", "motor"),
         ("pydantic", "pydantic"),
@@ -117,7 +105,7 @@ def check_files() -> bool:
     """Check essential files exist"""
     essential_files = [
         "main.py",
-        "pyproject.toml", 
+        "pyproject.toml",
         ".env",
         "src/core/config.py",
         "src/telegram/bot_manager.py",
@@ -138,7 +126,7 @@ async def run_checks() -> int:
     """Run all health checks"""
     checks = [
         ("Python Version", check_python),
-        ("Essential Packages", check_packages), 
+        ("Essential Packages", check_packages),
         ("Project Files", check_files),
         ("Telegram Credentials", check_credentials),
         ("MongoDB Connection", check_mongodb),
@@ -152,7 +140,7 @@ async def run_checks() -> int:
 
     for name, check_func in checks:
         print(f"\n🔍 {name}...")
-        
+
         try:
             if asyncio.iscoroutinefunction(check_func):
                 result = await check_func()
@@ -168,7 +156,7 @@ async def run_checks() -> int:
             else:
                 if check_func():
                     passed += 1
-                    
+
         except Exception as e:
             print(f"❌ Error: {e}")
 

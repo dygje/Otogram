@@ -3,9 +3,9 @@ Log Models
 """
 
 from enum import Enum
-from typing import Any, ClassVar
+from typing import Any
 
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from src.models.base import BaseDocument
 

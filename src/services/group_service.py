@@ -128,7 +128,7 @@ class GroupService:
 
         update_data["updated_at"] = datetime.utcnow()
         result = await self.collection.update_one({"id": group_id}, {"$set": update_data})
-        
+
         return result.matched_count > 0
 
     async def update_group_info(
@@ -164,11 +164,11 @@ class GroupService:
 
         new_status = not group.is_active
         updated = await self.update_group_info(group_id, is_active=new_status)
-        
+
         if updated:
             status_text = "activated" if new_status else "deactivated"
             logger.info(f"Group {group_id} {status_text}")
-        
+
         return updated
 
     async def search_groups(self, search_term: str) -> list[Group]:
@@ -180,7 +180,7 @@ class GroupService:
                 {"group_id": {"$regex": search_term, "$options": "i"}},
             ]
         }
-        
+
         cursor = self.collection.find(query)
         groups = []
 
@@ -199,10 +199,12 @@ class GroupService:
 
         return groups
 
-    async def batch_update_groups(self, group_ids: list[str], update_data: dict[str, Any]) -> dict[str, bool]:
+    async def batch_update_groups(
+        self, group_ids: list[str], update_data: dict[str, Any]
+    ) -> dict[str, bool]:
         """Batch update multiple groups"""
         results = {}
-        
+
         for group_id in group_ids:
             try:
                 success = await self.update_group(group_id, update_data.copy())
@@ -216,7 +218,7 @@ class GroupService:
     async def batch_delete_groups(self, group_ids: list[str]) -> dict[str, bool]:
         """Batch delete multiple groups"""
         results = {}
-        
+
         for group_id in group_ids:
             try:
                 success = await self.delete_group(group_id)
@@ -227,13 +229,15 @@ class GroupService:
 
         return results
 
-    async def get_groups_with_message_count_filter(self, min_count: int = 0, max_count: int | None = None) -> list[Group]:
+    async def get_groups_with_message_count_filter(
+        self, min_count: int = 0, max_count: int | None = None
+    ) -> list[Group]:
         """Get groups filtered by message count"""
         query = {"message_count": {"$gte": min_count}}
-        
+
         if max_count is not None:
             query["message_count"]["$lte"] = max_count
-        
+
         cursor = self.collection.find(query)
         groups = []
 
@@ -245,10 +249,9 @@ class GroupService:
     async def reset_all_message_counts(self) -> int:
         """Reset message count for all groups"""
         result = await self.collection.update_many(
-            {},
-            {"$set": {"message_count": 0, "updated_at": datetime.utcnow()}}
+            {}, {"$set": {"message_count": 0, "updated_at": datetime.utcnow()}}
         )
-        
+
         logger.info(f"Reset message count for {result.modified_count} groups")
         return result.modified_count
 
@@ -267,16 +270,16 @@ class GroupService:
                 }
             }
         ]
-        
+
         cursor = self.collection.aggregate(pipeline)
         result = await cursor.to_list(length=1)
-        
+
         if result:
             summary = result[0]
             summary.pop("_id", None)  # Remove _id field
             summary["inactive_groups"] = summary["total_groups"] - summary["active_groups"]
             return summary
-        
+
         return {
             "total_groups": 0,
             "active_groups": 0,
@@ -299,9 +302,7 @@ class GroupService:
 
     async def increment_message_count(self, group_id: str) -> bool:
         """Increment message count for a group"""
-        result = await self.collection.update_one(
-            {"id": group_id}, {"$inc": {"message_count": 1}}
-        )
+        result = await self.collection.update_one({"id": group_id}, {"$inc": {"message_count": 1}})
         return result.matched_count > 0
 
     async def get_group_count(self) -> int:

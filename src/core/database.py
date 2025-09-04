@@ -80,7 +80,7 @@ class Database:
 
         except Exception as e:
             logger.warning(f"⚠️ Index creation warning: {e}")
-    
+
     async def _create_indexes(self) -> None:
         """Legacy method - alias for create_indexes"""
         await self.create_indexes()
@@ -89,7 +89,7 @@ class Database:
         """Ping database to check connection"""
         if not self.client:
             return False
-        
+
         try:
             result = await self.client.admin.command("ping")
             return result.get("ok") == 1
@@ -100,7 +100,7 @@ class Database:
         """Get database statistics"""
         if not self.db:
             raise RuntimeError("Database not connected")
-        
+
         try:
             stats = await self.db.command("dbStats")
             return {
@@ -119,7 +119,7 @@ class Database:
         """Drop a collection"""
         if not self.db:
             raise RuntimeError("Database not connected")
-        
+
         try:
             await self.db.drop_collection(collection_name)
             logger.info(f"Dropped collection: {collection_name}")
@@ -132,7 +132,7 @@ class Database:
         """List all collections"""
         if not self.db:
             raise RuntimeError("Database not connected")
-        
+
         try:
             collections = await self.db.list_collection_names()
             return collections
@@ -149,7 +149,7 @@ class Database:
         """Get collection document count"""
         if not self.db:
             raise RuntimeError("Database not connected")
-        
+
         try:
             collection = self.db[collection_name]
             return await collection.count_documents({})
@@ -162,7 +162,7 @@ class Database:
         if not self.client:
             await self.connect()
             return
-        
+
         # Test existing connection
         if not await self.ping():
             logger.warning("Database connection lost, reconnecting...")
@@ -172,10 +172,10 @@ class Database:
         """Bulk insert documents"""
         if not self.db:
             raise RuntimeError("Database not connected")
-        
+
         if not documents:
             return 0
-        
+
         try:
             collection = self.db[collection_name]
             result = await collection.insert_many(documents)
@@ -188,7 +188,7 @@ class Database:
         """Start a database transaction"""
         if not self.client:
             raise RuntimeError("Database not connected")
-        
+
         return await self.client.start_session()
 
     async def comprehensive_health_check(self) -> dict[str, Any]:
@@ -198,26 +198,26 @@ class Database:
             "ping_success": False,
             "collections": [],
             "stats": None,
-            "error": None
+            "error": None,
         }
-        
+
         try:
             # Check connection
             health["connected"] = self.client is not None and self.db is not None
-            
+
             if health["connected"]:
                 # Check ping
                 health["ping_success"] = await self.ping()
-                
+
                 # Get collections
                 health["collections"] = await self.list_collections()
-                
+
                 # Get stats
                 health["stats"] = await self.get_database_stats()
-                
+
         except Exception as e:
             health["error"] = str(e)
-        
+
         return health
 
     def get_collection(self, name: str) -> Any:  # AsyncIOMotorCollection

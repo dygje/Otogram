@@ -35,7 +35,7 @@ class TestConfig:
             TELEGRAM_API_ID=12345,
             TELEGRAM_API_HASH="hash",
             TELEGRAM_BOT_TOKEN="token",
-            TELEGRAM_PHONE_NUMBER="+123456789"
+            TELEGRAM_PHONE_NUMBER="+123456789",
         )
         assert settings.is_configured() is True
 
