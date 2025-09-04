@@ -9,7 +9,7 @@ description = "Personal Telegram automation system"
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
-    {name = "dygje", email = "dygje@example.com"}
+    {name = "dygje"}
 ]
 keywords = ["telegram", "automation", "bot", "personal"]
 classifiers = [
