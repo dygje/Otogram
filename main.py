@@ -25,9 +25,9 @@ class TelegramAutomationApp:
     """Main Application Class"""
 
     def __init__(self) -> None:
-        self.bot_manager = None
-        self.database = None
-        self.running = False
+        self.bot_manager: BotManager | None = None
+        self.database: Database | None = None
+        self.running: bool = False
         self._setup_logging()
 
     def _setup_logging(self) -> None:
