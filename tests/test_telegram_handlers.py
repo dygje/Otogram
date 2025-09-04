@@ -189,7 +189,7 @@ class TestGroupHandlers:
         # Verify response was sent
         mock_message.reply_text.assert_called_once()
         call_args = mock_message.reply_text.call_args[0][0]
-        assert "No groups" in call_args or "Tidak ada grup" in call_args
+        assert "belum ada grup" in call_args.lower() or "no groups" in call_args.lower()
 
     @pytest.mark.asyncio
     async def test_add_group_command(self, group_handlers):
