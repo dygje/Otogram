@@ -33,13 +33,12 @@ class BotManager:
             await self.management_bot.start()
             logger.info("✅ Management bot started")
 
-            # Start userbot for broadcasting
-            self.userbot = UserBot()
-            await self.userbot.start()
-            logger.info("✅ Userbot started")
+            # Note: Userbot authentication will be handled separately
+            # due to verification code requirement
+            logger.info("📱 Userbot authentication required - use /menu in Telegram bot for setup")
 
             self.running = True
-            logger.info("🎯 Both management bot and userbot are now running!")
+            logger.info("🎯 Management bot is ready! Use your Telegram bot to complete setup.")
 
         except Exception as e:
             logger.error(f"❌ Failed to start Telegram services: {e}")
