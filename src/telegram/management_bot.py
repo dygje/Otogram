@@ -45,7 +45,10 @@ class ManagementBot:
         # Start the bot
         await self.app.initialize()
         await self.app.start()
-        await self.app.updater.start_polling()
+        if self.app.updater:
+            await self.app.updater.start_polling()
+        else:
+            raise RuntimeError("Updater not available")
 
         logger.info("🤖 Management bot is running")
 
