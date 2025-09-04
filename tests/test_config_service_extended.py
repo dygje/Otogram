@@ -275,7 +275,10 @@ class TestConfigServiceExtended:
                 "id": "1",
                 "key": "message_delay",
                 "value": "5",
+                "value_type": "int",
                 "description": "Message delay setting",
+                "category": "general",
+                "is_editable": True,
                 "created_at": "2023-01-01T00:00:00",
                 "updated_at": "2023-01-01T00:00:00"
             },
@@ -283,7 +286,10 @@ class TestConfigServiceExtended:
                 "id": "2",
                 "key": "retry_config", 
                 "value": "3",
+                "value_type": "int",
                 "description": "Delay between retries",
+                "category": "general",
+                "is_editable": True,
                 "created_at": "2023-01-01T00:00:00",
                 "updated_at": "2023-01-01T00:00:00"
             }
