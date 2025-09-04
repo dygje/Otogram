@@ -37,7 +37,7 @@ class BlacklistHandlers:
                     f"⏰ **Kedaluwarsa:** {stats['expired']}\n\n"
                 )
 
-                keyboard: list[list[InlineKeyboardButton]] = []
+                keyboard_entries: list[list[InlineKeyboardButton]] = []
 
                 # Show permanent blacklists first
                 permanent_count = 0
@@ -50,7 +50,7 @@ class BlacklistHandlers:
                         permanent_count += 1
                         text += f"🔴 {identifier}\n   └ {blacklist.reason.value}\n\n"
 
-                        keyboard.append(
+                        keyboard_entries.append(
                             [
                                 InlineKeyboardButton(
                                     f"🗑️ Hapus #{permanent_count}",
@@ -73,7 +73,7 @@ class BlacklistHandlers:
 
                         text += f"🟡 {identifier} ({status})\n   └ {blacklist.reason.value}\n\n"
 
-                        keyboard.append(
+                        keyboard_entries.append(
                             [
                                 InlineKeyboardButton(
                                     f"🗑️ Hapus #{temporary_count}",
@@ -87,7 +87,7 @@ class BlacklistHandlers:
 
                 # Add cleanup button if there are expired entries
                 if stats["expired"] > 0:
-                    keyboard.append(
+                    keyboard_entries.append(
                         [
                             InlineKeyboardButton(
                                 f"🧹 Bersihkan Yang Kedaluwarsa ({stats['expired']})",
@@ -95,6 +95,8 @@ class BlacklistHandlers:
                             )
                         ]
                     )
+
+                keyboard = keyboard_entries
 
             keyboard.append(
                 [InlineKeyboardButton("🔙 Dashboard", callback_data="back_to_dashboard")]
@@ -105,7 +107,7 @@ class BlacklistHandlers:
                 await update.message.reply_text(
                     text, parse_mode="Markdown", reply_markup=reply_markup
                 )
-            else:
+            elif update.callback_query:
                 await update.callback_query.edit_message_text(
                     text, parse_mode="Markdown", reply_markup=reply_markup
                 )
@@ -137,18 +139,20 @@ class BlacklistHandlers:
             if removed_count > 0:
                 text = f"🧹 Berhasil membersihkan {removed_count} entry blacklist yang kedaluwarsa."
             else:
-                text = "i Tidak ada entry blacklist yang kedaluwarsa untuk dibersihkan."
+                text = "ℹ️ Tidak ada entry blacklist yang kedaluwarsa untuk dibersihkan."
 
             keyboard = [
                 [InlineKeyboardButton("🚫 Lihat Blacklist", callback_data="blacklist_menu")]
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
 
-            await update.callback_query.edit_message_text(text, reply_markup=reply_markup)
+            if update.callback_query:
+                await update.callback_query.edit_message_text(text, reply_markup=reply_markup)
 
         except Exception as e:
             logger.error(f"Error cleaning up blacklist: {e}")
-            await update.callback_query.edit_message_text("❌ Gagal membersihkan blacklist.")
+            if update.callback_query:
+                await update.callback_query.edit_message_text("❌ Gagal membersihkan blacklist.")
 
     async def _confirm_remove_blacklist(self, update: Update, blacklist_id: str) -> None:
         """Confirm blacklist removal"""
@@ -156,7 +160,8 @@ class BlacklistHandlers:
             blacklist = await self.blacklist_service.get_blacklist_entry_by_id(blacklist_id)
 
             if not blacklist:
-                await update.callback_query.edit_message_text("❌ Entry blacklist tidak ditemukan.")
+                if update.callback_query:
+                    await update.callback_query.edit_message_text("❌ Entry blacklist tidak ditemukan.")
                 return
 
             identifier = blacklist.group_identifier or blacklist.group_id
@@ -180,13 +185,15 @@ class BlacklistHandlers:
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
 
-            await update.callback_query.edit_message_text(
-                text, parse_mode="Markdown", reply_markup=reply_markup
-            )
+            if update.callback_query:
+                await update.callback_query.edit_message_text(
+                    text, parse_mode="Markdown", reply_markup=reply_markup
+                )
 
         except Exception as e:
             logger.error(f"Error confirming blacklist removal: {e}")
-            await update.callback_query.edit_message_text("❌ Gagal memuat entry blacklist.")
+            if update.callback_query:
+                await update.callback_query.edit_message_text("❌ Gagal memuat entry blacklist.")
 
     async def _remove_blacklist(self, update: Update, blacklist_id: str) -> None:
         """Remove blacklist entry"""
@@ -194,7 +201,8 @@ class BlacklistHandlers:
             blacklist = await self.blacklist_service.get_blacklist_entry_by_id(blacklist_id)
 
             if not blacklist:
-                await update.callback_query.edit_message_text("❌ Entry blacklist tidak ditemukan.")
+                if update.callback_query:
+                    await update.callback_query.edit_message_text("❌ Entry blacklist tidak ditemukan.")
                 return
 
             success = await self.blacklist_service.remove_from_blacklist(blacklist.group_id)
@@ -210,15 +218,17 @@ class BlacklistHandlers:
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
 
-            await update.callback_query.edit_message_text(text, reply_markup=reply_markup)
+            if update.callback_query:
+                await update.callback_query.edit_message_text(text, reply_markup=reply_markup)
 
         except Exception as e:
             logger.error(f"Error removing blacklist: {e}")
-            await update.callback_query.edit_message_text("❌ Gagal menghapus entry blacklist.")
+            if update.callback_query:
+                await update.callback_query.edit_message_text("❌ Gagal menghapus entry blacklist.")
 
     async def _send_error_message(self, update: Update, error_text: str) -> None:
         """Send error message"""
         if update.message:
             await update.message.reply_text(f"❌ {error_text}")
-        else:
+        elif update.callback_query:
             await update.callback_query.edit_message_text(f"❌ {error_text}")

@@ -63,7 +63,7 @@ class ConfigHandlers:
                 await update.message.reply_text(
                     text, parse_mode="Markdown", reply_markup=reply_markup
                 )
-            else:
+            elif update.callback_query:
                 await update.callback_query.edit_message_text(
                     text, parse_mode="Markdown", reply_markup=reply_markup
                 )
@@ -85,16 +85,28 @@ class ConfigHandlers:
     async def handle_config_input(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         """Handle configuration value input"""
         try:
+            if not context.user_data:
+                if update.message:
+                    await update.message.reply_text("❌ Session expired. Please try again.")
+                return
+
             waiting_for = context.user_data.get("waiting_for", "")
 
             if waiting_for.startswith("config_"):
                 config_id = waiting_for.replace("config_", "")
+                
+                if not update.message or not update.message.text:
+                    if update.message:
+                        await update.message.reply_text("❌ Please provide a valid value.")
+                    return
+                
                 new_value = update.message.text.strip()
 
                 # Get the configuration
                 config = await self.config_service.get_config_by_id(config_id)
                 if not config:
-                    await update.message.reply_text("❌ Konfigurasi tidak ditemukan.")
+                    if update.message:
+                        await update.message.reply_text("❌ Konfigurasi tidak ditemukan.")
                     return
 
                 # Validate and convert value based on type
@@ -126,12 +138,15 @@ class ConfigHandlers:
 
                 except ValueError:
                     text = f"❌ Nilai tidak valid untuk tipe {config.value_type}. Coba lagi."
-                    context.user_data.pop("waiting_for", None)
-                    await update.message.reply_text(text)
+                    if context.user_data:
+                        context.user_data.pop("waiting_for", None)
+                    if update.message:
+                        await update.message.reply_text(text)
                     return
 
                 # Clear waiting state
-                context.user_data.pop("waiting_for", None)
+                if context.user_data:
+                    context.user_data.pop("waiting_for", None)
 
                 keyboard = [
                     [InlineKeyboardButton("⚙️ Lihat Konfigurasi", callback_data="config_menu")],
@@ -139,30 +154,34 @@ class ConfigHandlers:
                 ]
                 reply_markup = InlineKeyboardMarkup(keyboard)
 
-                await update.message.reply_text(
-                    text, parse_mode="Markdown", reply_markup=reply_markup
-                )
+                if update.message:
+                    await update.message.reply_text(
+                        text, parse_mode="Markdown", reply_markup=reply_markup
+                    )
 
         except Exception as e:
             logger.error(f"Error handling config input: {e}")
-            context.user_data.pop("waiting_for", None)
+            if context.user_data:
+                context.user_data.pop("waiting_for", None)
             await self._send_error_message(update, "Gagal memperbarui konfigurasi")
 
     async def _show_edit_config(
         self, update: Update, context: ContextTypes.DEFAULT_TYPE, config_id: str
-    ):
+    ) -> None:
         """Show edit configuration prompt"""
         try:
             config = await self.config_service.get_config_by_id(config_id)
 
             if not config:
-                await update.callback_query.edit_message_text("❌ Konfigurasi tidak ditemukan.")
+                if update.callback_query:
+                    await update.callback_query.edit_message_text("❌ Konfigurasi tidak ditemukan.")
                 return
 
             if not config.is_editable:
-                await update.callback_query.edit_message_text(
-                    "❌ Konfigurasi ini tidak dapat diedit."
-                )
+                if update.callback_query:
+                    await update.callback_query.edit_message_text(
+                        "❌ Konfigurasi ini tidak dapat diedit."
+                    )
                 return
 
             current_value = config.get_typed_value()
@@ -177,22 +196,25 @@ class ConfigHandlers:
             )
 
             # Set waiting state
-            context.user_data["waiting_for"] = f"config_{config_id}"
+            if context.user_data:
+                context.user_data["waiting_for"] = f"config_{config_id}"
 
             keyboard = [[InlineKeyboardButton("❌ Batal", callback_data="config_menu")]]
             reply_markup = InlineKeyboardMarkup(keyboard)
 
-            await update.callback_query.edit_message_text(
-                text, parse_mode="Markdown", reply_markup=reply_markup
-            )
+            if update.callback_query:
+                await update.callback_query.edit_message_text(
+                    text, parse_mode="Markdown", reply_markup=reply_markup
+                )
 
         except Exception as e:
             logger.error(f"Error showing edit config: {e}")
-            await update.callback_query.edit_message_text("❌ Gagal memuat konfigurasi.")
+            if update.callback_query:
+                await update.callback_query.edit_message_text("❌ Gagal memuat konfigurasi.")
 
     async def _send_error_message(self, update: Update, error_text: str) -> None:
         """Send error message"""
         if update.message:
             await update.message.reply_text(f"❌ {error_text}")
-        else:
+        elif update.callback_query:
             await update.callback_query.edit_message_text(f"❌ {error_text}")
