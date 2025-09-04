@@ -347,16 +347,19 @@ class TestConfigServiceExtended:
             "nonexistent_config": "value2"
         }
         
-        # Mock first update succeeds, second fails (modified_count=0)
-        mock_collection.update_one.side_effect = [
-            MagicMock(modified_count=1),
-            MagicMock(modified_count=0)
+        # Mock set_config calls - first succeeds, second fails
+        config_service.set_config = AsyncMock()
+        config_service.set_config.side_effect = [
+            Configuration(key="existing_config", value="value1", value_type="str"),  # Success
+            None  # Failure
         ]
         
         result = await config_service.bulk_update_configs(updates)
         
-        # Should return count of successful updates only
-        assert result == 1
+        # Should return dict with mixed results
+        assert isinstance(result, dict)
+        assert result["existing_config"] is True
+        assert result["nonexistent_config"] is False
 
     @pytest.mark.asyncio
     async def test_reset_config_to_default(self, config_service, mock_collection):
