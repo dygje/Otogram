@@ -51,6 +51,10 @@ class MockService:
     async def get_all_groups(self):
         return []
 
+# Patch database at module level
+mock_database = MockDatabase()
+sys.modules['src.core.database'].database = mock_database
+
 
 class InterfaceComponentTester:
     """Test Otogram interface components"""
