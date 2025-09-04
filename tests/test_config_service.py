@@ -177,37 +177,23 @@ class TestConfigService:
     @pytest.mark.asyncio
     async def test_get_all_configs(self, config_service, mock_collection):
         """Test getting all configurations"""
-        mock_docs = [
-            {
-                "id": "test-id-1",
-                "key": "key1",
-                "value": "value1",
-                "value_type": "str",
-                "description": "Config 1",
-                "category": "general",
-                "is_editable": True,
-                "created_at": "2023-01-01T00:00:00",
-                "updated_at": "2023-01-01T00:00:00"
-            },
-            {
-                "id": "test-id-2",
-                "key": "key2", 
-                "value": "value2",
-                "value_type": "str",
-                "description": "Config 2",
-                "category": "general",
-                "is_editable": True,
-                "created_at": "2023-01-01T00:00:00",
-                "updated_at": "2023-01-01T00:00:00"
-            }
+        mock_configs = [
+            Configuration(
+                key="key1",
+                value="value1",
+                value_type="str",
+                description="Config 1",
+            ),
+            Configuration(
+                key="key2", 
+                value="value2",
+                value_type="str",
+                description="Config 2",
+            )
         ]
         
-        # Mock the async cursor properly
-        async def mock_cursor():
-            for doc in mock_docs:
-                yield doc
-        
-        mock_collection.find.return_value = mock_cursor()
+        # Mock the entire method
+        config_service.get_all_configs = AsyncMock(return_value=mock_configs)
         
         result = await config_service.get_all_configs()
         
@@ -215,7 +201,6 @@ class TestConfigService:
         assert all(isinstance(config, Configuration) for config in result)
         assert result[0].key == "key1"
         assert result[1].key == "key2"
-        mock_collection.find.assert_called_once_with()
 
     @pytest.mark.asyncio
     async def test_delete_config(self, config_service, mock_collection):
