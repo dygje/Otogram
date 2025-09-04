@@ -66,11 +66,11 @@ class TestBlacklist:
         blacklist = Blacklist(
             group_id="-1001234567890",
             blacklist_type=BlacklistType.PERMANENT,
-            reason="UserDeactivated",
+            reason=BlacklistReason.USER_BLOCKED,
         )
         assert blacklist.group_id == "-1001234567890"
         assert blacklist.blacklist_type == BlacklistType.PERMANENT
-        assert blacklist.reason == "UserDeactivated"
+        assert blacklist.reason == BlacklistReason.USER_BLOCKED
 
     def test_temporary_blacklist(self) -> None:
         """Test temporary blacklist with expiration"""
