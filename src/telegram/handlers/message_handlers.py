@@ -241,13 +241,15 @@ class MessageHandlers:
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
 
-            await update.callback_query.edit_message_text(
-                text, parse_mode="Markdown", reply_markup=reply_markup
-            )
+            if update.callback_query:
+                await update.callback_query.edit_message_text(
+                    text, parse_mode="Markdown", reply_markup=reply_markup
+                )
 
         except Exception as e:
             logger.error(f"Error showing edit message: {e}")
-            await update.callback_query.edit_message_text("❌ Gagal memuat pesan.")
+            if update.callback_query:
+                await update.callback_query.edit_message_text("❌ Gagal memuat pesan.")
 
     async def _confirm_delete_message(self, update: Update, message_id: str) -> None:
         """Confirm message deletion"""
