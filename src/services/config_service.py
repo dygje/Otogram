@@ -77,7 +77,7 @@ class ConfigService:
         config.value = value
         config.update_timestamp()
 
-        await self.collection.update_one({"key": key}, {"$set": config.dict()})
+        await self.collection.update_one({"key": key}, {"$set": config.model_dump()})
 
         logger.info(f"Updated config {key}: {value}")
         return config
