@@ -14,14 +14,15 @@ from src.models.message import Message, MessageCreate, MessageUpdate
 class MessageService:
     """Service for managing messages"""
 
-    def __init__(self) -> None:
+    def __init__(self, db_instance: Any = None) -> None:
+        self._db = db_instance or database
         self._collection: Any = None
 
     @property
     def collection(self) -> Any:
         """Lazy-load collection"""
         if self._collection is None:
-            self._collection = database.get_collection("messages")
+            self._collection = self._db.get_collection("messages")
         return self._collection
 
     async def create_message(self, message_data: MessageCreate) -> Message:
