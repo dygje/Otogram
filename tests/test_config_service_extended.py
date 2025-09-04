@@ -321,15 +321,23 @@ class TestConfigServiceExtended:
             "retry_count": "5"
         }
         
-        mock_collection.update_one.return_value = MagicMock(modified_count=1)
+        # Mock set_config calls to succeed
+        config_service.set_config = AsyncMock()
+        config_service.set_config.side_effect = [
+            Configuration(key="min_delay", value="3", value_type="str"),  # Success
+            Configuration(key="max_delay", value="8", value_type="str"),  # Success  
+            Configuration(key="retry_count", value="5", value_type="str")  # Success
+        ]
         
         result = await config_service.bulk_update_configs(updates)
         
-        # Should return count of successful updates
-        assert result == 3
+        # Should return dict of results
+        assert isinstance(result, dict)
+        assert len(result) == 3
+        assert all(result[key] for key in updates.keys())
         
-        # Verify update_one was called for each config
-        assert mock_collection.update_one.call_count == 3
+        # Verify set_config was called for each config
+        assert config_service.set_config.call_count == 3
 
     @pytest.mark.asyncio
     async def test_bulk_update_configs_partial_success(self, config_service, mock_collection):
