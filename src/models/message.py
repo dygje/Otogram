@@ -16,14 +16,15 @@ class Message(BaseDocument):
     is_active: bool = Field(default=True, description="Whether message is active")
     usage_count: int = Field(default=0, description="Times this message was used")
 
-    class Config:
-        json_schema_extra: ClassVar = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "content": "Hello! This is a broadcast message.",
                 "is_active": True,
                 "usage_count": 0,
             }
         }
+    )
 
 
 class MessageCreate(BaseModel):
