@@ -14,8 +14,8 @@ class BotManager:
     """Manager for both management bot and userbot"""
 
     def __init__(self) -> None:
-        self.management_bot = None
-        self.userbot = None
+        self.management_bot: ManagementBot | None = None
+        self.userbot: Any | None = None  # UserBot type would be imported if used
         self.config_service = ConfigService()
         self.running = False
 
