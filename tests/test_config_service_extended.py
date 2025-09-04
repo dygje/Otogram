@@ -139,7 +139,7 @@ class TestConfigServiceExtended:
         
         # Return updated doc on second find_one call
         mock_collection.find_one.side_effect = [
-            {"key": config_key, "value": "15", "value_type": "int"},
+            {"key": config_key, "value": "15", "value_type": "int", "category": "general", "is_editable": True},
             updated_doc
         ]
         
