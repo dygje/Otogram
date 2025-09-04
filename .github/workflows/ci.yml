@@ -44,7 +44,7 @@ jobs:
 
     - name: Type check with mypy (relaxed for personal project)
       run: |
-        mypy src/ || echo "Type check completed (errors allowed for personal project)"
+        mypy src/ scripts/ || echo "Type check completed (errors allowed for personal project)"
 
     - name: Test with pytest (15% coverage for personal project)
       run: |
