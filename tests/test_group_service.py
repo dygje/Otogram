@@ -109,9 +109,11 @@ class TestGroupService:
         ]
         
         # Mock the async cursor properly
-        mock_cursor = AsyncMock()
-        mock_cursor.__aiter__ = AsyncMock(return_value=iter(mock_docs))
-        mock_collection.find.return_value = mock_cursor
+        async def mock_cursor():
+            for doc in mock_docs:
+                yield doc
+        
+        mock_collection.find.return_value = mock_cursor()
         
         result = await group_service.get_all_groups()
         
@@ -138,9 +140,11 @@ class TestGroupService:
         ]
         
         # Mock the async cursor properly
-        mock_cursor = AsyncMock()
-        mock_cursor.__aiter__ = AsyncMock(return_value=iter(mock_docs))
-        mock_collection.find.return_value = mock_cursor
+        async def mock_cursor():
+            for doc in mock_docs:
+                yield doc
+        
+        mock_collection.find.return_value = mock_cursor()
         
         result = await group_service.get_active_groups()
         
