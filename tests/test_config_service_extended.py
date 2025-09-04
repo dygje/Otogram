@@ -540,24 +540,23 @@ class TestConfigServiceExtended:
             # Should not attempt any updates
             mock_collection.update_one.assert_not_called()
 
-    @pytest.mark.asyncio
-    async def test_validate_config_value(self, config_service):
+    def test_validate_config_value(self, config_service):
         """Test config value validation"""
         # Test integer validation
-        assert config_service._validate_config_value("5", "int") is True
-        assert config_service._validate_config_value("invalid", "int") is False
+        assert config_service._validate_config_value("int", "5") is True
+        assert config_service._validate_config_value("int", "invalid") is False
         
         # Test float validation
-        assert config_service._validate_config_value("5.5", "float") is True
-        assert config_service._validate_config_value("invalid", "float") is False
+        assert config_service._validate_config_value("float", "5.5") is True
+        assert config_service._validate_config_value("float", "invalid") is False
         
         # Test boolean validation
-        assert config_service._validate_config_value("true", "bool") is True
-        assert config_service._validate_config_value("false", "bool") is True
-        assert config_service._validate_config_value("invalid", "bool") is False
+        assert config_service._validate_config_value("bool", "true") is True
+        assert config_service._validate_config_value("bool", "false") is True
+        assert config_service._validate_config_value("bool", "invalid") is False
         
         # Test string validation (always true)
-        assert config_service._validate_config_value("anything", "string") is True
+        assert config_service._validate_config_value("str", "anything") is True
 
     def test_infer_value_type(self, config_service):
         """Test automatic value type inference"""
