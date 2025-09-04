@@ -78,7 +78,7 @@ class GroupHandlers:
                 await update.message.reply_text(
                     text, parse_mode="Markdown", reply_markup=reply_markup
                 )
-            else:
+            elif update.callback_query:
                 await update.callback_query.edit_message_text(
                     text, parse_mode="Markdown", reply_markup=reply_markup
                 )
@@ -99,12 +99,14 @@ class GroupHandlers:
             "Kirim identifier grup sekarang:"
         )
 
-        context.user_data["waiting_for"] = "group_identifier"
+        if context.user_data:
+            context.user_data["waiting_for"] = "group_identifier"
 
         keyboard = [[InlineKeyboardButton("❌ Batal", callback_data="groups_menu")]]
         reply_markup = InlineKeyboardMarkup(keyboard)
 
-        await update.message.reply_text(text, parse_mode="Markdown", reply_markup=reply_markup)
+        if update.message:
+            await update.message.reply_text(text, parse_mode="Markdown", reply_markup=reply_markup)
 
     async def add_groups_bulk_command(
         self, update: Update, context: ContextTypes.DEFAULT_TYPE
@@ -122,20 +124,28 @@ class GroupHandlers:
             "Kirim daftar grup sekarang:"
         )
 
-        context.user_data["waiting_for"] = "groups_bulk"
+        if context.user_data:
+            context.user_data["waiting_for"] = "groups_bulk"
 
         keyboard = [[InlineKeyboardButton("❌ Batal", callback_data="groups_menu")]]
         reply_markup = InlineKeyboardMarkup(keyboard)
 
-        await update.message.reply_text(text, parse_mode="Markdown", reply_markup=reply_markup)
+        if update.message:
+            await update.message.reply_text(text, parse_mode="Markdown", reply_markup=reply_markup)
 
     async def handle_group_input(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         """Handle single group input"""
         try:
-            identifier = update.message.text.strip()
+            if update.message and update.message.text:
+                identifier = update.message.text.strip()
+            else:
+                if update.message:
+                    await update.message.reply_text("❌ Identifier grup tidak boleh kosong. Coba lagi:")
+                return
 
             if not identifier:
-                await update.message.reply_text("❌ Identifier grup tidak boleh kosong. Coba lagi:")
+                if update.message:
+                    await update.message.reply_text("❌ Identifier grup tidak boleh kosong. Coba lagi:")
                 return
 
             # Create group
@@ -143,7 +153,8 @@ class GroupHandlers:
             group = await self.group_service.create_group(group_data)
 
             # Clear waiting state
-            context.user_data.pop("waiting_for", None)
+            if context.user_data:
+                context.user_data.pop("waiting_for", None)
 
             text = (
                 f"✅ *Grup Berhasil Ditambahkan*\n\n"
@@ -161,20 +172,28 @@ class GroupHandlers:
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
 
-            await update.message.reply_text(text, parse_mode="Markdown", reply_markup=reply_markup)
+            if update.message:
+                await update.message.reply_text(text, parse_mode="Markdown", reply_markup=reply_markup)
 
         except Exception as e:
             logger.error(f"Error adding group: {e}")
-            context.user_data.pop("waiting_for", None)
+            if context.user_data:
+                context.user_data.pop("waiting_for", None)
             await self._send_error_message(update, "Gagal menambahkan grup")
 
     async def handle_bulk_input(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         """Handle bulk groups input"""
         try:
-            identifiers_text = update.message.text.strip()
+            if update.message and update.message.text:
+                identifiers_text = update.message.text.strip()
+            else:
+                if update.message:
+                    await update.message.reply_text("❌ Daftar grup tidak boleh kosong. Coba lagi:")
+                return
 
             if not identifiers_text:
-                await update.message.reply_text("❌ Daftar grup tidak boleh kosong. Coba lagi:")
+                if update.message:
+                    await update.message.reply_text("❌ Daftar grup tidak boleh kosong. Coba lagi:")
                 return
 
             # Create groups in bulk
@@ -182,7 +201,8 @@ class GroupHandlers:
             groups = await self.group_service.create_groups_bulk(bulk_data)
 
             # Clear waiting state
-            context.user_data.pop("waiting_for", None)
+            if context.user_data:
+                context.user_data.pop("waiting_for", None)
 
             success_count = len(groups)
             identifiers_list = bulk_data.get_identifiers_list()
@@ -217,11 +237,13 @@ class GroupHandlers:
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
 
-            await update.message.reply_text(text, parse_mode="Markdown", reply_markup=reply_markup)
+            if update.message:
+                await update.message.reply_text(text, parse_mode="Markdown", reply_markup=reply_markup)
 
         except Exception as e:
             logger.error(f"Error adding bulk groups: {e}")
-            context.user_data.pop("waiting_for", None)
+            if context.user_data:
+                context.user_data.pop("waiting_for", None)
             await self._send_error_message(update, "Gagal menambahkan grup massal")
 
     async def handle_callback(
@@ -263,10 +285,13 @@ class GroupHandlers:
         keyboard = [[InlineKeyboardButton("❌ Batal", callback_data="groups_menu")]]
         reply_markup = InlineKeyboardMarkup(keyboard)
 
-        await update.callback_query.edit_message_text(
-            text, parse_mode="Markdown", reply_markup=reply_markup
-        )
-        context.user_data["waiting_for"] = "group_identifier"
+        if update.callback_query:
+            await update.callback_query.edit_message_text(
+                text, parse_mode="Markdown", reply_markup=reply_markup
+            )
+        
+        if context.user_data:
+            context.user_data["waiting_for"] = "group_identifier"
 
     async def _show_bulk_add_prompt(
         self, update: Update, context: ContextTypes.DEFAULT_TYPE
@@ -281,10 +306,13 @@ class GroupHandlers:
         keyboard = [[InlineKeyboardButton("❌ Batal", callback_data="groups_menu")]]
         reply_markup = InlineKeyboardMarkup(keyboard)
 
-        await update.callback_query.edit_message_text(
-            text, parse_mode="Markdown", reply_markup=reply_markup
-        )
-        context.user_data["waiting_for"] = "groups_bulk"
+        if update.callback_query:
+            await update.callback_query.edit_message_text(
+                text, parse_mode="Markdown", reply_markup=reply_markup
+            )
+        
+        if context.user_data:
+            context.user_data["waiting_for"] = "groups_bulk"
 
     async def _show_edit_group(self, update: Update, group_id: str) -> None:
         """Show edit group options"""
@@ -292,7 +320,8 @@ class GroupHandlers:
             group = await self.group_service.get_group_by_id(group_id)
 
             if not group:
-                await update.callback_query.edit_message_text("❌ Grup tidak ditemukan.")
+                if update.callback_query:
+                    await update.callback_query.edit_message_text("❌ Grup tidak ditemukan.")
                 return
 
             status_text = "Aktif ✅" if group.is_active else "Nonaktif ❌"
@@ -320,20 +349,23 @@ class GroupHandlers:
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
 
-            await update.callback_query.edit_message_text(
-                text, parse_mode="Markdown", reply_markup=reply_markup
-            )
+            if update.callback_query:
+                await update.callback_query.edit_message_text(
+                    text, parse_mode="Markdown", reply_markup=reply_markup
+                )
 
         except Exception as e:
             logger.error(f"Error showing edit group: {e}")
-            await update.callback_query.edit_message_text("❌ Gagal memuat grup.")
+            if update.callback_query:
+                await update.callback_query.edit_message_text("❌ Gagal memuat grup.")
 
     async def _toggle_group_status(self, update: Update, group_id: str) -> None:
         """Toggle group active status"""
         try:
             group = await self.group_service.get_group_by_id(group_id)
             if not group:
-                await update.callback_query.edit_message_text("❌ Grup tidak ditemukan.")
+                if update.callback_query:
+                    await update.callback_query.edit_message_text("❌ Grup tidak ditemukan.")
                 return
 
             new_status = not group.is_active
@@ -350,11 +382,13 @@ class GroupHandlers:
             keyboard = [[InlineKeyboardButton("🔙 Kembali", callback_data="groups_menu")]]
             reply_markup = InlineKeyboardMarkup(keyboard)
 
-            await update.callback_query.edit_message_text(text, reply_markup=reply_markup)
+            if update.callback_query:
+                await update.callback_query.edit_message_text(text, reply_markup=reply_markup)
 
         except Exception as e:
             logger.error(f"Error toggling group status: {e}")
-            await update.callback_query.edit_message_text("❌ Gagal mengubah status grup.")
+            if update.callback_query:
+                await update.callback_query.edit_message_text("❌ Gagal mengubah status grup.")
 
     async def _confirm_delete_group(self, update: Update, group_id: str) -> None:
         """Confirm group deletion"""
@@ -374,9 +408,10 @@ class GroupHandlers:
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
 
-        await update.callback_query.edit_message_text(
-            text, parse_mode="Markdown", reply_markup=reply_markup
-        )
+        if update.callback_query:
+            await update.callback_query.edit_message_text(
+                text, parse_mode="Markdown", reply_markup=reply_markup
+            )
 
     async def _delete_group(self, update: Update, group_id: str) -> None:
         """Delete group"""
@@ -388,15 +423,17 @@ class GroupHandlers:
             keyboard = [[InlineKeyboardButton("👥 Lihat Grup", callback_data="groups_menu")]]
             reply_markup = InlineKeyboardMarkup(keyboard)
 
-            await update.callback_query.edit_message_text(text, reply_markup=reply_markup)
+            if update.callback_query:
+                await update.callback_query.edit_message_text(text, reply_markup=reply_markup)
 
         except Exception as e:
             logger.error(f"Error deleting group: {e}")
-            await update.callback_query.edit_message_text("❌ Gagal menghapus grup.")
+            if update.callback_query:
+                await update.callback_query.edit_message_text("❌ Gagal menghapus grup.")
 
     async def _send_error_message(self, update: Update, error_text: str) -> None:
         """Send error message"""
         if update.message:
             await update.message.reply_text(f"❌ {error_text}")
-        else:
+        elif update.callback_query:
             await update.callback_query.edit_message_text(f"❌ {error_text}")
