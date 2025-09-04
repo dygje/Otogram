@@ -109,7 +109,7 @@ def test_external_dependencies():
         ("pydantic", "pydantic"),
         ("pydantic_settings", "pydantic-settings"),
         ("loguru", "loguru"),
-        ("python_dotenv", "python-dotenv"),
+        ("dotenv", "python-dotenv"),
         ("apscheduler", "apscheduler"),
         ("aiofiles", "aiofiles"),
         ("dateutil", "python-dateutil"),
