@@ -21,14 +21,14 @@ class MessageService:
         """Create a new message"""
         message = Message(content=message_data.content)
 
-        await self.collection.insert_one(message.dict())  # type: ignore[attr-defined]
+        await self.collection.insert_one(message.dict())
         logger.info(f"Created message: {message.id}")
 
         return message
 
     async def get_all_messages(self) -> list[Message]:
         """Get all messages"""
-        cursor = self.collection.find()  # type: ignore[attr-defined]
+        cursor = self.collection.find()
         messages = []
 
         async for doc in cursor:
@@ -38,7 +38,7 @@ class MessageService:
 
     async def get_active_messages(self) -> list[Message]:
         """Get only active messages"""
-        cursor = self.collection.find({"is_active": True})  # type: ignore[attr-defined]
+        cursor = self.collection.find({"is_active": True})
         messages = []
 
         async for doc in cursor:
@@ -48,7 +48,7 @@ class MessageService:
 
     async def get_message_by_id(self, message_id: str) -> Message | None:
         """Get message by ID"""
-        doc = await self.collection.find_one({"id": message_id})  # type: ignore[attr-defined]
+        doc = await self.collection.find_one({"id": message_id})
 
         if doc:
             return Message(**doc)
@@ -63,7 +63,7 @@ class MessageService:
 
         update_dict["updated_at"] = datetime.utcnow()
 
-        result = await self.collection.update_one({"id": message_id}, {"$set": update_dict})  # type: ignore[attr-defined]
+        result = await self.collection.update_one({"id": message_id}, {"$set": update_dict})
 
         if result.modified_count > 0:
             logger.info(f"Updated message: {message_id}")
@@ -73,7 +73,7 @@ class MessageService:
 
     async def delete_message(self, message_id: str) -> bool:
         """Delete a message"""
-        result = await self.collection.delete_one({"id": message_id})  # type: ignore[attr-defined]
+        result = await self.collection.delete_one({"id": message_id})
 
         if result.deleted_count > 0:
             logger.info(f"Deleted message: {message_id}")
@@ -83,11 +83,11 @@ class MessageService:
 
     async def increment_usage_count(self, message_id: str) -> None:
         """Increment usage count for a message"""
-        await self.collection.update_one({"id": message_id}, {"$inc": {"usage_count": 1}})  # type: ignore[attr-defined]
+        await self.collection.update_one({"id": message_id}, {"$inc": {"usage_count": 1}})
 
     async def get_message_count(self) -> dict[str, int]:
         """Get message statistics"""
-        total = await self.collection.count_documents({})  # type: ignore[attr-defined]
-        active = await self.collection.count_documents({"is_active": True})  # type: ignore[attr-defined]
+        total = await self.collection.count_documents({})
+        active = await self.collection.count_documents({"is_active": True})
 
         return {"total": total, "active": active, "inactive": total - active}
