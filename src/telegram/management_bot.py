@@ -6,6 +6,7 @@ from loguru import logger
 
 from src.core.config import settings
 from src.core.constants import MAX_RECENT_ITEMS_DISPLAY, PREVIEW_MESSAGE_LENGTH
+from src.telegram.handlers.auth_handlers import AuthHandlers
 from src.telegram.handlers.blacklist_handlers import BlacklistHandlers
 from src.telegram.handlers.config_handlers import ConfigHandlers
 from src.telegram.handlers.group_handlers import GroupHandlers
