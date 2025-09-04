@@ -81,4 +81,4 @@ class TestBlacklist:
             duration_seconds=3600,
         )
         assert blacklist.expires_at is not None
-        assert not blacklist.is_expired()
+        assert not blacklist.is_expired
