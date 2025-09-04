@@ -1,31 +1,30 @@
 # 📚 Otogram Documentation
 
-> **Essential documentation for Otogram - Telegram Automation System**
+> **Personal project documentation - Simple and focused**
 
-## 🚀 Quick Navigation
+## 📖 Documentation Overview
 
 ### For Users
-- **[🎯 Getting Started](GETTING_STARTED.md)** - Quick setup guide
-- **[🛠️ Setup Guide](SETUP_GUIDE.md)** - Detailed installation
+- **[🚀 Quick Setup](GETTING_STARTED.md)** - Get running in 5 minutes
+- **[🔒 Security Guidelines](SECURITY.md)** - Keep your system secure
 
-### For Developers  
-- **[🏗️ Architecture](ARCHITECTURE.md)** - System design
-- **[🤝 Contributing](CONTRIBUTING.md)** - Development guide
+### For Development  
+- **[🏗️ Architecture Overview](ARCHITECTURE.md)** - Understand the system design
+- **[📝 Version History](CHANGELOG.md)** - Track changes and updates
 
-### Project Info
-- **[🔒 Security Policy](SECURITY.md)** - Security guidelines  
-- **[📝 Changelog](CHANGELOG.md)** - Version history
-
-## 🎯 Choose Your Path
+## 🎯 Quick Navigation
 
 ### "I'm New to Otogram"
-1. Start with **[Getting Started](GETTING_STARTED.md)**
-2. Follow **[Setup Guide](SETUP_GUIDE.md)**
+Start with **[Getting Started Guide](GETTING_STARTED.md)** - everything you need to get running.
 
 ### "I Want to Understand the Code"
-1. Review **[Architecture Guide](ARCHITECTURE.md)**
-2. Check **[Contributing Guidelines](CONTRIBUTING.md)**
+Check **[Architecture Overview](ARCHITECTURE.md)** for system design.
+
+### "I Found a Bug"
+1. Check existing [GitHub Issues](https://github.com/dygje/Otogram/issues)
+2. Run health check: `make health`
+3. Create new issue with details
 
 ---
 
-**Status**: Simplified for personal project | **Last Updated**: January 2025
+**Status**: Personal Project | **Last Updated**: January 2025
