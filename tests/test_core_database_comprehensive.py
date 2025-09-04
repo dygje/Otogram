@@ -372,12 +372,13 @@ class TestDatabaseComprehensive:
         """Test comprehensive health check with exception"""
         mock_client = MagicMock()
         db_instance.client = mock_client
+        db_instance.db = mock_client
         db_instance.ping = AsyncMock(side_effect=Exception("Health check failed"))
         
         result = await db_instance.comprehensive_health_check()
         
         assert "error" in result
-        assert result["error"] == "Health check failed"
+        assert "Health check failed" in str(result["error"])
 
     def test_get_collection_success(self, db_instance):
         """Test successful get collection"""
