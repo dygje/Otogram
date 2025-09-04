@@ -172,7 +172,7 @@ class UserBot:
             f"{duration:.1f}m duration"
         )
 
-    async def _send_message_to_group(self, group, message_content: str) -> bool:
+    async def _send_message_to_group(self, group: Any, message_content: str) -> bool:
         """Send message to a specific group"""
         try:
             # Determine the chat identifier
