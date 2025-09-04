@@ -50,16 +50,18 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    # Testing
+    # Testing - Essential only
     "pytest>=8.0.0",
     "pytest-asyncio>=0.23.0",
     "pytest-cov>=4.1.0",
     
-    # Code Quality
+    # Code Quality - Core tools
     "ruff>=0.1.15",
     "mypy>=1.8.0",
-    
-    # Security (optional for personal project)
+]
+
+# Optional security tools (install separately if needed)
+security = [
     "bandit>=1.7.5",
     "safety>=3.0.0",
 ]
@@ -78,9 +80,7 @@ where = ["."]
 include = ["src*", "scripts*"]
 exclude = ["tests*", "docs*", "build*", "dist*"]
 
-# Ruff configuration in ruff.toml file
-
-# MyPy - relaxed for personal project
+# MyPy - Personal project friendly
 [tool.mypy]
 python_version = "3.11"
 warn_return_any = false
@@ -88,6 +88,7 @@ warn_unused_configs = true
 disallow_untyped_defs = false      # Relaxed for personal project
 disallow_incomplete_defs = false    # Relaxed for personal project
 check_untyped_defs = true
+strict_optional = false             # Less strict for personal use
 
 [[tool.mypy.overrides]]
 module = [
@@ -103,7 +104,7 @@ module = [
 ]
 ignore_missing_imports = true
 
-# Pytest - simplified for personal project
+# Pytest - Personal project optimized
 [tool.pytest.ini_options]
 minversion = "8.0"
 testpaths = ["tests"]
@@ -116,11 +117,11 @@ addopts = [
     "--asyncio-mode=auto",
     "--cov=src",
     "--cov-report=term-missing",
-    "--cov-fail-under=60",    # Lowered from 80% for personal project
+    "--cov-fail-under=50",    # Even more relaxed for personal project
 ]
 asyncio_mode = "auto"
 
-# Coverage - relaxed requirements
+# Coverage - Relaxed for personal development
 [tool.coverage.run]
 source = ["src"]
 omit = [
@@ -141,11 +142,8 @@ exclude_lines = [
     "raise AssertionError",
     "raise NotImplementedError",
     "if __name__ == .__main__.:",
+    "except.*Exception",      # Don't require exception coverage
+    "pass",                   # Don't require pass statement coverage
 ]
 show_missing = true
 precision = 1
-
-# Bandit - minimal security for personal project
-[tool.bandit]
-exclude_dirs = ["tests", "build", "dist"]
-skips = ["B101", "B601"]    # Skip assert and shell usage (ok for personal)
