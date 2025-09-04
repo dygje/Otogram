@@ -1,33 +1,51 @@
 version: 2
 updates:
-  # Python dependencies - weekly updates
+  # Python dependencies - monthly updates untuk menghindari terlalu banyak PR
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
       day: "monday"
       time: "06:00"
-    open-pull-requests-limit: 3
+    open-pull-requests-limit: 2  # Batasi PR yang terbuka
     commit-message:
-      prefix: "deps"
+      prefix: "deps(pip)"
       include: "scope"
     reviewers:
       - "dygje"
+    # Kelompokkan update minor dan patch
+    groups:
+      telegram-deps:
+        patterns:
+          - "python-telegram-bot*"
+          - "pyrofork*"
+          - "TgCrypto*"
+      database-deps:
+        patterns:
+          - "motor*"
+          - "pymongo*"
+      core-deps:
+        patterns:
+          - "pydantic*"
+          - "loguru*"
+          - "python-dotenv*"
 
-  # GitHub Actions - monthly updates
+  # GitHub Actions - setiap 3 bulan
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "monthly"
+    open-pull-requests-limit: 1
     commit-message:
-      prefix: "ci"
+      prefix: "ci(actions)"
       include: "scope"
 
-  # Docker - monthly updates  
+  # Docker - setiap 3 bulan  
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "monthly"
+    open-pull-requests-limit: 1
     commit-message:
       prefix: "docker"
       include: "scope"
