@@ -16,6 +16,41 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from loguru import logger
 
+# Mock database connection for testing
+class MockDatabase:
+    def __init__(self):
+        self.client = MagicMock()
+        self.db = MagicMock()
+    
+    def get_collection(self, name):
+        return MagicMock()
+    
+    async def connect(self, *args, **kwargs):
+        pass
+    
+    async def disconnect(self):
+        pass
+
+# Mock services for testing
+class MockService:
+    def __init__(self):
+        pass
+    
+    async def get_message_count(self):
+        return {"total": 5, "active": 3, "inactive": 2}
+    
+    async def get_group_stats(self):
+        return {"total": 10, "active": 7, "inactive": 3}
+    
+    async def get_blacklist_stats(self):
+        return {"total": 2, "permanent": 1, "temporary": 1, "expired": 0}
+    
+    async def get_all_messages(self):
+        return []
+    
+    async def get_all_groups(self):
+        return []
+
 
 class InterfaceComponentTester:
     """Test Otogram interface components"""
