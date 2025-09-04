@@ -119,7 +119,6 @@ class TestSettings:
             TELEGRAM_API_HASH=None,
             TELEGRAM_BOT_TOKEN=None,
             TELEGRAM_PHONE_NUMBER=None,
-            _env_file=None,  # Don't load from .env file
         )
 
         status = settings.get_credentials_status()
