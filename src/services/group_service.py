@@ -28,7 +28,7 @@ class GroupService:
             "group_link": None,
             "group_title": None,
             "is_active": True,
-            "message_count": 0
+            "message_count": 0,
         }
 
         if identifier.startswith("-") and identifier[1:].isdigit():

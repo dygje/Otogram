@@ -100,7 +100,9 @@ class MessageHandlers:
 
         await update.message.reply_text(text, parse_mode="Markdown", reply_markup=reply_markup)
 
-    async def handle_message_input(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    async def handle_message_input(
+        self, update: Update, context: ContextTypes.DEFAULT_TYPE
+    ) -> None:
         """Handle message content input"""
         try:
             content = update.message.text.strip()
@@ -145,7 +147,9 @@ class MessageHandlers:
             context.user_data.pop("waiting_for", None)
             await self._send_error_message(update, "Gagal menambahkan pesan")
 
-    async def handle_callback(self, update: Update, context: ContextTypes.DEFAULT_TYPE, data: str) -> None:
+    async def handle_callback(
+        self, update: Update, context: ContextTypes.DEFAULT_TYPE, data: str
+    ) -> None:
         """Handle message-related callbacks"""
         if data == "messages_menu":
             await self.list_messages(update, context)

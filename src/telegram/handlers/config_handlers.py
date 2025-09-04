@@ -72,7 +72,9 @@ class ConfigHandlers:
             logger.error(f"Error showing config: {e}")
             await self._send_error_message(update, "Gagal memuat konfigurasi")
 
-    async def handle_callback(self, update: Update, context: ContextTypes.DEFAULT_TYPE, data: str) -> None:
+    async def handle_callback(
+        self, update: Update, context: ContextTypes.DEFAULT_TYPE, data: str
+    ) -> None:
         """Handle configuration-related callbacks"""
         if data == "config_menu":
             await self.show_config(update, context)

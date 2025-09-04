@@ -106,7 +106,9 @@ class GroupHandlers:
 
         await update.message.reply_text(text, parse_mode="Markdown", reply_markup=reply_markup)
 
-    async def add_groups_bulk_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    async def add_groups_bulk_command(
+        self, update: Update, context: ContextTypes.DEFAULT_TYPE
+    ) -> None:
         """Start adding multiple groups"""
         text = (
             "📋 *Tambah Grup Massal*\n\n"
@@ -222,7 +224,9 @@ class GroupHandlers:
             context.user_data.pop("waiting_for", None)
             await self._send_error_message(update, "Gagal menambahkan grup massal")
 
-    async def handle_callback(self, update: Update, context: ContextTypes.DEFAULT_TYPE, data: str) -> None:
+    async def handle_callback(
+        self, update: Update, context: ContextTypes.DEFAULT_TYPE, data: str
+    ) -> None:
         """Handle group-related callbacks"""
         if data == "groups_menu":
             await self.list_groups(update, context)
@@ -243,7 +247,9 @@ class GroupHandlers:
             group_id = data.replace("groups_toggle_", "")
             await self._toggle_group_status(update, group_id)
 
-    async def _show_add_group_prompt(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    async def _show_add_group_prompt(
+        self, update: Update, context: ContextTypes.DEFAULT_TYPE
+    ) -> None:
         """Show add group prompt"""
         text = (
             "+ *Tambah Grup Baru*\n\n"
@@ -262,7 +268,9 @@ class GroupHandlers:
         )
         context.user_data["waiting_for"] = "group_identifier"
 
-    async def _show_bulk_add_prompt(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    async def _show_bulk_add_prompt(
+        self, update: Update, context: ContextTypes.DEFAULT_TYPE
+    ) -> None:
         """Show bulk add prompt"""
         text = (
             "📋 *Tambah Grup Massal*\n\n"

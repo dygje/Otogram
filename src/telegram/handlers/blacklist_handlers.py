@@ -114,7 +114,9 @@ class BlacklistHandlers:
             logger.error(f"Error showing blacklist: {e}")
             await self._send_error_message(update, "Gagal memuat blacklist")
 
-    async def handle_callback(self, update: Update, context: ContextTypes.DEFAULT_TYPE, data: str) -> None:
+    async def handle_callback(
+        self, update: Update, context: ContextTypes.DEFAULT_TYPE, data: str
+    ) -> None:
         """Handle blacklist-related callbacks"""
         if data == "blacklist_menu":
             await self.show_blacklist(update, context)

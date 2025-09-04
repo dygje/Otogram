@@ -39,7 +39,7 @@ class ConfigService:
                     value_type=str(config_data["value_type"]),
                     description=description,
                     category=str(config_data.get("category", "general")),
-                    is_editable=bool(config_data.get("is_editable", True))
+                    is_editable=bool(config_data.get("is_editable", True)),
                 )
                 await self.collection.insert_one(config.dict())
                 logger.info(f"Initialized config: {config_data['key']}")

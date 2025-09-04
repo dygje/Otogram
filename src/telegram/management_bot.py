@@ -693,7 +693,9 @@ class ManagementBot:
                 text, parse_mode="Markdown", reply_markup=reply_markup
             )
 
-    async def _show_emergency_stop(self, update: Update, _context: ContextTypes.DEFAULT_TYPE) -> None:
+    async def _show_emergency_stop(
+        self, update: Update, _context: ContextTypes.DEFAULT_TYPE
+    ) -> None:
         """Show emergency stop confirmation"""
         text = (
             "🆘 *EMERGENCY STOP*\n"
