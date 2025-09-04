@@ -103,13 +103,21 @@ def check_packages() -> bool:
 
 def check_files() -> bool:
     """Check essential files exist"""
+    import os
+    
+    # For CI environment, .env is optional
+    is_ci = os.getenv("CI") == "true" or os.getenv("GITHUB_ACTIONS") == "true"
+    
     essential_files = [
         "main.py",
         "pyproject.toml",
-        ".env",
         "src/core/config.py",
         "src/telegram/bot_manager.py",
     ]
+    
+    # Only require .env in non-CI environments
+    if not is_ci:
+        essential_files.append(".env")
 
     missing = []
     for file_path in essential_files:
@@ -118,6 +126,10 @@ def check_files() -> bool:
         else:
             print(f"❌ {file_path}")
             missing.append(file_path)
+    
+    # Check .env separately for CI - show as optional
+    if is_ci and not Path(".env").exists():
+        print(f"⚠️ .env (optional in CI)")
 
     return len(missing) == 0
 
