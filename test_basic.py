@@ -23,16 +23,16 @@ def test_imports():
     print("🔍 Testing imports...")
     failed = []
     
-    for module_name in imports_to_test:
+    for module_name, package_name in imports_to_test:
         try:
             if importlib.util.find_spec(module_name) is not None:
-                print(f"✅ {module_name}")
+                print(f"✅ {package_name}")
             else:
-                print(f"❌ {module_name} - Not found")
-                failed.append(module_name)
+                print(f"❌ {package_name} - Not found")
+                failed.append(package_name)
         except ImportError as e:
-            print(f"❌ {module_name} - Import error: {e}")
-            failed.append(module_name)
+            print(f"❌ {package_name} - Import error: {e}")
+            failed.append(package_name)
     
     return len(failed) == 0
 
