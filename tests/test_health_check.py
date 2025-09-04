@@ -40,7 +40,7 @@ class TestHealthCheck:
         assert isinstance(result, bool)
 
     @patch("scripts.health_check.importlib.import_module")
-    def test_check_dependencies_success(self, mock_import) -> None:
+    def test_check_dependencies_success(self, mock_import: MagicMock) -> None:
         """Test dependency check with all dependencies available"""
         mock_import.return_value = MagicMock()
 
