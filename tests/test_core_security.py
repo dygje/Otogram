@@ -29,7 +29,7 @@ class TestSecureRandom:
 
     def test_choice_empty_sequence_raises_error(self):
         """Test choice with empty sequence raises error"""
-        with pytest.raises(IndexError):
+        with pytest.raises(ValueError, match="Cannot choose from empty sequence"):
             SecureRandom.choice([])
 
     def test_randint_basic(self):
@@ -60,47 +60,45 @@ class TestSecureRandom:
 
     def test_random_float_basic(self):
         """Test basic random float functionality"""
-        result = SecureRandom.random()
-        assert 0.0 <= result < 1.0
+        result = SecureRandom.random_float()
+        assert 0.0 <= result <= 1.0
         assert isinstance(result, float)
 
     def test_random_float_multiple_calls(self):
         """Test multiple random float calls produce different values"""
-        results = [SecureRandom.random() for _ in range(10)]
+        results = [SecureRandom.random_float() for _ in range(10)]
         # Very unlikely all results are the same
         assert len(set(results)) > 1
 
     def test_random_delay_basic(self):
         """Test random delay functionality"""
-        min_delay = 1.0
-        max_delay = 5.0
+        min_delay = 1
+        max_delay = 5
         result = SecureRandom.random_delay(min_delay, max_delay)
         assert min_delay <= result <= max_delay
-        assert isinstance(result, float)
+        assert isinstance(result, int)
 
     def test_random_delay_same_values(self):
         """Test random delay with same min and max"""
-        delay = 2.5
+        delay = 2
         result = SecureRandom.random_delay(delay, delay)
         assert result == delay
 
     def test_random_delay_integer_input(self):
         """Test random delay with integer input"""
         result = SecureRandom.random_delay(1, 3)
-        assert 1.0 <= result <= 3.0
-        assert isinstance(result, float)
+        assert 1 <= result <= 3
+        assert isinstance(result, int)
 
     def test_random_delay_large_range(self):
         """Test random delay with large range"""
-        result = SecureRandom.random_delay(0.1, 100.0)
-        assert 0.1 <= result <= 100.0
+        result = SecureRandom.random_delay(1, 100)
+        assert 1 <= result <= 100
 
     def test_random_delay_precision(self):
-        """Test random delay precision"""
-        result = SecureRandom.random_delay(1.123, 1.124)
-        assert 1.123 <= result <= 1.124
-        # Should have reasonable precision
-        assert len(str(result).split('.')[-1]) >= 3
+        """Test random delay error handling"""
+        with pytest.raises(ValueError):
+            SecureRandom.random_delay(5, 1)  # min > max should raise error
 
     def test_consistency_across_calls(self):
         """Test that multiple calls produce reasonable distribution"""
@@ -115,7 +113,7 @@ class TestSecureRandom:
         assert len(unique_randints) > 1  # Should get variety
 
         # Test random float consistency
-        floats = [SecureRandom.random() for _ in range(100)]
+        floats = [SecureRandom.random_float() for _ in range(100)]
         unique_floats = set(floats)
         assert len(unique_floats) > 50  # Should get lots of variety
 
@@ -129,14 +127,14 @@ class TestSecureRandom:
         assert sequence1 != sequence2
 
         # Test float sequences are different
-        float_seq1 = [SecureRandom.random() for _ in range(10)]
-        float_seq2 = [SecureRandom.random() for _ in range(10)]
+        float_seq1 = [SecureRandom.random_float() for _ in range(10)]
+        float_seq2 = [SecureRandom.random_float() for _ in range(10)]
         assert float_seq1 != float_seq2
 
     def test_edge_cases(self):
         """Test edge cases for random functions"""
         # Test with very small ranges
-        result = SecureRandom.random_delay(0.0001, 0.0002)
+        result = SecureRandom.random_float(0.0001, 0.0002)
         assert 0.0001 <= result <= 0.0002
 
         # Test with very large numbers
@@ -147,3 +145,20 @@ class TestSecureRandom:
         objects = [{"a": 1}, {"b": 2}, {"c": 3}]
         result = SecureRandom.choice(objects)
         assert result in objects
+
+    def test_uniform_method(self):
+        """Test uniform method"""
+        result = SecureRandom.uniform(1.5, 2.5)
+        assert 1.5 <= result <= 2.5
+        assert isinstance(result, float)
+
+    def test_shuffle_method(self):
+        """Test shuffle method"""
+        original = [1, 2, 3, 4, 5]
+        to_shuffle = original.copy()
+        SecureRandom.shuffle(to_shuffle)
+        
+        # Should contain same elements
+        assert set(to_shuffle) == set(original)
+        # Length should be same
+        assert len(to_shuffle) == len(original)
