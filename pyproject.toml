@@ -26,26 +26,26 @@ classifiers = [
 requires-python = ">=3.11"
 dependencies = [
     # Telegram Libraries
-    "pyrofork==2.3.68",
-    "python-telegram-bot==20.8",
-    "TgCrypto==1.2.5",
+    "pyrofork>=2.3.68",
+    "python-telegram-bot>=21.0",
+    "TgCrypto>=1.2.5",
     
     # Database
-    "motor==3.7.0",
-    "pymongo==4.11.0",
+    "motor>=3.7.1",
+    "pymongo>=4.14.1",
     
     # Background Tasks & Scheduling
-    "apscheduler==3.11.0",
+    "apscheduler>=3.11.0",
     
     # Core Dependencies
-    "python-dotenv==1.0.0",
-    "pydantic==2.8.2",
-    "pydantic-settings==2.4.0",
-    "loguru==0.7.2",
-    "aiofiles==24.1.0",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.11.0",
+    "pydantic-settings>=2.4.0",
+    "loguru>=0.7.3",
+    "aiofiles>=24.1.0",
     
     # Utilities
-    "python-dateutil==2.9.0",
+    "python-dateutil>=2.9.0",
 ]
 
 [project.optional-dependencies]
