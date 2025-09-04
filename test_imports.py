@@ -20,7 +20,7 @@ def test_core_imports():
         from src.core.database import Database, database
         print("✅ src.core.database")
         
-        from src.core.constants import MessageStatus, GroupStatus
+        from src.core.constants import DEFAULT_MIN_MESSAGE_DELAY, TELEGRAM_MESSAGE_MAX_LENGTH
         print("✅ src.core.constants")
         
         from src.core.security import SecurityManager
