@@ -161,7 +161,8 @@ class TestGroupHandlers:
     @pytest.fixture
     def group_handlers(self):
         """GroupHandlers fixture"""
-        return GroupHandlers()
+        with patch('src.services.group_service.database'):
+            return GroupHandlers()
 
     @pytest.mark.asyncio
     async def test_init(self, group_handlers):
