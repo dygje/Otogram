@@ -15,7 +15,14 @@ class MessageService:
     """Service for managing messages"""
 
     def __init__(self) -> None:
-        self.collection: Any = database.get_collection("messages")
+        self._collection: Any = None
+
+    @property
+    def collection(self) -> Any:
+        """Lazy-load collection"""
+        if self._collection is None:
+            self._collection = database.get_collection("messages")
+        return self._collection
 
     async def create_message(self, message_data: MessageCreate) -> Message:
         """Create a new message"""
