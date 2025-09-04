@@ -55,10 +55,13 @@ class ManagementBot:
     async def stop(self) -> None:
         """Stop the management bot"""
         if self.app:
-            if self.app.updater:
-                await self.app.updater.stop()
-            await self.app.stop()
-            await self.app.shutdown()
+            try:
+                if self.app.updater and self.app.updater.running:
+                    await self.app.updater.stop()
+                await self.app.stop()
+                await self.app.shutdown()
+            except Exception as e:
+                logger.warning(f"Error during bot shutdown: {e}")
 
     def _add_handlers(self) -> None:
         """Add command and callback handlers"""
