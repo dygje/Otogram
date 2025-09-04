@@ -18,7 +18,7 @@ class TestDatabaseComprehensive:
     @pytest.mark.asyncio
     async def test_connect_success(self, db_instance):
         """Test successful database connection"""
-        with patch('src.core.database.AsyncIOMotorClient') as mock_client_class:
+        with patch('motor.motor_asyncio.AsyncIOMotorClient') as mock_client_class:
             mock_client = AsyncMock()
             mock_db = AsyncMock()
             mock_client_class.return_value = mock_client
@@ -38,7 +38,7 @@ class TestDatabaseComprehensive:
         """Test connection with custom MongoDB URL"""
         custom_url = "mongodb://custom:27017"
         
-        with patch('src.core.database.AsyncIOMotorClient') as mock_client_class:
+        with patch('motor.motor_asyncio.AsyncIOMotorClient') as mock_client_class:
             mock_client = AsyncMock()
             mock_db = AsyncMock()
             mock_client_class.return_value = mock_client
@@ -52,7 +52,7 @@ class TestDatabaseComprehensive:
     @pytest.mark.asyncio
     async def test_connect_failure(self, db_instance):
         """Test database connection failure"""
-        with patch('src.core.database.AsyncIOMotorClient') as mock_client_class:
+        with patch('motor.motor_asyncio.AsyncIOMotorClient') as mock_client_class:
             mock_client_class.side_effect = Exception("Connection failed")
             
             with pytest.raises(Exception):
