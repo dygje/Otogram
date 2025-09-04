@@ -295,10 +295,12 @@ class TestBlacklistService:
             }
         ]
         
-        # Mock the async cursor
-        mock_cursor = AsyncMock()
-        mock_cursor.__aiter__ = AsyncMock(return_value=iter(mock_docs))
-        mock_collection.find.return_value = mock_cursor
+        # Mock the async cursor properly
+        async def mock_cursor():
+            for doc in mock_docs:
+                yield doc
+        
+        mock_collection.find.return_value = mock_cursor()
         
         result = await blacklist_service.get_all_blacklists()
         
