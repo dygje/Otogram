@@ -296,5 +296,5 @@ class MessageHandlers:
         """Send error message"""
         if update.message:
             await update.message.reply_text(f"❌ {error_text}")
-        else:
+        elif update.callback_query:
             await update.callback_query.edit_message_text(f"❌ {error_text}")
