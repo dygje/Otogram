@@ -67,11 +67,12 @@ class TestBlacklistService:
         """Test blacklist creation"""
         service = BlacklistService()
 
-        blacklist = await service.add_to_blacklist(
+        blacklist_data = BlacklistCreate(
             group_id="-1001234567890",
             blacklist_type=BlacklistType.PERMANENT,
-            reason="UserDeactivated",
+            reason=BlacklistReason.USER_BLOCKED,
         )
+        blacklist = await service.add_to_blacklist(blacklist_data)
         assert blacklist.group_id == "-1001234567890"
         assert blacklist.blacklist_type == BlacklistType.PERMANENT
 
@@ -80,12 +81,15 @@ class TestBlacklistService:
         service = BlacklistService()
 
         # Add to blacklist
-        await service.add_to_blacklist(
-            group_id="-1001234567890", blacklist_type=BlacklistType.PERMANENT, reason="Test"
+        blacklist_data = BlacklistCreate(
+            group_id="-1001234567890", 
+            blacklist_type=BlacklistType.PERMANENT, 
+            reason=BlacklistReason.USER_BLOCKED
         )
+        await service.add_to_blacklist(blacklist_data)
 
         # Check if blacklisted
-        is_blacklisted, _ = await service.is_blacklisted("-1001234567890")
+        is_blacklisted = await service.is_blacklisted("-1001234567890")
         assert is_blacklisted is True
 
     async def test_cleanup_expired(self, test_database) -> None:
@@ -93,5 +97,5 @@ class TestBlacklistService:
         service = BlacklistService()
 
         # This should not raise errors
-        cleaned = await service.cleanup_expired_blacklists()
+        cleaned = await service.cleanup_expired()
         assert isinstance(cleaned, int)
