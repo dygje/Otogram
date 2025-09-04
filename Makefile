@@ -55,8 +55,8 @@ run: ## Run Otogram system
 	@echo "🚀 Starting Otogram..."
 	python main.py
 
-setup-wizard: ## Run simple setup wizard
-	@echo "🧙 Starting setup..."
+setup-wizard: ## Run simple setup wizard  
+	@echo "🧙 Starting setup wizard..."
 	python scripts/setup.py
 
 # Maintenance & Cleanup
