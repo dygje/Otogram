@@ -99,9 +99,10 @@ async def run_health_check() -> int:
                         print(f"   {result.details}")
                     success = result.status == "✅"
                 else:
-                    success = result
+                    success = bool(result)
             else:
-                success = check_func()
+                result = check_func()
+                success = bool(result)
 
             if success:
                 passed += 1
