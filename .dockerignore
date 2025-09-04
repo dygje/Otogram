@@ -61,7 +61,7 @@ mongodb_data/
 .DS_Store
 Thumbs.db
 
-# Docker
-Dockerfile
-docker-compose.yml
+# Docker development files (but keep build files)
+# Dockerfile  # Keep for build
+# docker-compose.yml  # Keep for build
 .dockerignore
