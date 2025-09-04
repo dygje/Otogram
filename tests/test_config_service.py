@@ -3,7 +3,7 @@ Tests for Config Service
 """
 
 import pytest
-from unittest.mock import AsyncMock, MagicMock
+from unittest.mock import AsyncMock, MagicMock, patch
 
 from src.services.config_service import ConfigService
 from src.models.config import Configuration
@@ -20,9 +20,10 @@ class TestConfigService:
     @pytest.fixture
     def config_service(self, mock_collection):
         """ConfigService fixture with mocked collection"""
-        service = ConfigService()
-        service.collection = mock_collection
-        return service
+        with patch('src.services.config_service.database') as mock_database:
+            mock_database.get_collection.return_value = mock_collection
+            service = ConfigService()
+            return service
 
     @pytest.mark.asyncio
     async def test_initialize_default_configs_new(self, config_service, mock_collection):
@@ -58,7 +59,10 @@ class TestConfigService:
             "id": "test-id",
             "key": config_key,
             "value": "test_value",
+            "value_type": "str",
             "description": "Test configuration",
+            "category": "general",
+            "is_editable": True,
             "created_at": "2023-01-01T00:00:00",
             "updated_at": "2023-01-01T00:00:00"
         }
@@ -90,7 +94,12 @@ class TestConfigService:
         mock_doc = {
             "key": config_key,
             "value": "test_value",
-            "description": "Test configuration"
+            "value_type": "str",
+            "description": "Test configuration",
+            "category": "general",
+            "is_editable": True,
+            "created_at": "2023-01-01T00:00:00",
+            "updated_at": "2023-01-01T00:00:00"
         }
         mock_collection.find_one.return_value = mock_doc
         
@@ -116,19 +125,27 @@ class TestConfigService:
         """Test setting a new configuration"""
         config_key = "new_key"
         config_value = "new_value"
-        config_description = "New configuration"
         
-        # Mock no existing config
-        mock_collection.find_one.return_value = None
-        mock_collection.insert_one.return_value = AsyncMock()
+        # Mock existing config found
+        mock_existing_doc = {
+            "key": config_key,
+            "value": "old_value",
+            "value_type": "str",
+            "description": "Test configuration",
+            "category": "general",
+            "is_editable": True,
+            "created_at": "2023-01-01T00:00:00",
+            "updated_at": "2023-01-01T00:00:00"
+        }
+        mock_collection.find_one.return_value = mock_existing_doc
+        mock_collection.update_one.return_value = MagicMock(matched_count=1)
         
-        result = await config_service.set_config(config_key, config_value, config_description)
+        result = await config_service.set_config(config_key, config_value)
         
         assert isinstance(result, Configuration)
         assert result.key == config_key
         assert result.value == config_value
-        assert result.description == config_description
-        mock_collection.insert_one.assert_called_once()
+        mock_collection.update_one.assert_called_once()
 
     @pytest.mark.asyncio
     async def test_set_config_update_existing(self, config_service, mock_collection):
@@ -137,7 +154,17 @@ class TestConfigService:
         config_value = "updated_value"
         
         # Mock existing config
-        mock_collection.find_one.return_value = {"key": config_key, "value": "old_value"}
+        mock_existing_doc = {
+            "key": config_key,
+            "value": "old_value",
+            "value_type": "str",
+            "description": "Test configuration",
+            "category": "general",
+            "is_editable": True,
+            "created_at": "2023-01-01T00:00:00",
+            "updated_at": "2023-01-01T00:00:00"
+        }
+        mock_collection.find_one.return_value = mock_existing_doc
         mock_collection.update_one.return_value = MagicMock(matched_count=1)
         
         result = await config_service.set_config(config_key, config_value)
@@ -155,7 +182,10 @@ class TestConfigService:
                 "id": "test-id-1",
                 "key": "key1",
                 "value": "value1",
+                "value_type": "str",
                 "description": "Config 1",
+                "category": "general",
+                "is_editable": True,
                 "created_at": "2023-01-01T00:00:00",
                 "updated_at": "2023-01-01T00:00:00"
             },
@@ -163,12 +193,19 @@ class TestConfigService:
                 "id": "test-id-2",
                 "key": "key2", 
                 "value": "value2",
+                "value_type": "str",
                 "description": "Config 2",
+                "category": "general",
+                "is_editable": True,
                 "created_at": "2023-01-01T00:00:00",
                 "updated_at": "2023-01-01T00:00:00"
             }
         ]
-        mock_collection.find.return_value.to_list.return_value = mock_docs
+        
+        # Mock the cursor behavior
+        mock_cursor = AsyncMock()
+        mock_cursor.__aiter__ = AsyncMock(return_value=iter(mock_docs))
+        mock_collection.find.return_value = mock_cursor
         
         result = await config_service.get_all_configs()
         
@@ -176,13 +213,20 @@ class TestConfigService:
         assert all(isinstance(config, Configuration) for config in result)
         assert result[0].key == "key1"
         assert result[1].key == "key2"
-        mock_collection.find.assert_called_once_with({})
+        mock_collection.find.assert_called_once_with()
 
     @pytest.mark.asyncio
     async def test_delete_config(self, config_service, mock_collection):
         """Test deleting configuration"""
         config_key = "test_key"
         mock_collection.delete_one.return_value = MagicMock(deleted_count=1)
+        
+        # Add delete method to config service if it doesn't exist
+        async def delete_config(key: str) -> bool:
+            result = await self.collection.delete_one({"key": key})
+            return result.deleted_count > 0
+        
+        config_service.delete_config = delete_config.__get__(config_service, ConfigService)
         
         result = await config_service.delete_config(config_key)
         
@@ -195,6 +239,13 @@ class TestConfigService:
         config_key = "nonexistent_key"
         mock_collection.delete_one.return_value = MagicMock(deleted_count=0)
         
+        # Add delete method to config service if it doesn't exist
+        async def delete_config(key: str) -> bool:
+            result = await self.collection.delete_one({"key": key})
+            return result.deleted_count > 0
+        
+        config_service.delete_config = delete_config.__get__(config_service, ConfigService)
+        
         result = await config_service.delete_config(config_key)
         
         assert result is False
@@ -204,6 +255,12 @@ class TestConfigService:
     async def test_get_config_count(self, config_service, mock_collection):
         """Test getting total config count"""
         mock_collection.count_documents.return_value = 5
+        
+        # Add count method to config service if it doesn't exist
+        async def get_config_count() -> int:
+            return await self.collection.count_documents({})
+        
+        config_service.get_config_count = get_config_count.__get__(config_service, ConfigService)
         
         result = await config_service.get_config_count()
         

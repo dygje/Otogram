@@ -60,7 +60,11 @@ class TestMessageService:
                 "updated_at": "2023-01-01T00:00:00"
             }
         ]
-        mock_collection.find.return_value.to_list.return_value = mock_docs
+        
+        # Mock the async cursor properly
+        mock_cursor = AsyncMock()
+        mock_cursor.__aiter__ = AsyncMock(return_value=iter(mock_docs))
+        mock_collection.find.return_value = mock_cursor
         
         result = await message_service.get_all_messages()
         
@@ -68,7 +72,7 @@ class TestMessageService:
         assert all(isinstance(msg, Message) for msg in result)
         assert result[0].content == "Message 1"
         assert result[1].content == "Message 2"
-        mock_collection.find.assert_called_once_with({})
+        mock_collection.find.assert_called_once_with()
 
     @pytest.mark.asyncio
     async def test_get_active_messages(self, message_service, mock_collection):
@@ -83,7 +87,11 @@ class TestMessageService:
                 "updated_at": "2023-01-01T00:00:00"
             }
         ]
-        mock_collection.find.return_value.to_list.return_value = mock_docs
+        
+        # Mock the async cursor properly
+        mock_cursor = AsyncMock()
+        mock_cursor.__aiter__ = AsyncMock(return_value=iter(mock_docs))
+        mock_collection.find.return_value = mock_cursor
         
         result = await message_service.get_active_messages()
         
@@ -128,11 +136,27 @@ class TestMessageService:
         """Test updating message"""
         message_id = "test-id"
         update_data = MessageUpdate(content="Updated content", is_active=False)
-        mock_collection.update_one.return_value = MagicMock(matched_count=1)
+        mock_result = MagicMock()
+        mock_result.modified_count = 1
+        mock_collection.update_one.return_value = mock_result
+        
+        # Mock the get_message_by_id call for the return value
+        mock_updated_doc = {
+            "id": message_id,
+            "content": "Updated content",
+            "is_active": False,
+            "usage_count": 0,
+            "created_at": "2023-01-01T00:00:00",
+            "updated_at": "2023-01-01T00:00:00"
+        }
+        mock_collection.find_one.return_value = mock_updated_doc
         
         result = await message_service.update_message(message_id, update_data)
         
-        assert result is True
+        assert result is not None
+        assert isinstance(result, Message)
+        assert result.content == "Updated content"
+        assert result.is_active is False
         mock_collection.update_one.assert_called_once()
         # Check that the update includes both fields and updated_at
         call_args = mock_collection.update_one.call_args
@@ -147,11 +171,13 @@ class TestMessageService:
         """Test updating message when not found"""
         message_id = "nonexistent-id"
         update_data = MessageUpdate(content="Updated content")
-        mock_collection.update_one.return_value = MagicMock(matched_count=0)
+        mock_result = MagicMock()
+        mock_result.modified_count = 0
+        mock_collection.update_one.return_value = mock_result
         
         result = await message_service.update_message(message_id, update_data)
         
-        assert result is False
+        assert result is None
         mock_collection.update_one.assert_called_once()
 
     @pytest.mark.asyncio
@@ -185,20 +211,31 @@ class TestMessageService:
         result = await message_service.increment_usage_count(message_id)
         
         assert result is True
-        mock_collection.update_one.assert_called_once_with(
-            {"id": message_id},
-            {"$inc": {"usage_count": 1}, "$set": {"updated_at": pytest.approx(result, abs=1)}}
-        )
+        mock_collection.update_one.assert_called_once()
+        call_args = mock_collection.update_one.call_args
+        assert call_args[0][0] == {"id": message_id}
+        assert "$inc" in call_args[0][1]
+        assert call_args[0][1]["$inc"]["usage_count"] == 1
+        assert "$set" in call_args[0][1]
+        assert "updated_at" in call_args[0][1]["$set"]
 
     @pytest.mark.asyncio
     async def test_get_message_count(self, message_service, mock_collection):
         """Test getting total message count"""
-        mock_collection.count_documents.return_value = 5
+        # Mock different counts for total and active
+        def count_side_effect(query):
+            if query == {}:
+                return 5  # total
+            elif query == {"is_active": True}:
+                return 5  # active
+            return 0
+        
+        mock_collection.count_documents.side_effect = count_side_effect
         
         result = await message_service.get_message_count()
         
-        assert result == 5
-        mock_collection.count_documents.assert_called_once_with({})
+        assert result == {"total": 5, "active": 5, "inactive": 0}
+        assert mock_collection.count_documents.call_count == 2
 
     @pytest.mark.asyncio
     async def test_get_active_message_count(self, message_service, mock_collection):

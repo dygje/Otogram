@@ -29,6 +29,7 @@ class TestGroupService:
     async def test_create_group_with_id(self, group_service, mock_collection):
         """Test group creation with group ID"""
         group_data = GroupCreate(group_identifier="-1001234567890")
+        mock_collection.find_one.return_value = None  # No existing group
         mock_collection.insert_one.return_value = AsyncMock()
         
         result = await group_service.create_group(group_data)
@@ -44,6 +45,7 @@ class TestGroupService:
     async def test_create_group_with_username(self, group_service, mock_collection):
         """Test group creation with username"""
         group_data = GroupCreate(group_identifier="@testgroup")
+        mock_collection.find_one.return_value = None  # No existing group
         mock_collection.insert_one.return_value = AsyncMock()
         
         result = await group_service.create_group(group_data)
@@ -59,6 +61,7 @@ class TestGroupService:
     async def test_create_group_with_link(self, group_service, mock_collection):
         """Test group creation with t.me link"""
         group_data = GroupCreate(group_identifier="https://t.me/testgroup")
+        mock_collection.find_one.return_value = None  # No existing group
         mock_collection.insert_one.return_value = AsyncMock()
         
         result = await group_service.create_group(group_data)
@@ -66,7 +69,7 @@ class TestGroupService:
         assert isinstance(result, Group)
         assert result.group_link == "https://t.me/testgroup"
         assert result.group_id is None
-        assert result.group_username is None 
+        assert result.group_username == "@testgroup"  # Extracted from link
         assert result.is_active is True
         mock_collection.insert_one.assert_called_once()
 
@@ -74,7 +77,8 @@ class TestGroupService:
     async def test_create_bulk_groups(self, group_service, mock_collection):
         """Test bulk group creation"""
         bulk_data = GroupBulkCreate(identifiers="-1001234567890\n@testgroup\nhttps://t.me/testgroup2")
-        mock_collection.insert_many.return_value = AsyncMock()
+        mock_collection.find_one.return_value = None  # No existing groups
+        mock_collection.insert_one.return_value = AsyncMock()
         
         result = await group_service.create_bulk_groups(bulk_data)
         
@@ -86,7 +90,6 @@ class TestGroupService:
         assert result[1].group_username == "@testgroup"
         # Check third group (link)
         assert result[2].group_link == "https://t.me/testgroup2"
-        mock_collection.insert_many.assert_called_once()
 
     @pytest.mark.asyncio
     async def test_get_all_groups(self, group_service, mock_collection):
@@ -104,14 +107,18 @@ class TestGroupService:
                 "updated_at": "2023-01-01T00:00:00"
             }
         ]
-        mock_collection.find.return_value.to_list.return_value = mock_docs
+        
+        # Mock the async cursor properly
+        mock_cursor = AsyncMock()
+        mock_cursor.__aiter__ = AsyncMock(return_value=iter(mock_docs))
+        mock_collection.find.return_value = mock_cursor
         
         result = await group_service.get_all_groups()
         
         assert len(result) == 1
         assert isinstance(result[0], Group)
         assert result[0].group_id == "-1001234567890"
-        mock_collection.find.assert_called_once_with({})
+        mock_collection.find.assert_called_once_with()
 
     @pytest.mark.asyncio
     async def test_get_active_groups(self, group_service, mock_collection):
@@ -129,7 +136,11 @@ class TestGroupService:
                 "updated_at": "2023-01-01T00:00:00"
             }
         ]
-        mock_collection.find.return_value.to_list.return_value = mock_docs
+        
+        # Mock the async cursor properly
+        mock_cursor = AsyncMock()
+        mock_cursor.__aiter__ = AsyncMock(return_value=iter(mock_docs))
+        mock_collection.find.return_value = mock_cursor
         
         result = await group_service.get_active_groups()
         
