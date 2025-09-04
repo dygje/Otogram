@@ -331,7 +331,8 @@ class TestUserBot:
         result = await userbot._send_message_to_group(mock_group, message_content)
         
         assert result is True
-        mock_client.send_message.assert_called_once_with("testgroup", message_content)
+        # Note: userbot adds '@' prefix to usernames automatically
+        mock_client.send_message.assert_called_once_with("@testgroup", message_content)
 
     @pytest.mark.asyncio
     async def test_send_message_to_group_no_identifier(self, userbot):
