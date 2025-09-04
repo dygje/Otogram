@@ -14,14 +14,15 @@ from src.models.group import Group, GroupBulkCreate, GroupCreate
 class GroupService:
     """Service for managing groups"""
 
-    def __init__(self) -> None:
+    def __init__(self, db_instance: Any = None) -> None:
+        self._db = db_instance or database
         self._collection: Any = None
 
     @property
     def collection(self) -> Any:
         """Lazy-load collection"""
         if self._collection is None:
-            self._collection = database.get_collection("groups")
+            self._collection = self._db.get_collection("groups")
         return self._collection
 
     async def create_group(self, group_data: GroupCreate) -> Group:
