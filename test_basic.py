@@ -8,16 +8,16 @@ import importlib.util
 def test_imports():
     """Test semua import yang diperlukan"""
     imports_to_test = [
-        'loguru',
-        'motor',
-        'pymongo', 
-        'pydantic',
-        'python_telegram_bot',
-        'pyrofork',
-        'TgCrypto',
-        'apscheduler',
-        'aiofiles',
-        'python_dateutil'
+        ('loguru', 'loguru'),
+        ('motor', 'motor'),
+        ('pymongo', 'pymongo'), 
+        ('pydantic', 'pydantic'),
+        ('telegram', 'python-telegram-bot'),
+        ('pyrogram', 'pyrofork'),
+        ('TgCrypto', 'TgCrypto'),
+        ('apscheduler', 'apscheduler'),
+        ('aiofiles', 'aiofiles'),
+        ('dateutil', 'python-dateutil')
     ]
     
     print("🔍 Testing imports...")
