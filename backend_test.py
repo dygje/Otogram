@@ -174,7 +174,7 @@ class OtogramSystemTester:
         try:
             from src.models.message import Message
             from src.models.group import Group
-            from src.models.blacklist import Blacklist
+            from src.models.blacklist import Blacklist, BlacklistType
             from datetime import datetime
             
             # Test Message
@@ -185,13 +185,13 @@ class OtogramSystemTester:
             )
             assert message.content == "Test message"
             
-            # Test Group  
+            # Test Group (group_id should be string)
             group = Group(
-                group_id=-1001234567890,
-                title="Test Group",
-                username="testgroup"
+                group_id="-1001234567890",
+                group_title="Test Group",
+                group_username="@testgroup"
             )
-            assert group.group_id == -1001234567890
+            assert group.group_id == "-1001234567890"
             
             print("   Model instantiation successful")
             return True
