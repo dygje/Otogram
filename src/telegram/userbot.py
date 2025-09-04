@@ -5,6 +5,7 @@ Userbot - Handles mass messaging using MTProto
 import asyncio
 import contextlib
 from datetime import datetime
+from typing import Any
 
 from loguru import logger
 from pyrogram import Client
