@@ -150,7 +150,7 @@ class OtogramSystemTester:
     def test_essential_packages(self):
         """Test essential package imports"""
         packages = [
-            ("pyrofork", "pyrogram"),
+            ("pyrogram", "pyrofork"),  # pyrofork is the actual package
             ("telegram", "python-telegram-bot"),
             ("motor.motor_asyncio", "motor"),
             ("pydantic", "pydantic"),
