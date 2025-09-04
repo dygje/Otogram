@@ -40,8 +40,8 @@ class Log(BaseDocument):
     group_id: str | None = Field(None, description="Related group ID")
     user_id: str | None = Field(None, description="Related user ID")
 
-    class Config:
-        json_schema_extra: ClassVar = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "log_type": "message_sent",
                 "level": "info",
@@ -49,6 +49,7 @@ class Log(BaseDocument):
                 "group_id": "-1001234567890",
             }
         }
+    )
 
 
 class LogCreate(BaseModel):
