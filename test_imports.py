@@ -45,7 +45,7 @@ def test_model_imports():
         from src.models.blacklist import Blacklist, BlacklistCreate
         print("✅ src.models.blacklist")
         
-        from src.models.config import ConfigModel
+        from src.models.config import Configuration, ConfigUpdate
         print("✅ src.models.config")
         
         from src.models.log import LogEntry
