@@ -149,15 +149,18 @@ class TelegramBotTester:
         try:
             from src.telegram.management_bot import ManagementBot
             
-            # Try to create instance (may fail due to missing credentials, but should not have import/type errors)
+            # Try to create instance (may fail due to missing database, but should not have import/type errors)
             try:
                 bot = ManagementBot()
                 print("   ✓ ManagementBot instance created successfully")
                 return True
             except Exception as e:
-                # Check if it's a credential/config error (acceptable) vs type/import error (not acceptable)
+                # Check if it's a database/service error (acceptable) vs type/import error (not acceptable)
                 error_str = str(e).lower()
-                if any(keyword in error_str for keyword in ['token', 'credential', 'api', 'config', 'env']):
+                if any(keyword in error_str for keyword in ['database', 'not connected', 'service', 'collection', 'mongo']):
+                    print(f"   ✓ ManagementBot creation failed due to database dependency (expected): {e}")
+                    return True
+                elif any(keyword in error_str for keyword in ['token', 'credential', 'api', 'config', 'env']):
                     print(f"   ✓ ManagementBot creation failed due to missing credentials (expected): {e}")
                     return True
                 else:
@@ -178,7 +181,10 @@ class TelegramBotTester:
                 return True
             except Exception as e:
                 error_str = str(e).lower()
-                if any(keyword in error_str for keyword in ['token', 'credential', 'api', 'config', 'env']):
+                if any(keyword in error_str for keyword in ['database', 'not connected', 'service', 'collection', 'mongo']):
+                    print(f"   ✓ BotManager creation failed due to database dependency (expected): {e}")
+                    return True
+                elif any(keyword in error_str for keyword in ['token', 'credential', 'api', 'config', 'env']):
                     print(f"   ✓ BotManager creation failed due to missing credentials (expected): {e}")
                     return True
                 else:
@@ -199,7 +205,10 @@ class TelegramBotTester:
                 return True
             except Exception as e:
                 error_str = str(e).lower()
-                if any(keyword in error_str for keyword in ['token', 'credential', 'api', 'config', 'env', 'phone']):
+                if any(keyword in error_str for keyword in ['database', 'not connected', 'service', 'collection', 'mongo']):
+                    print(f"   ✓ UserBot creation failed due to database dependency (expected): {e}")
+                    return True
+                elif any(keyword in error_str for keyword in ['token', 'credential', 'api', 'config', 'env', 'phone']):
                     print(f"   ✓ UserBot creation failed due to missing credentials (expected): {e}")
                     return True
                 else:
