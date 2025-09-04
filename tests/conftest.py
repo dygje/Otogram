@@ -21,7 +21,7 @@ def event_loop() -> Generator[asyncio.AbstractEventLoop, None, None]:
     loop.close()
 
 
-@pytest_asyncio.fixture(scope="session")  # type: ignore[misc]
+@pytest_asyncio.fixture(scope="session")
 async def test_database() -> AsyncGenerator[Database, None]:
     """Test database fixture"""
     # Use test database
