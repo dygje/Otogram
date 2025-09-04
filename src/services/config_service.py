@@ -17,8 +17,10 @@ class ConfigService:
     def __init__(self) -> None:
         self.collection: Any = database.get_collection("configurations")
 
-    async def initialize_default_configs(self) -> None:
+    async def initialize_default_configs(self) -> int:
         """Initialize default configurations"""
+        initialized_count = 0
+        
         for config_data in DEFAULT_CONFIGS:
             existing = await self.collection.find_one({"key": config_data["key"]})
 
@@ -43,6 +45,9 @@ class ConfigService:
                 )
                 await self.collection.insert_one(config.model_dump())
                 logger.info(f"Initialized config: {config_data['key']}")
+                initialized_count += 1
+        
+        return initialized_count
 
     async def get_config(self, key: str) -> Configuration | None:
         """Get configuration by key"""
