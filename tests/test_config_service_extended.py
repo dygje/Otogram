@@ -493,8 +493,8 @@ class TestConfigServiceExtended:
         backup_doc = {
             "backup_id": backup_id,
             "configs": [
-                {"key": "config1", "value": "backup_value1"},
-                {"key": "config2", "value": "backup_value2"}
+                {"key": "config1", "value": "backup_value1", "value_type": "str"},
+                {"key": "config2", "value": "backup_value2", "value_type": "str"}
             ],
             "timestamp": "2023-01-01T12:00:00"
         }
