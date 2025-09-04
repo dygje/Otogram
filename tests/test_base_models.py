@@ -138,7 +138,7 @@ class TestBaseDocument:
         
         # Test JSON serialization
         try:
-            json_str = doc.json()
+            json_str = doc.model_dump_json()
             assert isinstance(json_str, str)
             assert doc.id in json_str
         except AttributeError:
