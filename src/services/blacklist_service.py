@@ -3,6 +3,7 @@ Blacklist Service - Handles blacklist management
 """
 
 from datetime import datetime, timedelta
+from typing import Any
 
 from loguru import logger
 
@@ -20,7 +21,7 @@ class BlacklistService:
     """Service for managing blacklists"""
 
     def __init__(self) -> None:
-        self.collection = database.get_collection("blacklists")
+        self.collection: Any = database.get_collection("blacklists")
 
     async def add_to_blacklist(self, blacklist_data: BlacklistCreate) -> Blacklist:
         """Add group to blacklist"""
@@ -44,10 +45,10 @@ class BlacklistService:
         )
 
         # Remove existing blacklist for this group
-        await self.collection.delete_many({"group_id": blacklist_data.group_id})
+        await self.collection.delete_many({"group_id": blacklist_data.group_id})  # type: ignore
 
         # Insert new blacklist entry
-        await self.collection.insert_one(blacklist.dict())
+        await self.collection.insert_one(blacklist.dict())  # type: ignore
 
         logger.info(
             f"Added to {blacklist_data.blacklist_type} blacklist: {blacklist_data.group_id} - {blacklist_data.reason}"
@@ -109,12 +110,12 @@ class BlacklistService:
         # Clean up expired entries first
         await self.cleanup_expired()
 
-        doc = await self.collection.find_one({"group_id": group_id})
+        doc = await self.collection.find_one({"group_id": group_id})  # type: ignore
         return doc is not None
 
     async def get_blacklist_entry(self, group_id: str) -> Blacklist | None:
         """Get blacklist entry for group"""
-        doc = await self.collection.find_one({"group_id": group_id})
+        doc = await self.collection.find_one({"group_id": group_id})  # type: ignore
 
         if doc:
             return Blacklist(**doc)
@@ -122,7 +123,7 @@ class BlacklistService:
 
     async def remove_from_blacklist(self, group_id: str) -> bool:
         """Remove group from blacklist"""
-        result = await self.collection.delete_one({"group_id": group_id})
+        result = await self.collection.delete_one({"group_id": group_id})  # type: ignore
 
         if result.deleted_count > 0:
             logger.info(f"Removed from blacklist: {group_id}")
@@ -134,18 +135,18 @@ class BlacklistService:
         """Clean up expired temporary blacklist entries"""
         now = datetime.utcnow()
 
-        result = await self.collection.delete_many(
+        result = await self.collection.delete_many(  # type: ignore
             {"blacklist_type": BlacklistType.TEMPORARY, "expires_at": {"$lte": now}}
         )
 
         if result.deleted_count > 0:
             logger.info(f"Cleaned up {result.deleted_count} expired blacklist entries")
 
-        return result.deleted_count
+        return result.deleted_count  # type: ignore
 
     async def get_all_blacklists(self) -> list[Blacklist]:
         """Get all blacklist entries"""
-        cursor = self.collection.find()
+        cursor = self.collection.find()  # type: ignore
         blacklists = []
 
         async for doc in cursor:
@@ -153,19 +154,19 @@ class BlacklistService:
 
         return blacklists
 
-    async def get_blacklist_stats(self) -> dict:
+    async def get_blacklist_stats(self) -> dict[str, int]:
         """Get blacklist statistics"""
-        total = await self.collection.count_documents({})
-        permanent = await self.collection.count_documents(
+        total = await self.collection.count_documents({})  # type: ignore
+        permanent = await self.collection.count_documents(  # type: ignore
             {"blacklist_type": BlacklistType.PERMANENT}
         )
-        temporary = await self.collection.count_documents(
+        temporary = await self.collection.count_documents(  # type: ignore
             {"blacklist_type": BlacklistType.TEMPORARY}
         )
 
         # Count expired temporary entries
         now = datetime.utcnow()
-        expired = await self.collection.count_documents(
+        expired = await self.collection.count_documents(  # type: ignore
             {"blacklist_type": BlacklistType.TEMPORARY, "expires_at": {"$lte": now}}
         )
 
@@ -173,7 +174,7 @@ class BlacklistService:
 
     async def get_blacklist_entry_by_id(self, blacklist_id: str) -> Blacklist | None:
         """Get blacklist entry by ID"""
-        doc = await self.collection.find_one({"id": blacklist_id})
+        doc = await self.collection.find_one({"id": blacklist_id})  # type: ignore
 
         if doc:
             return Blacklist(**doc)
