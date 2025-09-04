@@ -17,7 +17,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from loguru import logger
 
 from src.core.config import settings
-from src.core.database import database
+from src.core.database import Database, database
 from src.telegram.bot_manager import BotManager
 
 
