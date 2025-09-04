@@ -14,7 +14,7 @@ def test_imports():
         ('pydantic', 'pydantic'),
         ('telegram', 'python-telegram-bot'),
         ('pyrogram', 'pyrofork'),
-        ('TgCrypto', 'TgCrypto'),
+        ('TgCrypto', 'tgcrypto'),
         ('apscheduler', 'apscheduler'),
         ('aiofiles', 'aiofiles'),
         ('dateutil', 'python-dateutil')
