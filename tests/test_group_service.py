@@ -3,7 +3,7 @@ Tests for Group Service
 """
 
 import pytest
-from unittest.mock import AsyncMock, MagicMock
+from unittest.mock import AsyncMock, MagicMock, patch
 
 from src.services.group_service import GroupService
 from src.models.group import Group, GroupCreate, GroupBulkCreate
@@ -20,9 +20,10 @@ class TestGroupService:
     @pytest.fixture
     def group_service(self, mock_collection):
         """GroupService fixture with mocked collection"""
-        service = GroupService()
-        service.collection = mock_collection
-        return service
+        with patch('src.services.group_service.database') as mock_database:
+            mock_database.get_collection.return_value = mock_collection
+            service = GroupService()
+            return service
 
     @pytest.mark.asyncio
     async def test_create_group_with_id(self, group_service, mock_collection):
