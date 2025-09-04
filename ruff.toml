@@ -1,8 +1,9 @@
 # Ruff configuration for personal project
-# Simple and practical rules
+# All ruff settings centralized here
 
 target-version = "py311"
 line-length = 100
+src = ["src", "scripts", "tests"]
 
 [lint]
 # Essential rules only for personal development
@@ -33,8 +34,12 @@ exclude = [
 
 [lint.per-file-ignores]
 # Very lenient for tests and scripts
-"tests/*" = ["E", "W", "B"]
-"scripts/*" = ["T201", "PLR"]  # Allow prints and complexity
+"tests/*" = ["B", "E"]      # Very lenient for tests
+"scripts/*" = ["T201"]      # Allow print statements
 
 [lint.isort]
 known-first-party = ["src"]
+
+[format]
+quote-style = "double"
+indent-style = "space"
