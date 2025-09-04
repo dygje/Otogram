@@ -363,7 +363,8 @@ class TestBlacklistHandlers:
     @pytest.fixture
     def blacklist_handlers(self):
         """BlacklistHandlers fixture"""
-        return BlacklistHandlers()
+        with patch('src.services.blacklist_service.database'):
+            return BlacklistHandlers()
 
     @pytest.mark.asyncio
     async def test_init(self, blacklist_handlers):
