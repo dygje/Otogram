@@ -71,7 +71,7 @@ class TestDatabase:
                 pass  # Skip detailed index validation for now
 
     @pytest.mark.asyncio
-    async def test_basic_crud_operations(self, test_database) -> None:
+    async def test_basic_crud_operations(self, test_database: Database) -> None:
         """Test basic CRUD operations"""
         db = test_database
         collection = db.get_collection("test_crud")
