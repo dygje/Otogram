@@ -192,27 +192,34 @@ class InterfaceComponentTester:
     def test_management_bot_initialization(self):
         """Test ManagementBot class initialization"""
         try:
-            from src.telegram.management_bot import ManagementBot
-            
-            # Create instance
-            bot = ManagementBot()
-            
-            # Check if handlers are initialized
-            required_handlers = [
-                'auth_handlers', 'message_handlers', 'group_handlers',
-                'config_handlers', 'blacklist_handlers'
-            ]
-            
-            for handler in required_handlers:
-                if not hasattr(bot, handler):
-                    print(f"   Missing handler: {handler}")
-                    return False
-                if getattr(bot, handler) is None:
-                    print(f"   Handler not initialized: {handler}")
-                    return False
-            
-            print(f"   All handlers initialized: {len(required_handlers)}")
-            return True
+            # Mock database and services
+            with patch('src.core.database.database', MockDatabase()), \
+                 patch('src.services.config_service.ConfigService', MockService), \
+                 patch('src.services.message_service.MessageService', MockService), \
+                 patch('src.services.group_service.GroupService', MockService), \
+                 patch('src.services.blacklist_service.BlacklistService', MockService):
+                
+                from src.telegram.management_bot import ManagementBot
+                
+                # Create instance
+                bot = ManagementBot()
+                
+                # Check if handlers are initialized
+                required_handlers = [
+                    'auth_handlers', 'message_handlers', 'group_handlers',
+                    'config_handlers', 'blacklist_handlers'
+                ]
+                
+                for handler in required_handlers:
+                    if not hasattr(bot, handler):
+                        print(f"   Missing handler: {handler}")
+                        return False
+                    if getattr(bot, handler) is None:
+                        print(f"   Handler not initialized: {handler}")
+                        return False
+                
+                print(f"   All handlers initialized: {len(required_handlers)}")
+                return True
             
         except Exception as e:
             print(f"   Initialization error: {e}")
