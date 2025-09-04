@@ -445,12 +445,18 @@ class TestConfigServiceExtended:
             {
                 "key": "config1",
                 "value": "value1", 
-                "description": "Config 1"
+                "value_type": "str",
+                "description": "Config 1",
+                "category": "general",
+                "is_editable": True
             },
             {
                 "key": "config2",
                 "value": "value2",
-                "description": "Config 2"
+                "value_type": "str",
+                "description": "Config 2",
+                "category": "general",
+                "is_editable": True
             }
         ]
         
