@@ -44,10 +44,10 @@ async def check_mongodb() -> HealthCheckResult:
 def check_credentials() -> HealthCheckResult:
     """Check Telegram credentials"""
     import os
-    
+
     # For CI environment, credentials are optional
     is_ci = os.getenv("CI") == "true" or os.getenv("GITHUB_ACTIONS") == "true"
-    
+
     try:
         creds = {
             "API ID": settings.TELEGRAM_API_ID,
@@ -64,7 +64,9 @@ def check_credentials() -> HealthCheckResult:
             )
         elif is_ci:
             return HealthCheckResult(
-                status="⚠️", message="Credentials not configured (OK in CI)", details="Skipping in CI environment"
+                status="⚠️",
+                message="Credentials not configured (OK in CI)",
+                details="Skipping in CI environment",
             )
         else:
             return HealthCheckResult(
@@ -113,17 +115,17 @@ def check_packages() -> bool:
 def check_files() -> bool:
     """Check essential files exist"""
     import os
-    
+
     # For CI environment, .env is optional
     is_ci = os.getenv("CI") == "true" or os.getenv("GITHUB_ACTIONS") == "true"
-    
+
     essential_files = [
         "main.py",
         "pyproject.toml",
         "src/core/config.py",
         "src/telegram/bot_manager.py",
     ]
-    
+
     # Only require .env in non-CI environments
     if not is_ci:
         essential_files.append(".env")
@@ -135,7 +137,7 @@ def check_files() -> bool:
         else:
             print(f"❌ {file_path}")
             missing.append(file_path)
-    
+
     # Check .env separately for CI - show as optional
     if is_ci and not Path(".env").exists():
         print("⚠️ .env (optional in CI)")
