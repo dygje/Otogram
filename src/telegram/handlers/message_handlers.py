@@ -296,6 +296,28 @@ class MessageHandlers:
             if update.callback_query:
                 await update.callback_query.edit_message_text("❌ Gagal menghapus pesan.")
 
+    async def _toggle_message_status(self, update: Update, message_id: str) -> None:
+        """Toggle message active status"""
+        try:
+            updated_message = await self.message_service.toggle_message_status(message_id)
+
+            if updated_message:
+                status_text = "diaktifkan" if updated_message.is_active else "dinonaktifkan"
+                text = f"✅ Pesan berhasil {status_text}!"
+            else:
+                text = "❌ Gagal mengubah status pesan."
+
+            keyboard = [[InlineKeyboardButton("🔙 Kembali", callback_data="messages_menu")]]
+            reply_markup = InlineKeyboardMarkup(keyboard)
+
+            if update.callback_query:
+                await update.callback_query.edit_message_text(text, reply_markup=reply_markup)
+
+        except Exception as e:
+            logger.error(f"Error toggling message status: {e}")
+            if update.callback_query:
+                await update.callback_query.edit_message_text("❌ Gagal mengubah status pesan.")
+
     async def _send_error_message(self, update: Update, error_text: str) -> None:
         """Send error message"""
         if update.message:
