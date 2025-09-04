@@ -5,12 +5,17 @@ Verifies all system components are working correctly
 """
 
 import asyncio
+import importlib
 import sys
 from dataclasses import dataclass
 from pathlib import Path
 
 # Add app directory to path - Updated untuk reorganisasi
 sys.path.insert(0, str(Path(__file__).parent.parent))
+
+# Import at module level for testing
+from motor.motor_asyncio import AsyncIOMotorClient
+from src.core.config import settings
 
 
 @dataclass
