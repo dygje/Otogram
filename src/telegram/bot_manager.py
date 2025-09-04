@@ -33,13 +33,13 @@ class BotManager:
             await self.management_bot.start()
             logger.info("✅ Management bot started")
 
-            # TODO: Start userbot after authentication setup
-            # self.userbot = UserBot()
-            # await self.userbot.start()
-            # logger.info("✅ Userbot started")
+            # Start userbot for broadcasting
+            self.userbot = UserBot()
+            await self.userbot.start()
+            logger.info("✅ Userbot started")
 
             self.running = True
-            logger.info("🎯 Management bot running! (Userbot temporarily disabled for testing)")
+            logger.info("🎯 Both management bot and userbot are now running!")
 
         except Exception as e:
             logger.error(f"❌ Failed to start Telegram services: {e}")
