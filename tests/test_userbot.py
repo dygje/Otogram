@@ -100,7 +100,11 @@ class TestUserBot:
     async def test_stop_with_task(self, userbot):
         """Test stopping userbot with active task"""
         mock_client = AsyncMock()
+        
+        # Create a proper mock task that can be awaited
         mock_task = AsyncMock()
+        mock_task_coroutine = AsyncMock()
+        mock_task.__await__ = lambda: mock_task_coroutine.__await__()
         
         userbot.client = mock_client
         userbot.current_cycle_task = mock_task
