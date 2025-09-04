@@ -55,7 +55,8 @@ class ManagementBot:
     async def stop(self) -> None:
         """Stop the management bot"""
         if self.app:
-            await self.app.updater.stop()
+            if self.app.updater:
+                await self.app.updater.stop()
             await self.app.stop()
             await self.app.shutdown()
 
