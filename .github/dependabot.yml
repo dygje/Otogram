@@ -1,18 +1,20 @@
 version: 2
 updates:
-  # Python dependencies
+  # Python dependencies - weekly updates
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
       interval: "weekly"
       day: "monday"
       time: "06:00"
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 3
     commit-message:
       prefix: "deps"
       include: "scope"
+    reviewers:
+      - "dygje"
 
-  # GitHub Actions
+  # GitHub Actions - monthly updates
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -21,13 +23,11 @@ updates:
       prefix: "ci"
       include: "scope"
 
-  # Docker dependencies  
+  # Docker - monthly updates  
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "06:00"
+      interval: "monthly"
     commit-message:
       prefix: "docker"
       include: "scope"
