@@ -20,7 +20,8 @@ class TestMessageHandlers:
     @pytest.fixture
     def message_handlers(self):
         """MessageHandlers fixture"""
-        return MessageHandlers()
+        with patch('src.services.message_service.database'):
+            return MessageHandlers()
 
     @pytest.mark.asyncio
     async def test_init(self, message_handlers):
