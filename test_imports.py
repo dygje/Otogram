@@ -23,7 +23,7 @@ def test_core_imports():
         from src.core.constants import DEFAULT_MIN_MESSAGE_DELAY, TELEGRAM_MESSAGE_MAX_LENGTH
         print("✅ src.core.constants")
         
-        from src.core.security import SecurityManager
+        from src.core.security import SecureRandom
         print("✅ src.core.security")
         
         return True
