@@ -33,7 +33,7 @@ class TestSettings:
     def test_api_id_parsing(self) -> None:
         """Test API ID parsing from different formats"""
         # String number
-        settings = Settings(TELEGRAM_API_ID=str(TEST_API_ID))
+        settings = Settings(TELEGRAM_API_ID=str(TEST_API_ID))  # type: ignore[arg-type]
         assert settings.TELEGRAM_API_ID == TEST_API_ID
 
         # Integer
@@ -41,7 +41,7 @@ class TestSettings:
         assert settings.TELEGRAM_API_ID == TEST_API_ID
 
         # Empty string
-        settings = Settings(TELEGRAM_API_ID="")
+        settings = Settings(TELEGRAM_API_ID="")  # type: ignore[arg-type]
         assert settings.TELEGRAM_API_ID is None
 
         # None
