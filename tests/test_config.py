@@ -95,7 +95,7 @@ class TestSettings:
             exc_info.value
         )
 
-    def test_is_configured(self, mock_telegram_credentials) -> None:
+    def test_is_configured(self, mock_telegram_credentials: None) -> None:
         """Test configuration status check"""
         settings = Settings()
 
