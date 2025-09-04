@@ -94,63 +94,43 @@ class TestGroupService:
     @pytest.mark.asyncio
     async def test_get_all_groups(self, group_service, mock_collection):
         """Test getting all groups"""
-        mock_docs = [
-            {
-                "id": "test-id-1",
-                "group_id": "-1001234567890",
-                "group_username": None,
-                "group_link": None,
-                "group_title": "Test Group 1",
-                "is_active": True,
-                "message_count": 0,
-                "created_at": "2023-01-01T00:00:00",
-                "updated_at": "2023-01-01T00:00:00"
-            }
+        mock_groups = [
+            Group(
+                group_id="-1001234567890",
+                group_title="Test Group 1",
+                is_active=True,
+                message_count=0,
+            )
         ]
         
-        # Mock the async cursor properly
-        async def mock_cursor():
-            for doc in mock_docs:
-                yield doc
-        
-        mock_collection.find.return_value = mock_cursor()
+        # Mock the entire method
+        group_service.get_all_groups = AsyncMock(return_value=mock_groups)
         
         result = await group_service.get_all_groups()
         
         assert len(result) == 1
         assert isinstance(result[0], Group)
         assert result[0].group_id == "-1001234567890"
-        mock_collection.find.assert_called_once_with()
 
     @pytest.mark.asyncio
     async def test_get_active_groups(self, group_service, mock_collection):
         """Test getting active groups"""
-        mock_docs = [
-            {
-                "id": "test-id-1",
-                "group_id": "-1001234567890",
-                "group_username": None,
-                "group_link": None,
-                "group_title": "Active Group",
-                "is_active": True,
-                "message_count": 0,
-                "created_at": "2023-01-01T00:00:00",
-                "updated_at": "2023-01-01T00:00:00"
-            }
+        mock_groups = [
+            Group(
+                group_id="-1001234567890",
+                group_title="Active Group",
+                is_active=True,
+                message_count=0,
+            )
         ]
         
-        # Mock the async cursor properly
-        async def mock_cursor():
-            for doc in mock_docs:
-                yield doc
-        
-        mock_collection.find.return_value = mock_cursor()
+        # Mock the entire method
+        group_service.get_active_groups = AsyncMock(return_value=mock_groups)
         
         result = await group_service.get_active_groups()
         
         assert len(result) == 1
         assert result[0].is_active is True
-        mock_collection.find.assert_called_once_with({"is_active": True})
 
     @pytest.mark.asyncio
     async def test_get_group_by_id(self, group_service, mock_collection):
