@@ -757,8 +757,7 @@ class ManagementBot:
                     await update.message.reply_text(
                         "❌ Input tidak dikenali. Gunakan /menu untuk memulai."
                     )
-        else:
-            if update.message:
-                await update.message.reply_text(
-                    "❓ Saya tidak mengerti. Gunakan /menu untuk melihat pilihan yang tersedia."
-                )
+        elif update.message:
+            await update.message.reply_text(
+                "❓ Saya tidak mengerti. Gunakan /menu untuk melihat pilihan yang tersedia."
+            )

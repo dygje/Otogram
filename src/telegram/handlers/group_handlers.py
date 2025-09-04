@@ -289,7 +289,7 @@ class GroupHandlers:
             await update.callback_query.edit_message_text(
                 text, parse_mode="Markdown", reply_markup=reply_markup
             )
-        
+
         if context.user_data:
             context.user_data["waiting_for"] = "group_identifier"
 
@@ -310,7 +310,7 @@ class GroupHandlers:
             await update.callback_query.edit_message_text(
                 text, parse_mode="Markdown", reply_markup=reply_markup
             )
-        
+
         if context.user_data:
             context.user_data["waiting_for"] = "groups_bulk"
 

@@ -11,7 +11,7 @@ from loguru import logger
 from src.core.config import settings
 
 if TYPE_CHECKING:
-    from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection, AsyncIOMotorDatabase
+    pass
 
 
 class Database:
@@ -25,7 +25,7 @@ class Database:
         """Connect to MongoDB"""
         try:
             from motor.motor_asyncio import AsyncIOMotorClient
-            
+
             self.client = AsyncIOMotorClient(settings.MONGO_URL)
             self.db = self.client[settings.DB_NAME]
 

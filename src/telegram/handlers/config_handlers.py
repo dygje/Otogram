@@ -94,12 +94,12 @@ class ConfigHandlers:
 
             if waiting_for.startswith("config_"):
                 config_id = waiting_for.replace("config_", "")
-                
+
                 if not update.message or not update.message.text:
                     if update.message:
                         await update.message.reply_text("❌ Please provide a valid value.")
                     return
-                
+
                 new_value = update.message.text.strip()
 
                 # Get the configuration
