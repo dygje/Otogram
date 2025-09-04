@@ -48,7 +48,7 @@ class TestMessageHandlers:
         # Verify response was sent
         mock_message.reply_text.assert_called_once()
         call_args = mock_message.reply_text.call_args[0][0]
-        assert "No messages found" in call_args or "Tidak ada pesan" in call_args
+        assert "belum ada pesan" in call_args.lower() or "no messages found" in call_args.lower()
 
     @pytest.mark.asyncio
     async def test_list_messages_with_data(self, message_handlers):
