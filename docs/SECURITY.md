@@ -96,4 +96,6 @@ MAX_GROUPS_PER_CYCLE=20
 
 ---
 
+**Status**: Personal Project Security Guide | **Version**: 2.0.3 | **Updated**: September 2025
+
 **Remember**: This is for personal automation. Be responsible and respect Telegram's terms.
