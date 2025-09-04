@@ -14,7 +14,9 @@ class TestBotManager:
     @pytest.fixture
     def bot_manager(self):
         """BotManager fixture"""
-        return BotManager()
+        with patch('src.services.config_service.database') as mock_database:
+            mock_database.get_collection.return_value = AsyncMock()
+            return BotManager()
 
     @pytest.mark.asyncio
     async def test_init(self, bot_manager):
