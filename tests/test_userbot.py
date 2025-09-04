@@ -466,7 +466,7 @@ class TestUserBot:
         userbot.blacklist_service.add_to_blacklist.assert_called_once()
         call_args = userbot.blacklist_service.add_to_blacklist.call_args[0][0]
         assert call_args.group_id == "-100123456"
-        assert call_args.group_identifier == "testgroup"
+        assert call_args.group_identifier == "@testgroup"  # Note: userbot adds '@' prefix
         assert call_args.blacklist_type == BlacklistType.PERMANENT
         assert call_args.reason == BlacklistReason.CHAT_FORBIDDEN
 
