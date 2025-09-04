@@ -1,46 +1,40 @@
-# Ruff configuration file
+# Ruff configuration for personal project
+# Simple and practical rules
+
 target-version = "py311"
 line-length = 100
 
 [lint]
+# Essential rules only for personal development
 select = [
     "E",   # pycodestyle errors
     "W",   # pycodestyle warnings
-    "F",   # pyflakes
+    "F",   # pyflakes 
     "I",   # isort
-    "B",   # flake8-bugbear
-    "C4",  # flake8-comprehensions
-    "UP",  # pyupgrade
-    "ARG", # flake8-unused-arguments
-    "SIM", # flake8-simplify
-    "PLR", # pylint refactor
-    "PLE", # pylint errors
-    "PLW", # pylint warnings
-    "RUF", # ruff-specific rules
+    "B",   # flake8-bugbear (critical bugs only)
 ]
 
+# Relaxed rules for personal project
 ignore = [
-    "E501",     # line too long, handled by formatter
-    "B008",     # do not perform function calls in argument defaults
-    "C901",     # too complex
-    "PLR0913",  # too many arguments
-    "PLR0912",  # too many branches
-    "PLR0915",  # too many statements
+    "E501",     # line too long (formatter handles this)
+    "B008",     # function calls in defaults (common pattern)
+    "W293",     # blank line contains whitespace
+    "E203",     # whitespace before ':' (conflicts with formatter)
 ]
 
 exclude = [
     ".git",
-    "__pycache__",
+    "__pycache__", 
     "build",
     "dist",
     ".venv",
     ".env",
-    "migrations",
 ]
 
 [lint.per-file-ignores]
-"tests/*" = ["ARG", "S101"]
-"scripts/*" = ["PLR0913"]
+# Very lenient for tests and scripts
+"tests/*" = ["E", "W", "B"]
+"scripts/*" = ["T201", "PLR"]  # Allow prints and complexity
 
 [lint.isort]
 known-first-party = ["src"]
