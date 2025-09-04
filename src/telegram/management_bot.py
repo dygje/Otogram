@@ -222,6 +222,9 @@ class ManagementBot:
             message_stats = await self.message_handlers.message_service.get_message_count()
             group_stats = await self.group_handlers.group_service.get_group_stats()
             blacklist_stats = await self.blacklist_handlers.blacklist_service.get_blacklist_stats()
+            
+            # Check userbot status
+            userbot_status = await self.auth_handlers._check_userbot_status()
 
             # Calculate percentages
             active_msg_pct = (message_stats["active"] / max(message_stats["total"], 1)) * 100
@@ -231,12 +234,14 @@ class ManagementBot:
             msg_status = "🟢" if message_stats["active"] > 0 else "🔴"
             grp_status = "🟢" if group_stats["active"] > 0 else "🔴"
             bl_status = "🟡" if blacklist_stats["total"] > 0 else "🟢"
+            userbot_indicator = "🟢" if userbot_status else "🔴"
 
             stats = (
                 f"📝 *Messages:* {msg_status} {message_stats['active']}/{message_stats['total']} active ({active_msg_pct:.0f}%)\n"
                 f"👥 *Groups:* {grp_status} {group_stats['active']}/{group_stats['total']} active ({active_grp_pct:.0f}%)\n"
+                f"🤖 *Userbot:* {userbot_indicator} {'Authenticated' if userbot_status else 'Not Authenticated'}\n"
                 f"🚫 *Blacklist:* {bl_status} {blacklist_stats['total']} entries ({blacklist_stats['temporary']} temp)\n"
-                f"⚡ *System:* 🟢 Running • 🔄 Auto-mode ON\n"
+                f"⚡ *System:* 🟢 Running • 🔄 Auto-mode {'ON' if userbot_status else 'PENDING'}\n"
             )
 
             return stats
