@@ -4,7 +4,7 @@ Database Management
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from loguru import logger
 
@@ -12,20 +12,20 @@ from src.core.config import settings
 
 if TYPE_CHECKING:
     from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection, AsyncIOMotorDatabase
-else:
-    from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection, AsyncIOMotorDatabase
 
 
 class Database:
     """Database connection manager"""
 
     def __init__(self) -> None:
-        self.client: AsyncIOMotorClient | None = None
-        self.db: AsyncIOMotorDatabase | None = None
+        self.client: Any = None  # AsyncIOMotorClient | None
+        self.db: Any = None      # AsyncIOMotorDatabase | None
 
     async def connect(self) -> None:
         """Connect to MongoDB"""
         try:
+            from motor.motor_asyncio import AsyncIOMotorClient
+            
             self.client = AsyncIOMotorClient(settings.MONGO_URL)
             self.db = self.client[settings.DB_NAME]
 
@@ -78,7 +78,7 @@ class Database:
         except Exception as e:
             logger.warning(f"⚠️ Index creation warning: {e}")
 
-    def get_collection(self, name: str) -> AsyncIOMotorCollection:
+    def get_collection(self, name: str) -> Any:  # AsyncIOMotorCollection
         """Get a collection"""
         if self.db is None:
             raise RuntimeError("Database not connected")
