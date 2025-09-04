@@ -16,6 +16,7 @@ class GroupHandlers:
 
     def __init__(self) -> None:
         self.group_service = GroupService()
+        self.user_states: dict[str, str] = {}
 
     async def list_groups(self, update: Update, _context: ContextTypes.DEFAULT_TYPE) -> None:
         """List all groups"""
