@@ -4,7 +4,7 @@ Message Models
 
 from typing import ClassVar
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 from src.models.base import BaseDocument
 
