@@ -23,12 +23,21 @@ class ConfigService:
             existing = await self.collection.find_one({"key": config_data["key"]})
 
             if not existing:
+                # Type cast for proper types
+                value = config_data["value"]
+                if not isinstance(value, (str, int, float, bool)):
+                    value = str(value)
+                
+                description = config_data.get("description")
+                if description is not None and not isinstance(description, str):
+                    description = str(description)
+                
                 config = Configuration(
                     key=str(config_data["key"]),
                     created_at=datetime.utcnow(),
-                    value=config_data["value"],
+                    value=value,
                     value_type=str(config_data["value_type"]),
-                    description=config_data.get("description"),
+                    description=description,
                     category=str(config_data.get("category", "general")),
                     is_editable=bool(config_data.get("is_editable", True))
                 )
