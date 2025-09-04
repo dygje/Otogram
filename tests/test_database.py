@@ -49,7 +49,7 @@ class TestDatabase:
             db.get_collection("test_collection")
 
     @pytest.mark.asyncio
-    async def test_indexes_creation(self, test_database) -> None:
+    async def test_indexes_creation(self, test_database: Database) -> None:
         """Test that indexes are created properly"""
         db = test_database
 
