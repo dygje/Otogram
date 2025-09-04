@@ -58,6 +58,22 @@ class BotManager:
             await self.management_bot.stop()
             logger.info("✅ Management bot stopped")
 
-    def is_running(self) -> bool:
-        """Check if services are running"""
-        return self.running
+    async def start_userbot(self) -> bool:
+        """Start userbot separately (requires interactive authentication)"""
+        try:
+            if self.userbot:
+                logger.info("Userbot already running")
+                return True
+                
+            logger.info("🔄 Starting userbot authentication...")
+            self.userbot = UserBot()
+            await self.userbot.start()
+            logger.info("✅ Userbot started successfully")
+            return True
+            
+        except Exception as e:
+            logger.error(f"❌ Failed to start userbot: {e}")
+            if self.userbot:
+                await self.userbot.stop()
+                self.userbot = None
+            return False
