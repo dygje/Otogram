@@ -1,8 +1,0 @@
-blank_issues_enabled: false
-contact_links:
-  - name: 📚 Documentation
-    url: https://github.com/dygje/Otogram/tree/main/docs
-    about: Check setup guides and documentation
-  - name: 🩺 Health Check
-    url: https://github.com/dygje/Otogram/blob/main/scripts/health_check.py
-    about: Run system diagnostics first
