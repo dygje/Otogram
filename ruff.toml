@@ -1,7 +1,7 @@
 # Ruff configuration for personal project
 # All ruff settings centralized here
 
-target-version = "py311"
+target-version = "py312"
 line-length = 100
 src = ["src", "scripts", "tests"]
 
