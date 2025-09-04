@@ -42,7 +42,7 @@ class UserBot:
         self.blacklist_service = BlacklistService()
         self.config_service = ConfigService()
         self.is_running = False
-        self.current_cycle_task = None
+        self.current_cycle_task: asyncio.Task[None] | None = None
 
     async def start(self) -> None:
         """Start the userbot"""
