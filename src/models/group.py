@@ -10,10 +10,10 @@ from src.models.base import BaseDocument
 class Group(BaseDocument):
     """Group model for target groups"""
 
-    group_id: str | None = Field(None, description="Telegram group ID")
-    group_username: str | None = Field(None, description="Group username")
-    group_link: str | None = Field(None, description="Group link")
-    group_title: str | None = Field(None, description="Group title")
+    group_id: str | None = Field(default=None, description="Telegram group ID")
+    group_username: str | None = Field(default=None, description="Group username")
+    group_link: str | None = Field(default=None, description="Group link")
+    group_title: str | None = Field(default=None, description="Group title")
     is_active: bool = Field(default=True, description="Whether group is active")
     message_count: int = Field(default=0, description="Messages sent to this group")
 
