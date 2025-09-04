@@ -48,7 +48,7 @@ class BlacklistService:
         await self.collection.delete_many({"group_id": blacklist_data.group_id})
 
         # Insert new blacklist entry
-        await self.collection.insert_one(blacklist.dict())
+        await self.collection.insert_one(blacklist.model_dump())
 
         logger.info(
             f"Added to {blacklist_data.blacklist_type} blacklist: {blacklist_data.group_id} - {blacklist_data.reason}"
