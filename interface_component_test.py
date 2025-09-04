@@ -431,31 +431,38 @@ class InterfaceComponentTester:
     def test_service_integration(self):
         """Test integration with service classes"""
         try:
-            from src.telegram.handlers.message_handlers import MessageHandlers
-            from src.telegram.handlers.group_handlers import GroupHandlers
-            
-            # Test if handlers have service dependencies
-            message_handler = MessageHandlers()
-            group_handler = GroupHandlers()
-            
-            # Check if services are accessible
-            services_to_check = [
-                (message_handler, 'message_service'),
-                (group_handler, 'group_service')
-            ]
-            
-            for handler, service_name in services_to_check:
-                if hasattr(handler, service_name):
-                    service = getattr(handler, service_name)
-                    if service is not None:
-                        print(f"   {service_name}: ✅ Integrated")
+            # Mock database and services
+            with patch('src.core.database.database', MockDatabase()), \
+                 patch('src.services.config_service.ConfigService', MockService), \
+                 patch('src.services.message_service.MessageService', MockService), \
+                 patch('src.services.group_service.GroupService', MockService), \
+                 patch('src.services.blacklist_service.BlacklistService', MockService):
+                
+                from src.telegram.handlers.message_handlers import MessageHandlers
+                from src.telegram.handlers.group_handlers import GroupHandlers
+                
+                # Test if handlers have service dependencies
+                message_handler = MessageHandlers()
+                group_handler = GroupHandlers()
+                
+                # Check if services are accessible
+                services_to_check = [
+                    (message_handler, 'message_service'),
+                    (group_handler, 'group_service')
+                ]
+                
+                for handler, service_name in services_to_check:
+                    if hasattr(handler, service_name):
+                        service = getattr(handler, service_name)
+                        if service is not None:
+                            print(f"   {service_name}: ✅ Integrated")
+                        else:
+                            print(f"   {service_name}: ⚠️ Not initialized")
                     else:
-                        print(f"   {service_name}: ⚠️ Not initialized")
-                else:
-                    print(f"   {service_name}: ❌ Missing")
-                    return False
-            
-            return True
+                        print(f"   {service_name}: ❌ Missing")
+                        return False
+                
+                return True
             
         except Exception as e:
             print(f"   Service integration error: {e}")
