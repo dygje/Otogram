@@ -135,12 +135,12 @@ class TestUserBot:
     async def test_stop_cancelled_task(self, userbot):
         """Test stopping userbot with cancelled task"""
         mock_client = AsyncMock()
+        
+        # Create a proper mock task that raises CancelledError when awaited
         mock_task = AsyncMock()
-        mock_task.cancel.return_value = None
-        # Simulate task cancellation by raising CancelledError during await
-        async def cancelled_await():
+        async def cancelled_coro():
             raise asyncio.CancelledError()
-        mock_task.__await__ = lambda: cancelled_await().__await__()
+        mock_task.__await__ = lambda: cancelled_coro().__await__()
         
         userbot.client = mock_client
         userbot.current_cycle_task = mock_task
