@@ -15,6 +15,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 # Import at module level for testing
 from motor.motor_asyncio import AsyncIOMotorClient
+
 from src.core.config import settings
 
 
