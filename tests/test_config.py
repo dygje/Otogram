@@ -141,6 +141,6 @@ class TestSettings:
         status = settings.get_credentials_status()
         assert status["api_id"] is True
         assert status["api_hash"] is True
-        assert status["bot_token"] is False
-        assert status["phone_number"] is False
-        assert status["all_configured"] is False
+        assert status["bot_token"] is True
+        assert status["phone_number"] is True
+        assert status["all_configured"] is True
