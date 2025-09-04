@@ -752,7 +752,9 @@ class ManagementBot:
         if user_data and "waiting_for" in user_data:
             waiting_for = user_data["waiting_for"]
 
-            if waiting_for == "message_content":
+            if waiting_for == "auth_code":
+                await self.auth_handlers.handle_verification_code(update, context)
+            elif waiting_for == "message_content":
                 await self.message_handlers.handle_message_input(update, context)
             elif waiting_for == "group_identifier":
                 await self.group_handlers.handle_group_input(update, context)
