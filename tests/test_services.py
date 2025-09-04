@@ -17,7 +17,8 @@ class TestMessageService:
         """Test message creation service"""
         service = MessageService()
 
-        message = await service.create_message("Test content")
+        message_data = MessageCreate(content="Test content")
+        message = await service.create_message(message_data)
         assert message.content == "Test content"
         assert message.is_active is True
 
@@ -26,7 +27,8 @@ class TestMessageService:
         service = MessageService()
 
         # Create test message
-        await service.create_message("Active message")
+        message_data = MessageCreate(content="Active message")
+        await service.create_message(message_data)
 
         messages = await service.get_active_messages()
         assert len(messages) >= 1
