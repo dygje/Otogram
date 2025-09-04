@@ -43,6 +43,11 @@ async def check_mongodb() -> HealthCheckResult:
 
 def check_credentials() -> HealthCheckResult:
     """Check Telegram credentials"""
+    import os
+    
+    # For CI environment, credentials are optional
+    is_ci = os.getenv("CI") == "true" or os.getenv("GITHUB_ACTIONS") == "true"
+    
     try:
         creds = {
             "API ID": settings.TELEGRAM_API_ID,
@@ -56,6 +61,10 @@ def check_credentials() -> HealthCheckResult:
         if not missing:
             return HealthCheckResult(
                 status="✅", message="All credentials configured", details="Ready for automation"
+            )
+        elif is_ci:
+            return HealthCheckResult(
+                status="⚠️", message="Credentials not configured (OK in CI)", details="Skipping in CI environment"
             )
         else:
             return HealthCheckResult(
