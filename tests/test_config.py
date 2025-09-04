@@ -134,7 +134,6 @@ class TestSettings:
             TELEGRAM_API_HASH="test_hash",
             TELEGRAM_BOT_TOKEN="123456789:ABC-DEF...",
             TELEGRAM_PHONE_NUMBER="+1234567890",
-            _env_file=None,
         )
 
         status = settings.get_credentials_status()
