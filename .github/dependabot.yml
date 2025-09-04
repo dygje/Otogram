@@ -11,10 +11,6 @@ updates:
     commit-message:
       prefix: "deps"
       include: "scope"
-    reviewers:
-      - "dygje"
-    assignees:
-      - "dygje"
 
   # GitHub Actions
   - package-ecosystem: "github-actions"
@@ -24,12 +20,8 @@ updates:
     commit-message:
       prefix: "ci"
       include: "scope"
-    reviewers:
-      - "dygje"
-    assignees:
-      - "dygje"
 
-  # Docker dependencies
+  # Docker dependencies  
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
@@ -39,7 +31,3 @@ updates:
     commit-message:
       prefix: "docker"
       include: "scope"
-    reviewers:
-      - "dygje"
-    assignees:
-      - "dygje"
