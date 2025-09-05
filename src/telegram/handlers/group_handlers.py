@@ -50,18 +50,22 @@ class GroupHandlers:
                         InlineKeyboardButton("📋 Add Multiple Groups", callback_data="groups_bulk"),
                     ],
                     [
-                        InlineKeyboardButton("📚 Group Setup Guide", callback_data="tutorial_groups"),
+                        InlineKeyboardButton(
+                            "📚 Group Setup Guide", callback_data="tutorial_groups"
+                        ),
                         InlineKeyboardButton("🏠 Dashboard", callback_data="dashboard"),
                     ],
                 ]
             else:
                 # Calculate utilization metrics
-                active_rate = (stats['active'] / stats['total'] * 100) if stats['total'] > 0 else 0
-                health_indicator = "🟢" if stats['active'] > 0 else "🔴"
-                
+                active_rate = (stats["active"] / stats["total"] * 100) if stats["total"] > 0 else 0
+                health_indicator = "🟢" if stats["active"] > 0 else "🔴"
+
                 # Calculate total message potential
-                message_potential = stats['active'] * 1  # Assuming 1 message per group for calculation
-                
+                message_potential = (
+                    stats["active"] * 1
+                )  # Assuming 1 message per group for calculation
+
                 text = (
                     f"👥 **GROUP MANAGEMENT CENTER**\n"
                     f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
@@ -79,7 +83,7 @@ class GroupHandlers:
                 # Enhanced group display with better formatting
                 for i, group in enumerate(groups[:MAX_GROUPS_DISPLAY], 1):
                     status_icon = "🟢" if group.is_active else "⚪"
-                    
+
                     # Smart group identifier display
                     if group.group_title:
                         identifier = group.group_title
@@ -95,22 +99,34 @@ class GroupHandlers:
                         id_type = "❓"
 
                     # Truncate long identifiers
-                    display_identifier = identifier if len(str(identifier)) <= 35 else f"{str(identifier)[:32]}..."
-                    
+                    display_identifier = (
+                        identifier if len(str(identifier)) <= 35 else f"{str(identifier)[:32]}..."
+                    )
+
                     # Message delivery count
-                    delivery_count = f"📊 {group.message_count}x" if group.message_count > 0 else "📊 New"
-                    
+                    delivery_count = (
+                        f"📊 {group.message_count}x" if group.message_count > 0 else "📊 New"
+                    )
+
                     text += f"**{i}.** {status_icon} {id_type} *{display_identifier}*\n"
-                    text += f"   {delivery_count} • Added: {group.created_at.strftime('%d/%m/%Y')}\n\n"
+                    text += (
+                        f"   {delivery_count} • Added: {group.created_at.strftime('%d/%m/%Y')}\n\n"
+                    )
 
                     # Add management buttons in pairs for better layout
                     if i % 2 == 1:  # Start new row
-                        keyboard.append([
-                            InlineKeyboardButton(f"✏️ Manage #{i}", callback_data=f"groups_edit_{group.id}"),
-                        ])
+                        keyboard.append(
+                            [
+                                InlineKeyboardButton(
+                                    f"✏️ Manage #{i}", callback_data=f"groups_edit_{group.id}"
+                                ),
+                            ]
+                        )
                     else:  # Add to existing row
                         keyboard[-1].append(
-                            InlineKeyboardButton(f"✏️ Manage #{i}", callback_data=f"groups_edit_{group.id}")
+                            InlineKeyboardButton(
+                                f"✏️ Manage #{i}", callback_data=f"groups_edit_{group.id}"
+                            )
                         )
 
                 if len(groups) > MAX_GROUPS_DISPLAY:
@@ -118,21 +134,29 @@ class GroupHandlers:
                     text += f"   ⋮ *{remaining} more groups in network...*\n"
 
                 # Add management options
-                keyboard.extend([
+                keyboard.extend(
                     [
-                        InlineKeyboardButton("➕ Add Group", callback_data="groups_add"),
-                        InlineKeyboardButton("📋 Bulk Import", callback_data="groups_bulk"),
-                    ],
-                    [
-                        InlineKeyboardButton("📊 Network Analytics", callback_data="groups_analytics"),
-                        InlineKeyboardButton("🧹 Maintenance", callback_data="groups_maintenance"),
-                    ],
-                ])
+                        [
+                            InlineKeyboardButton("➕ Add Group", callback_data="groups_add"),
+                            InlineKeyboardButton("📋 Bulk Import", callback_data="groups_bulk"),
+                        ],
+                        [
+                            InlineKeyboardButton(
+                                "📊 Network Analytics", callback_data="groups_analytics"
+                            ),
+                            InlineKeyboardButton(
+                                "🧹 Maintenance", callback_data="groups_maintenance"
+                            ),
+                        ],
+                    ]
+                )
 
-            keyboard.append([
-                InlineKeyboardButton("🏠 Dashboard", callback_data="dashboard"),
-                InlineKeyboardButton("🔄 Refresh", callback_data="groups_menu"),
-            ])
+            keyboard.append(
+                [
+                    InlineKeyboardButton("🏠 Dashboard", callback_data="dashboard"),
+                    InlineKeyboardButton("🔄 Refresh", callback_data="groups_menu"),
+                ]
+            )
             reply_markup = InlineKeyboardMarkup(keyboard)
 
             if update.message:
@@ -188,7 +212,7 @@ class GroupHandlers:
             ],
             [
                 InlineKeyboardButton("📋 Add Multiple Instead", callback_data="groups_bulk"),
-            ]
+            ],
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
 
@@ -244,7 +268,7 @@ class GroupHandlers:
             ],
             [
                 InlineKeyboardButton("➕ Add Single Instead", callback_data="groups_add"),
-            ]
+            ],
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
 
@@ -276,14 +300,18 @@ class GroupHandlers:
                 return
 
             # Show processing message
-            processing_msg = await update.message.reply_text(
-                "⏳ **PROCESSING GROUP**\n"
-                "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
-                "🔍 **Step 1/3:** Validating group identifier...\n"
-                "📡 **Step 2/3:** Checking group accessibility...\n"
-                "💾 **Step 3/3:** Adding to network...\n\n"
-                "Please wait while we verify and add your group."
-            ) if update.message else None
+            processing_msg = (
+                await update.message.reply_text(
+                    "⏳ **PROCESSING GROUP**\n"
+                    "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
+                    "🔍 **Step 1/3:** Validating group identifier...\n"
+                    "📡 **Step 2/3:** Checking group accessibility...\n"
+                    "💾 **Step 3/3:** Adding to network...\n\n"
+                    "Please wait while we verify and add your group."
+                )
+                if update.message
+                else None
+            )
 
             # Enhanced validation and creation
             try:
@@ -295,9 +323,9 @@ class GroupHandlers:
                     context.user_data.pop("waiting_for", None)
 
                 # Determine identifier type and format
-                if identifier.startswith('-100'):
+                if identifier.startswith("-100"):
                     id_type = "🆔 Group ID"
-                elif identifier.startswith('@') or identifier.startswith('t.me/'):
+                elif identifier.startswith("@") or identifier.startswith("t.me/"):
                     id_type = "🏷️ Username/Link"
                 else:
                     id_type = "📝 Identifier"
@@ -337,7 +365,9 @@ class GroupHandlers:
                         InlineKeyboardButton("🚀 Start Broadcasting", callback_data="dashboard"),
                     ],
                     [
-                        InlineKeyboardButton("✏️ Manage This Group", callback_data=f"groups_edit_{group.id}"),
+                        InlineKeyboardButton(
+                            "✏️ Manage This Group", callback_data=f"groups_edit_{group.id}"
+                        ),
                         InlineKeyboardButton("🏠 Dashboard", callback_data="dashboard"),
                     ],
                 ]
@@ -354,7 +384,7 @@ class GroupHandlers:
 
             except Exception as creation_error:
                 error_details = str(creation_error)
-                
+
                 if "duplicate" in error_details.lower():
                     error_text = (
                         "🔄 **GROUP ALREADY EXISTS**\n"
@@ -443,19 +473,25 @@ class GroupHandlers:
                 return
 
             # Show enhanced processing message
-            processing_msg = await update.message.reply_text(
-                "⏳ **BULK IMPORT PROCESSING**\n"
-                "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
-                "📊 **Step 1/4:** Parsing group list...\n"
-                "🔍 **Step 2/4:** Validating each group...\n"
-                "📡 **Step 3/4:** Checking accessibility...\n"
-                "💾 **Step 4/4:** Adding to network...\n\n"
-                "Please wait while we process your groups..."
-            ) if update.message else None
+            processing_msg = (
+                await update.message.reply_text(
+                    "⏳ **BULK IMPORT PROCESSING**\n"
+                    "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
+                    "📊 **Step 1/4:** Parsing group list...\n"
+                    "🔍 **Step 2/4:** Validating each group...\n"
+                    "📡 **Step 3/4:** Checking accessibility...\n"
+                    "💾 **Step 4/4:** Adding to network...\n\n"
+                    "Please wait while we process your groups..."
+                )
+                if update.message
+                else None
+            )
 
             try:
                 # Parse input lines
-                input_lines = [line.strip() for line in identifiers_text.split('\n') if line.strip()]
+                input_lines = [
+                    line.strip() for line in identifiers_text.split("\n") if line.strip()
+                ]
                 total_input = len(input_lines)
 
                 # Update processing message
@@ -498,20 +534,24 @@ class GroupHandlers:
                     # Show first few successful groups
                     for i, group in enumerate(groups[:MAX_BULK_SUCCESS_DISPLAY], 1):
                         identifier = (
-                            group.group_title or
-                            group.group_username or
-                            group.group_id or
-                            group.group_link or
-                            "Unknown"
+                            group.group_title
+                            or group.group_username
+                            or group.group_id
+                            or group.group_link
+                            or "Unknown"
                         )
                         # Truncate long identifiers
-                        display_id = str(identifier)[:35] + "..." if len(str(identifier)) > 35 else identifier
+                        display_id = (
+                            str(identifier)[:35] + "..."
+                            if len(str(identifier)) > 35
+                            else identifier
+                        )
                         result_text += f"{i}. 🟢 {display_id}\n"
 
                     if success_count > MAX_BULK_SUCCESS_DISPLAY:
                         remaining = success_count - MAX_BULK_SUCCESS_DISPLAY
                         result_text += f"   ⋮ *{remaining} more groups added successfully*\n"
-                    
+
                     result_text += "\n"
 
                 if failure_count > 0:
@@ -661,7 +701,7 @@ class GroupHandlers:
             ],
             [
                 InlineKeyboardButton("📋 Add Multiple", callback_data="groups_bulk"),
-            ]
+            ],
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
 
@@ -704,7 +744,7 @@ class GroupHandlers:
             ],
             [
                 InlineKeyboardButton("➕ Add Single", callback_data="groups_add"),
-            ]
+            ],
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
 
@@ -732,7 +772,7 @@ class GroupHandlers:
 
             # Enhanced group information display
             status_text = "🟢 **Active**" if group.is_active else "⚪ **Inactive**"
-            
+
             # Format display identifier
             if group.group_title:
                 display_name = group.group_title
@@ -749,7 +789,9 @@ class GroupHandlers:
 
             # Calculate engagement metrics
             days_active = (group.updated_at - group.created_at).days if group.updated_at else 0
-            avg_messages_per_day = group.message_count / max(days_active, 1) if days_active > 0 else 0
+            avg_messages_per_day = (
+                group.message_count / max(days_active, 1) if days_active > 0 else 0
+            )
 
             text = (
                 f"✏️ **GROUP MANAGEMENT**\n"
@@ -780,15 +822,25 @@ class GroupHandlers:
                         "⚪ Deactivate" if group.is_active else "🟢 Activate",
                         callback_data=f"groups_toggle_{group_id}",
                     ),
-                    InlineKeyboardButton("📊 View Analytics", callback_data=f"groups_analytics_{group_id}"),
+                    InlineKeyboardButton(
+                        "📊 View Analytics", callback_data=f"groups_analytics_{group_id}"
+                    ),
                 ],
                 [
-                    InlineKeyboardButton("🧪 Test Connection", callback_data=f"groups_test_{group_id}"),
-                    InlineKeyboardButton("📝 Update Info", callback_data=f"groups_update_{group_id}"),
+                    InlineKeyboardButton(
+                        "🧪 Test Connection", callback_data=f"groups_test_{group_id}"
+                    ),
+                    InlineKeyboardButton(
+                        "📝 Update Info", callback_data=f"groups_update_{group_id}"
+                    ),
                 ],
                 [
-                    InlineKeyboardButton("🗑️ Remove Group", callback_data=f"groups_delete_{group_id}"),
-                    InlineKeyboardButton("🔄 Refresh Info", callback_data=f"groups_edit_{group_id}"),
+                    InlineKeyboardButton(
+                        "🗑️ Remove Group", callback_data=f"groups_delete_{group_id}"
+                    ),
+                    InlineKeyboardButton(
+                        "🔄 Refresh Info", callback_data=f"groups_edit_{group_id}"
+                    ),
                 ],
                 [
                     InlineKeyboardButton("🔙 Back to Groups", callback_data="groups_menu"),
@@ -831,7 +883,7 @@ class GroupHandlers:
             if updated_group:
                 status_action = "activated" if new_status else "deactivated"
                 status_icon = "🟢" if new_status else "⚪"
-                
+
                 text = (
                     f"✅ **GROUP {status_action.upper()}**\n"
                     f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
@@ -874,22 +926,22 @@ class GroupHandlers:
             reply_markup = InlineKeyboardMarkup(keyboard)
 
             if update.callback_query:
-                await update.callback_query.edit_message_text(text, parse_mode="Markdown", reply_markup=reply_markup)
+                await update.callback_query.edit_message_text(
+                    text, parse_mode="Markdown", reply_markup=reply_markup
+                )
 
         except Exception as e:
             logger.error(f"Error toggling group status: {e}")
             if update.callback_query:
                 await update.callback_query.edit_message_text(
-                    "❌ **System Error**\n\n"
-                    "Failed to update group status.\n"
-                    "Please try again later."
+                    "❌ **System Error**\n\nFailed to update group status.\nPlease try again later."
                 )
 
     async def _confirm_delete_group(self, update: Update, group_id: str) -> None:
         """Enhanced group deletion confirmation"""
         try:
             group = await self.group_service.get_group_by_id(group_id)
-            
+
             if not group:
                 if update.callback_query:
                     await update.callback_query.edit_message_text(
@@ -901,8 +953,12 @@ class GroupHandlers:
 
             # Enhanced deletion warning
             identifier = group.group_title or group.group_username or group.group_id or "Unknown"
-            usage_warning = f"⚠️ This group has received {group.message_count} messages" if group.message_count > 0 else ""
-            
+            usage_warning = (
+                f"⚠️ This group has received {group.message_count} messages"
+                if group.message_count > 0
+                else ""
+            )
+
             text = (
                 f"🗑️ **CONFIRM GROUP REMOVAL**\n"
                 f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
@@ -914,7 +970,9 @@ class GroupHandlers:
                 f"├ Messages Delivered: 📊 {group.message_count}\n"
                 f"├ Added: {group.created_at.strftime('%d/%m/%Y')}\n"
                 f"└ Network Role: Broadcasting target\n\n"
-                f"{usage_warning}\n\n" if usage_warning else ""
+                f"{usage_warning}\n\n"
+                if usage_warning
+                else ""
                 "🚨 **This action cannot be undone!**\n\n"
                 "**Consequences of Removal:**\n"
                 "├ Group permanently removed from network\n"
@@ -936,7 +994,9 @@ class GroupHandlers:
                     ),
                 ],
                 [
-                    InlineKeyboardButton("⚪ Deactivate Instead", callback_data=f"groups_toggle_{group_id}"),
+                    InlineKeyboardButton(
+                        "⚪ Deactivate Instead", callback_data=f"groups_toggle_{group_id}"
+                    ),
                 ],
                 [
                     InlineKeyboardButton("❌ Cancel", callback_data=f"groups_edit_{group_id}"),
@@ -1011,7 +1071,9 @@ class GroupHandlers:
             reply_markup = InlineKeyboardMarkup(keyboard)
 
             if update.callback_query:
-                await update.callback_query.edit_message_text(text, parse_mode="Markdown", reply_markup=reply_markup)
+                await update.callback_query.edit_message_text(
+                    text, parse_mode="Markdown", reply_markup=reply_markup
+                )
 
         except Exception as e:
             logger.error(f"Error deleting group: {e}")
@@ -1131,7 +1193,9 @@ class GroupHandlers:
                 text, parse_mode="Markdown", reply_markup=reply_markup
             )
 
-    async def _show_bulk_examples(self, update: Update, _context: ContextTypes.DEFAULT_TYPE) -> None:
+    async def _show_bulk_examples(
+        self, update: Update, _context: ContextTypes.DEFAULT_TYPE
+    ) -> None:
         """Show bulk import format examples"""
         text = (
             "📋 **BULK IMPORT EXAMPLES**\n"
@@ -1199,12 +1263,14 @@ class GroupHandlers:
                 text, parse_mode="Markdown", reply_markup=reply_markup
             )
 
-    async def _show_group_analytics(self, update: Update, _context: ContextTypes.DEFAULT_TYPE) -> None:
+    async def _show_group_analytics(
+        self, update: Update, _context: ContextTypes.DEFAULT_TYPE
+    ) -> None:
         """Show comprehensive group analytics"""
         try:
             groups = await self.group_service.get_all_groups()
             stats = await self.group_service.get_group_stats()
-            
+
             if not groups:
                 text = (
                     "📊 **GROUP NETWORK ANALYTICS**\n"
@@ -1225,11 +1291,11 @@ class GroupHandlers:
                 # Advanced analytics calculations
                 total_deliveries = sum(group.message_count for group in groups)
                 avg_deliveries = total_deliveries / len(groups) if groups else 0
-                active_rate = (stats['active'] / stats['total'] * 100) if stats['total'] > 0 else 0
-                
+                active_rate = (stats["active"] / stats["total"] * 100) if stats["total"] > 0 else 0
+
                 # Find top performers
                 top_group = max(groups, key=lambda x: x.message_count) if groups else None
-                
+
                 # Network health assessment
                 if active_rate >= 80:
                     health_status = "🟢 Excellent"
@@ -1255,15 +1321,15 @@ class GroupHandlers:
                     f"├ Group Diversity: {'Good' if len(groups) > 10 else 'Expanding'}\n"
                     f"└ Network Stability: {'Stable' if stats['inactive'] < stats['active'] else 'Variable'}\n\n"
                 )
-                
+
                 if top_group and top_group.message_count > 0:
                     top_group_name = (
-                        top_group.group_title or
-                        top_group.group_username or
-                        str(top_group.group_id) or
-                        "Unknown"
+                        top_group.group_title
+                        or top_group.group_username
+                        or str(top_group.group_id)
+                        or "Unknown"
                     )[:30]
-                    
+
                     text += (
                         f"🏆 **Top Performing Group:**\n"
                         f"├ Name: {top_group_name}\n"
@@ -1271,12 +1337,12 @@ class GroupHandlers:
                         f"├ Performance: {(top_group.message_count / max(total_deliveries, 1)) * 100:.1f}% of total\n"
                         f"└ Status: {'🟢 Active' if top_group.is_active else '⚪ Inactive'}\n\n"
                     )
-                
+
                 # Group distribution analysis
                 active_groups = [g for g in groups if g.is_active]
                 inactive_groups = [g for g in groups if not g.is_active]
                 high_performers = [g for g in groups if g.message_count > avg_deliveries]
-                
+
                 text += (
                     f"🔍 **Network Analysis:**\n"
                     f"├ High Performers: {len(high_performers)} groups (>{avg_deliveries:.0f} msgs)\n"
@@ -1285,32 +1351,38 @@ class GroupHandlers:
                     f"└ Growth Potential: {'High' if stats['inactive'] > 0 else 'Stable'}\n\n"
                     f"💡 **Recommendations:**\n"
                 )
-                
+
                 # Smart recommendations
                 recommendations = []
-                if stats['inactive'] > stats['active']:
+                if stats["inactive"] > stats["active"]:
                     recommendations.append("• Activate more groups to improve reach")
                 if avg_deliveries < 5:
                     recommendations.append("• Groups are new - monitor performance over time")
                 if len(groups) < 10:
                     recommendations.append("• Consider expanding network for better coverage")
-                if stats['active'] == 0:
+                if stats["active"] == 0:
                     recommendations.append("• Activate groups to enable broadcasting")
-                
+
                 if not recommendations:
                     recommendations.append("• Network is performing well!")
                     recommendations.append("• Continue monitoring and optimizing")
-                
+
                 text += "\n".join(recommendations)
 
                 keyboard = [
                     [
-                        InlineKeyboardButton("📈 Detailed Report", callback_data="groups_analytics_detailed"),
+                        InlineKeyboardButton(
+                            "📈 Detailed Report", callback_data="groups_analytics_detailed"
+                        ),
                         InlineKeyboardButton("🔄 Refresh Data", callback_data="groups_analytics"),
                     ],
                     [
-                        InlineKeyboardButton("🏆 Top Performers", callback_data="groups_top_performers"),
-                        InlineKeyboardButton("📊 Export Report", callback_data="groups_export_analytics"),
+                        InlineKeyboardButton(
+                            "🏆 Top Performers", callback_data="groups_top_performers"
+                        ),
+                        InlineKeyboardButton(
+                            "📊 Export Report", callback_data="groups_export_analytics"
+                        ),
                     ],
                     [
                         InlineKeyboardButton("🔙 Back to Groups", callback_data="groups_menu"),
@@ -1328,15 +1400,15 @@ class GroupHandlers:
         except Exception as e:
             logger.error(f"Error showing group analytics: {e}")
             if update.callback_query:
-                await update.callback_query.edit_message_text(
-                    "❌ Error loading network analytics"
-                )
+                await update.callback_query.edit_message_text("❌ Error loading network analytics")
 
-    async def _show_group_maintenance(self, update: Update, _context: ContextTypes.DEFAULT_TYPE) -> None:
+    async def _show_group_maintenance(
+        self, update: Update, _context: ContextTypes.DEFAULT_TYPE
+    ) -> None:
         """Show network maintenance options"""
         try:
             stats = await self.group_service.get_group_stats()
-            
+
             text = (
                 f"🧹 **NETWORK MAINTENANCE CENTER**\n"
                 f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
@@ -1366,16 +1438,28 @@ class GroupHandlers:
 
             keyboard = [
                 [
-                    InlineKeyboardButton("🟢 Activate All", callback_data="groups_maintenance_activate_all"),
-                    InlineKeyboardButton("⚪ Deactivate All", callback_data="groups_maintenance_deactivate_all"),
+                    InlineKeyboardButton(
+                        "🟢 Activate All", callback_data="groups_maintenance_activate_all"
+                    ),
+                    InlineKeyboardButton(
+                        "⚪ Deactivate All", callback_data="groups_maintenance_deactivate_all"
+                    ),
                 ],
                 [
-                    InlineKeyboardButton("🧪 Test Network", callback_data="groups_maintenance_test"),
-                    InlineKeyboardButton("📊 Clear Statistics", callback_data="groups_maintenance_clear_stats"),
+                    InlineKeyboardButton(
+                        "🧪 Test Network", callback_data="groups_maintenance_test"
+                    ),
+                    InlineKeyboardButton(
+                        "📊 Clear Statistics", callback_data="groups_maintenance_clear_stats"
+                    ),
                 ],
                 [
-                    InlineKeyboardButton("🔍 Find Duplicates", callback_data="groups_maintenance_duplicates"),
-                    InlineKeyboardButton("📤 Export Network", callback_data="groups_maintenance_export"),
+                    InlineKeyboardButton(
+                        "🔍 Find Duplicates", callback_data="groups_maintenance_duplicates"
+                    ),
+                    InlineKeyboardButton(
+                        "📤 Export Network", callback_data="groups_maintenance_export"
+                    ),
                 ],
                 [
                     InlineKeyboardButton("🔙 Back to Groups", callback_data="groups_menu"),
@@ -1410,7 +1494,7 @@ class GroupHandlers:
             f"└ Contact support if issue persists\n\n"
             f"💡 **Quick Actions:**"
         )
-        
+
         keyboard = [
             [
                 InlineKeyboardButton("🔄 Refresh Groups", callback_data="groups_menu"),
@@ -1424,6 +1508,10 @@ class GroupHandlers:
         reply_markup = InlineKeyboardMarkup(keyboard)
 
         if update.message:
-            await update.message.reply_text(error_msg, parse_mode="Markdown", reply_markup=reply_markup)
+            await update.message.reply_text(
+                error_msg, parse_mode="Markdown", reply_markup=reply_markup
+            )
         elif update.callback_query:
-            await update.callback_query.edit_message_text(error_msg, parse_mode="Markdown", reply_markup=reply_markup)
+            await update.callback_query.edit_message_text(
+                error_msg, parse_mode="Markdown", reply_markup=reply_markup
+            )

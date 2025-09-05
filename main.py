@@ -41,7 +41,7 @@ class TelegramAutomationApp:
                 "<green>{time:HH:mm:ss}</green> | <level>{level: <8}</level> | "
                 "<cyan>{name}</cyan> - <level>{message}</level>"
             ),
-            level=settings.LOG_LEVEL
+            level=settings.LOG_LEVEL,
         )
 
         # File logging
@@ -53,7 +53,7 @@ class TelegramAutomationApp:
             rotation="1 day",
             retention="7 days",
             format="{time:YYYY-MM-DD HH:mm:ss} | {level: <8} | {name} - {message}",
-            level=settings.LOG_LEVEL
+            level=settings.LOG_LEVEL,
         )
 
     async def start(self) -> None:
@@ -106,7 +106,7 @@ class TelegramAutomationApp:
             settings.TELEGRAM_API_ID,
             settings.TELEGRAM_API_HASH,
             settings.TELEGRAM_BOT_TOKEN,
-            settings.TELEGRAM_PHONE_NUMBER
+            settings.TELEGRAM_PHONE_NUMBER,
         ]
         return all(cred for cred in required)
 

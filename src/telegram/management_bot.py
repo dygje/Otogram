@@ -197,7 +197,7 @@ class ManagementBot:
             bot_status = "🟢 Online"
             userbot_indicator = "🟢 Connected" if userbot_status else "🔴 Disconnected"
             database_status = "🟢 Connected"  # We'll enhance this later
-            
+
             status_text = (
                 "📊 **SYSTEM STATUS REPORT**\n"
                 "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
@@ -229,9 +229,13 @@ class ManagementBot:
             reply_markup = InlineKeyboardMarkup(keyboard)
 
             if update.message:
-                await update.message.reply_text(status_text, parse_mode="Markdown", reply_markup=reply_markup)
+                await update.message.reply_text(
+                    status_text, parse_mode="Markdown", reply_markup=reply_markup
+                )
             elif update.callback_query:
-                await update.callback_query.edit_message_text(status_text, parse_mode="Markdown", reply_markup=reply_markup)
+                await update.callback_query.edit_message_text(
+                    status_text, parse_mode="Markdown", reply_markup=reply_markup
+                )
 
         except Exception as e:
             logger.error(f"Error getting status: {e}")
@@ -278,7 +282,9 @@ class ManagementBot:
         reply_markup = InlineKeyboardMarkup(keyboard)
 
         if update.message:
-            await update.message.reply_text(help_text, parse_mode="Markdown", reply_markup=reply_markup)
+            await update.message.reply_text(
+                help_text, parse_mode="Markdown", reply_markup=reply_markup
+            )
 
     async def _get_system_stats(self) -> str:
         """Get enhanced system statistics for dashboard"""
@@ -287,7 +293,7 @@ class ManagementBot:
             message_stats = await self.message_handlers.message_service.get_message_count()
             group_stats = await self.group_handlers.group_service.get_group_stats()
             blacklist_stats = await self.blacklist_handlers.blacklist_service.get_blacklist_stats()
-            
+
             # Check userbot status
             userbot_status = await self.auth_handlers._check_userbot_status()
 
@@ -295,10 +301,18 @@ class ManagementBot:
             msg_health = "🟢" if message_stats["active"] > 0 else "🔴"
             grp_health = "🟢" if group_stats["active"] > 0 else "🔴"
             auth_health = "🟢" if userbot_status else "🔴"
-            bl_health = "🟢" if blacklist_stats["total"] < 5 else "🟡" if blacklist_stats["total"] < 20 else "🔴"
+            bl_health = (
+                "🟢"
+                if blacklist_stats["total"] < 5
+                else "🟡"
+                if blacklist_stats["total"] < 20
+                else "🔴"
+            )
 
             # Overall system health
-            ready_to_broadcast = userbot_status and message_stats["active"] > 0 and group_stats["active"] > 0
+            ready_to_broadcast = (
+                userbot_status and message_stats["active"] > 0 and group_stats["active"] > 0
+            )
             system_health = "🟢 Operational" if ready_to_broadcast else "⚠️ Setup Required"
 
             stats = (
@@ -468,8 +482,8 @@ class ManagementBot:
             stats = await self.message_handlers.message_service.get_message_count()
 
             # Health indicator
-            health_status = "🟢 Healthy" if stats['active'] > 0 else "🔴 No Active Messages"
-            usage_rate = (stats['active'] / max(stats['total'], 1)) * 100
+            health_status = "🟢 Healthy" if stats["active"] > 0 else "🔴 No Active Messages"
+            usage_rate = (stats["active"] / max(stats["total"], 1)) * 100
 
             text = (
                 f"📝 **MESSAGES CONTROL CENTER**\n"
@@ -534,8 +548,8 @@ class ManagementBot:
             stats = await self.group_handlers.group_service.get_group_stats()
 
             # Health indicator
-            health_status = "🟢 Healthy" if stats['active'] > 0 else "🔴 No Active Groups"
-            usage_rate = (stats['active'] / max(stats['total'], 1)) * 100
+            health_status = "🟢 Healthy" if stats["active"] > 0 else "🔴 No Active Groups"
+            usage_rate = (stats["active"] / max(stats["total"], 1)) * 100
 
             text = (
                 f"👥 **GROUPS CONTROL CENTER**\n"
@@ -721,12 +735,14 @@ class ManagementBot:
             message_stats = await self.message_handlers.message_service.get_message_count()
             group_stats = await self.group_handlers.group_service.get_group_stats()
             blacklist_stats = await self.blacklist_handlers.blacklist_service.get_blacklist_stats()
-            
+
             # Calculate success rates and metrics
-            total_content = message_stats['total'] + group_stats['total']
-            active_content = message_stats['active'] + group_stats['active']
-            success_rate = (active_content / max(total_content, 1)) * 100 if total_content > 0 else 0
-            
+            total_content = message_stats["total"] + group_stats["total"]
+            active_content = message_stats["active"] + group_stats["active"]
+            success_rate = (
+                (active_content / max(total_content, 1)) * 100 if total_content > 0 else 0
+            )
+
             text = (
                 f"📊 **ANALYTICS & INSIGHTS**\n"
                 f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
@@ -758,7 +774,9 @@ class ManagementBot:
                     InlineKeyboardButton("🔄 Refresh Data", callback_data="analytics"),
                 ],
                 [
-                    InlineKeyboardButton("💡 Recommendations", callback_data="analytics_recommendations"),
+                    InlineKeyboardButton(
+                        "💡 Recommendations", callback_data="analytics_recommendations"
+                    ),
                     InlineKeyboardButton("🏠 Dashboard", callback_data="dashboard"),
                 ],
             ]
@@ -772,7 +790,9 @@ class ManagementBot:
         except Exception as e:
             logger.error(f"Error loading analytics: {e}")
             if update.callback_query:
-                await update.callback_query.edit_message_text("❌ Error loading analytics dashboard")
+                await update.callback_query.edit_message_text(
+                    "❌ Error loading analytics dashboard"
+                )
 
     async def _show_system_control(
         self, update: Update, _context: ContextTypes.DEFAULT_TYPE
@@ -858,7 +878,9 @@ class ManagementBot:
 
         keyboard = [
             [
-                InlineKeyboardButton("🆘 CONFIRM EMERGENCY STOP", callback_data="emergency_confirm"),
+                InlineKeyboardButton(
+                    "🆘 CONFIRM EMERGENCY STOP", callback_data="emergency_confirm"
+                ),
             ],
             [
                 InlineKeyboardButton("❌ Cancel", callback_data="system_control"),
@@ -912,7 +934,9 @@ class ManagementBot:
                 InlineKeyboardButton("⚙️ Config Tutorial", callback_data="tutorial_config"),
             ],
             [
-                InlineKeyboardButton("🚀 Broadcasting Tutorial", callback_data="tutorial_broadcasting"),
+                InlineKeyboardButton(
+                    "🚀 Broadcasting Tutorial", callback_data="tutorial_broadcasting"
+                ),
                 InlineKeyboardButton("🎯 Quick Start Guide", callback_data="tutorial_quickstart"),
             ],
             [
@@ -1034,7 +1058,7 @@ class ManagementBot:
             f"└ Get help with `/help`\n\n"
             f"💡 If the problem persists, please check the troubleshooting guide."
         )
-        
+
         keyboard = [
             [
                 InlineKeyboardButton("🔄 Refresh", callback_data="dashboard"),
@@ -1044,6 +1068,10 @@ class ManagementBot:
         reply_markup = InlineKeyboardMarkup(keyboard)
 
         if update.message:
-            await update.message.reply_text(error_msg, parse_mode="Markdown", reply_markup=reply_markup)
+            await update.message.reply_text(
+                error_msg, parse_mode="Markdown", reply_markup=reply_markup
+            )
         elif update.callback_query:
-            await update.callback_query.edit_message_text(error_msg, parse_mode="Markdown", reply_markup=reply_markup)
+            await update.callback_query.edit_message_text(
+                error_msg, parse_mode="Markdown", reply_markup=reply_markup
+            )

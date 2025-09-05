@@ -48,15 +48,17 @@ class MessageHandlers:
                 keyboard = [
                     [InlineKeyboardButton("➕ Create First Message", callback_data="messages_add")],
                     [
-                        InlineKeyboardButton("📚 Message Tutorial", callback_data="tutorial_messages"),
+                        InlineKeyboardButton(
+                            "📚 Message Tutorial", callback_data="tutorial_messages"
+                        ),
                         InlineKeyboardButton("🏠 Dashboard", callback_data="dashboard"),
                     ],
                 ]
             else:
                 # Calculate utilization rate
-                active_rate = (stats['active'] / stats['total'] * 100) if stats['total'] > 0 else 0
-                health_indicator = "🟢" if stats['active'] > 0 else "🔴"
-                
+                active_rate = (stats["active"] / stats["total"] * 100) if stats["total"] > 0 else 0
+                health_indicator = "🟢" if stats["active"] > 0 else "🔴"
+
                 text = (
                     f"📝 **MESSAGE MANAGEMENT CENTER**\n"
                     f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
@@ -74,24 +76,30 @@ class MessageHandlers:
                 for i, msg in enumerate(messages[:MAX_MESSAGES_DISPLAY], 1):
                     status_icon = "🟢" if msg.is_active else "⚪"
                     usage_indicator = f"📊 {msg.usage_count}x" if msg.usage_count > 0 else "📊 New"
-                    
+
                     content_preview = (
                         msg.content[:PREVIEW_MESSAGE_LENGTH] + "..."
                         if len(msg.content) > PREVIEW_MESSAGE_LENGTH
                         else msg.content
                     )
-                    
+
                     text += f"**{i}.** {status_icon} *{content_preview}*\n"
                     text += f"   {usage_indicator} • ID: `{msg.id[:8]}...`\n\n"
 
                     # Add edit buttons in pairs for better layout
                     if i % 2 == 1:  # Start new row for odd numbers
-                        keyboard.append([
-                            InlineKeyboardButton(f"✏️ Edit #{i}", callback_data=f"messages_edit_{msg.id}"),
-                        ])
+                        keyboard.append(
+                            [
+                                InlineKeyboardButton(
+                                    f"✏️ Edit #{i}", callback_data=f"messages_edit_{msg.id}"
+                                ),
+                            ]
+                        )
                     else:  # Add to existing row for even numbers
                         keyboard[-1].append(
-                            InlineKeyboardButton(f"✏️ Edit #{i}", callback_data=f"messages_edit_{msg.id}")
+                            InlineKeyboardButton(
+                                f"✏️ Edit #{i}", callback_data=f"messages_edit_{msg.id}"
+                            )
                         )
 
                 if len(messages) > MAX_MESSAGES_DISPLAY:
@@ -99,21 +107,29 @@ class MessageHandlers:
                     text += f"   ⋮ *{remaining} more messages in collection...*\n"
 
                 # Add management buttons
-                keyboard.extend([
+                keyboard.extend(
                     [
-                        InlineKeyboardButton("➕ Add Message", callback_data="messages_add"),
-                        InlineKeyboardButton("🔄 Bulk Actions", callback_data="messages_bulk"),
-                    ],
-                    [
-                        InlineKeyboardButton("📊 Usage Analytics", callback_data="messages_analytics"),
-                        InlineKeyboardButton("⚙️ Advanced Options", callback_data="messages_advanced"),
-                    ],
-                ])
+                        [
+                            InlineKeyboardButton("➕ Add Message", callback_data="messages_add"),
+                            InlineKeyboardButton("🔄 Bulk Actions", callback_data="messages_bulk"),
+                        ],
+                        [
+                            InlineKeyboardButton(
+                                "📊 Usage Analytics", callback_data="messages_analytics"
+                            ),
+                            InlineKeyboardButton(
+                                "⚙️ Advanced Options", callback_data="messages_advanced"
+                            ),
+                        ],
+                    ]
+                )
 
-            keyboard.append([
-                InlineKeyboardButton("🏠 Dashboard", callback_data="dashboard"),
-                InlineKeyboardButton("🔄 Refresh", callback_data="messages_menu"),
-            ])
+            keyboard.append(
+                [
+                    InlineKeyboardButton("🏠 Dashboard", callback_data="dashboard"),
+                    InlineKeyboardButton("🔄 Refresh", callback_data="messages_menu"),
+                ]
+            )
             reply_markup = InlineKeyboardMarkup(keyboard)
 
             if update.message:
@@ -203,13 +219,17 @@ class MessageHandlers:
                 return
 
             # Show processing message
-            processing_msg = await update.message.reply_text(
-                "⏳ **CREATING MESSAGE**\n"
-                "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
-                "📝 Processing your message...\n"
-                "⚡ Validating content and format...\n\n"
-                "Please wait a moment..."
-            ) if update.message else None
+            processing_msg = (
+                await update.message.reply_text(
+                    "⏳ **CREATING MESSAGE**\n"
+                    "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
+                    "📝 Processing your message...\n"
+                    "⚡ Validating content and format...\n\n"
+                    "Please wait a moment..."
+                )
+                if update.message
+                else None
+            )
 
             # Create message
             message_data = MessageCreate(content=content)
@@ -221,7 +241,7 @@ class MessageHandlers:
 
             # Calculate message metrics
             word_count = len(content.split())
-            line_count = len(content.split('\n'))
+            line_count = len(content.split("\n"))
             char_utilization = (len(content) / TELEGRAM_MESSAGE_MAX_LENGTH) * 100
 
             success_text = (
@@ -255,7 +275,9 @@ class MessageHandlers:
                     InlineKeyboardButton("🚀 Start Broadcasting", callback_data="dashboard"),
                 ],
                 [
-                    InlineKeyboardButton("✏️ Edit This Message", callback_data=f"messages_edit_{message.id}"),
+                    InlineKeyboardButton(
+                        "✏️ Edit This Message", callback_data=f"messages_edit_{message.id}"
+                    ),
                     InlineKeyboardButton("🏠 Dashboard", callback_data="dashboard"),
                 ],
             ]
@@ -308,7 +330,9 @@ class MessageHandlers:
             message_id = data.replace("messages_duplicate_", "")
             await self._duplicate_message(update, message_id)
 
-    async def _show_add_message_prompt(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    async def _show_add_message_prompt(
+        self, update: Update, context: ContextTypes.DEFAULT_TYPE
+    ) -> None:
         """Enhanced add message prompt with better guidance"""
         text = (
             "➕ **CREATE NEW BROADCAST MESSAGE**\n"
@@ -359,10 +383,10 @@ class MessageHandlers:
 
             # Calculate message metrics
             word_count = len(message.content.split())
-            line_count = len(message.content.split('\n'))
+            line_count = len(message.content.split("\n"))
             char_utilization = (len(message.content) / TELEGRAM_MESSAGE_MAX_LENGTH) * 100
             status_text = "🟢 **Active**" if message.is_active else "⚪ **Inactive**"
-            
+
             content_preview = (
                 message.content[:PREVIEW_MESSAGE_LENGTH_LONG] + "..."
                 if len(message.content) > PREVIEW_MESSAGE_LENGTH_LONG
@@ -392,15 +416,25 @@ class MessageHandlers:
                         "⚪ Deactivate" if message.is_active else "🟢 Activate",
                         callback_data=f"messages_toggle_{message_id}",
                     ),
-                    InlineKeyboardButton("📋 Duplicate", callback_data=f"messages_duplicate_{message_id}"),
+                    InlineKeyboardButton(
+                        "📋 Duplicate", callback_data=f"messages_duplicate_{message_id}"
+                    ),
                 ],
                 [
-                    InlineKeyboardButton("📊 View Analytics", callback_data=f"messages_analytics_{message_id}"),
-                    InlineKeyboardButton("📝 View Full Content", callback_data=f"messages_view_{message_id}"),
+                    InlineKeyboardButton(
+                        "📊 View Analytics", callback_data=f"messages_analytics_{message_id}"
+                    ),
+                    InlineKeyboardButton(
+                        "📝 View Full Content", callback_data=f"messages_view_{message_id}"
+                    ),
                 ],
                 [
-                    InlineKeyboardButton("🗑️ Delete Message", callback_data=f"messages_delete_{message_id}"),
-                    InlineKeyboardButton("🔄 Refresh Info", callback_data=f"messages_edit_{message_id}"),
+                    InlineKeyboardButton(
+                        "🗑️ Delete Message", callback_data=f"messages_delete_{message_id}"
+                    ),
+                    InlineKeyboardButton(
+                        "🔄 Refresh Info", callback_data=f"messages_edit_{message_id}"
+                    ),
                 ],
                 [
                     InlineKeyboardButton("🔙 Back to List", callback_data="messages_menu"),
@@ -427,7 +461,7 @@ class MessageHandlers:
         """Enhanced bulk actions interface"""
         try:
             stats = await self.message_service.get_message_count()
-            
+
             text = (
                 f"🔄 **BULK MESSAGE ACTIONS**\n"
                 f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
@@ -456,15 +490,25 @@ class MessageHandlers:
             keyboard = [
                 [
                     InlineKeyboardButton("🟢 Activate All", callback_data="messages_bulk_activate"),
-                    InlineKeyboardButton("⚪ Deactivate All", callback_data="messages_bulk_deactivate"),
+                    InlineKeyboardButton(
+                        "⚪ Deactivate All", callback_data="messages_bulk_deactivate"
+                    ),
                 ],
                 [
-                    InlineKeyboardButton("📊 Clear Statistics", callback_data="messages_bulk_clear_stats"),
-                    InlineKeyboardButton("🧹 Remove Duplicates", callback_data="messages_bulk_dedupe"),
+                    InlineKeyboardButton(
+                        "📊 Clear Statistics", callback_data="messages_bulk_clear_stats"
+                    ),
+                    InlineKeyboardButton(
+                        "🧹 Remove Duplicates", callback_data="messages_bulk_dedupe"
+                    ),
                 ],
                 [
-                    InlineKeyboardButton("📤 Export Collection", callback_data="messages_bulk_export"),
-                    InlineKeyboardButton("📥 Import Messages", callback_data="messages_bulk_import"),
+                    InlineKeyboardButton(
+                        "📤 Export Collection", callback_data="messages_bulk_export"
+                    ),
+                    InlineKeyboardButton(
+                        "📥 Import Messages", callback_data="messages_bulk_import"
+                    ),
                 ],
                 [
                     InlineKeyboardButton("🔙 Back to Messages", callback_data="messages_menu"),
@@ -485,12 +529,14 @@ class MessageHandlers:
                     "❌ Error loading bulk actions interface"
                 )
 
-    async def _show_message_analytics(self, update: Update, _context: ContextTypes.DEFAULT_TYPE) -> None:
+    async def _show_message_analytics(
+        self, update: Update, _context: ContextTypes.DEFAULT_TYPE
+    ) -> None:
         """Enhanced message analytics dashboard"""
         try:
             messages = await self.message_service.get_all_messages()
             stats = await self.message_service.get_message_count()
-            
+
             if not messages:
                 text = (
                     "📊 **MESSAGE ANALYTICS**\n"
@@ -508,12 +554,12 @@ class MessageHandlers:
                 total_usage = sum(msg.usage_count for msg in messages)
                 avg_usage = total_usage / len(messages) if messages else 0
                 most_used = max(messages, key=lambda x: x.usage_count) if messages else None
-                active_rate = (stats['active'] / stats['total'] * 100) if stats['total'] > 0 else 0
-                
+                active_rate = (stats["active"] / stats["total"] * 100) if stats["total"] > 0 else 0
+
                 # Content analysis
                 total_chars = sum(len(msg.content) for msg in messages)
                 avg_length = total_chars / len(messages) if messages else 0
-                
+
                 text = (
                     f"📊 **MESSAGE ANALYTICS DASHBOARD**\n"
                     f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
@@ -529,7 +575,7 @@ class MessageHandlers:
                     f"├ Content Variety: {'High' if len(set(msg.content[:50] for msg in messages)) > len(messages) * 0.8 else 'Medium'}\n"
                     f"└ Optimization Level: {'Good' if avg_length < 1000 else 'Needs Review'}\n\n"
                 )
-                
+
                 if most_used and most_used.usage_count > 0:
                     text += (
                         f"🏆 **Top Performer:**\n"
@@ -537,7 +583,7 @@ class MessageHandlers:
                         f"├ Usage: {most_used.usage_count} broadcasts\n"
                         f"└ Status: {'🟢 Active' if most_used.is_active else '⚪ Inactive'}\n\n"
                     )
-                
+
                 text += (
                     f"💡 **Recommendations:**\n"
                     f"• {'Create more active messages' if stats['active'] < 3 else 'Good message variety'}\n"
@@ -547,12 +593,18 @@ class MessageHandlers:
 
                 keyboard = [
                     [
-                        InlineKeyboardButton("📈 Detailed Report", callback_data="messages_analytics_detailed"),
+                        InlineKeyboardButton(
+                            "📈 Detailed Report", callback_data="messages_analytics_detailed"
+                        ),
                         InlineKeyboardButton("🔄 Refresh Data", callback_data="messages_analytics"),
                     ],
                     [
-                        InlineKeyboardButton("📊 Export Report", callback_data="messages_analytics_export"),
-                        InlineKeyboardButton("💡 Optimization Tips", callback_data="messages_optimization"),
+                        InlineKeyboardButton(
+                            "📊 Export Report", callback_data="messages_analytics_export"
+                        ),
+                        InlineKeyboardButton(
+                            "💡 Optimization Tips", callback_data="messages_optimization"
+                        ),
                     ],
                     [
                         InlineKeyboardButton("🔙 Back to Messages", callback_data="messages_menu"),
@@ -570,9 +622,7 @@ class MessageHandlers:
         except Exception as e:
             logger.error(f"Error showing message analytics: {e}")
             if update.callback_query:
-                await update.callback_query.edit_message_text(
-                    "❌ Error loading analytics data"
-                )
+                await update.callback_query.edit_message_text("❌ Error loading analytics data")
 
     async def _show_message_help(self, update: Update, _context: ContextTypes.DEFAULT_TYPE) -> None:
         """Enhanced message help and writing tips"""
@@ -642,7 +692,7 @@ class MessageHandlers:
         """Enhanced delete confirmation with safety checks"""
         try:
             message = await self.message_service.get_message_by_id(message_id)
-            
+
             if not message:
                 if update.callback_query:
                     await update.callback_query.edit_message_text(
@@ -653,9 +703,15 @@ class MessageHandlers:
                 return
 
             # Safety information
-            preview = message.content[:100] + "..." if len(message.content) > 100 else message.content
-            usage_warning = f"⚠️ This message has been used {message.usage_count} times" if message.usage_count > 0 else ""
-            
+            preview = (
+                message.content[:100] + "..." if len(message.content) > 100 else message.content
+            )
+            usage_warning = (
+                f"⚠️ This message has been used {message.usage_count} times"
+                if message.usage_count > 0
+                else ""
+            )
+
             text = (
                 f"🗑️ **CONFIRM MESSAGE DELETION**\n"
                 f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
@@ -668,7 +724,9 @@ class MessageHandlers:
                 f"└ Length: {len(message.content):,} characters\n\n"
                 f"📝 **Preview:**\n"
                 f"*{preview}*\n\n"
-                f"{usage_warning}\n\n" if usage_warning else ""
+                f"{usage_warning}\n\n"
+                if usage_warning
+                else ""
                 "🚨 **This action cannot be undone!**\n\n"
                 "**Consequences:**\n"
                 "├ Message will be permanently removed\n"
@@ -681,7 +739,8 @@ class MessageHandlers:
             keyboard = [
                 [
                     InlineKeyboardButton(
-                        "🗑️ DELETE PERMANENTLY", callback_data=f"messages_delete_confirm_{message_id}"
+                        "🗑️ DELETE PERMANENTLY",
+                        callback_data=f"messages_delete_confirm_{message_id}",
                     ),
                 ],
                 [
@@ -750,7 +809,9 @@ class MessageHandlers:
             reply_markup = InlineKeyboardMarkup(keyboard)
 
             if update.callback_query:
-                await update.callback_query.edit_message_text(text, parse_mode="Markdown", reply_markup=reply_markup)
+                await update.callback_query.edit_message_text(
+                    text, parse_mode="Markdown", reply_markup=reply_markup
+                )
 
         except Exception as e:
             logger.error(f"Error deleting message: {e}")
@@ -769,7 +830,7 @@ class MessageHandlers:
             if updated_message:
                 status_action = "activated" if updated_message.is_active else "deactivated"
                 status_icon = "🟢" if updated_message.is_active else "⚪"
-                
+
                 text = (
                     f"✅ **MESSAGE {status_action.upper()}**\n"
                     f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
@@ -805,14 +866,18 @@ class MessageHandlers:
             keyboard = [
                 [
                     InlineKeyboardButton("🔄 Refresh List", callback_data="messages_menu"),
-                    InlineKeyboardButton("✏️ Edit Message", callback_data=f"messages_edit_{message_id}"),
+                    InlineKeyboardButton(
+                        "✏️ Edit Message", callback_data=f"messages_edit_{message_id}"
+                    ),
                 ],
                 [InlineKeyboardButton("🏠 Dashboard", callback_data="dashboard")],
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
 
             if update.callback_query:
-                await update.callback_query.edit_message_text(text, parse_mode="Markdown", reply_markup=reply_markup)
+                await update.callback_query.edit_message_text(
+                    text, parse_mode="Markdown", reply_markup=reply_markup
+                )
 
         except Exception as e:
             logger.error(f"Error toggling message status: {e}")
@@ -827,7 +892,7 @@ class MessageHandlers:
         """Create a duplicate of an existing message"""
         try:
             original_message = await self.message_service.get_message_by_id(message_id)
-            
+
             if not original_message:
                 if update.callback_query:
                     await update.callback_query.edit_message_text("❌ Original message not found")
@@ -859,7 +924,9 @@ class MessageHandlers:
 
             keyboard = [
                 [
-                    InlineKeyboardButton("✏️ Edit Duplicate", callback_data=f"messages_edit_{new_message.id}"),
+                    InlineKeyboardButton(
+                        "✏️ Edit Duplicate", callback_data=f"messages_edit_{new_message.id}"
+                    ),
                     InlineKeyboardButton("📝 View All", callback_data="messages_menu"),
                 ],
                 [InlineKeyboardButton("🏠 Dashboard", callback_data="dashboard")],
@@ -867,14 +934,18 @@ class MessageHandlers:
             reply_markup = InlineKeyboardMarkup(keyboard)
 
             if update.callback_query:
-                await update.callback_query.edit_message_text(text, parse_mode="Markdown", reply_markup=reply_markup)
+                await update.callback_query.edit_message_text(
+                    text, parse_mode="Markdown", reply_markup=reply_markup
+                )
 
         except Exception as e:
             logger.error(f"Error duplicating message: {e}")
             if update.callback_query:
                 await update.callback_query.edit_message_text("❌ Failed to duplicate message")
 
-    async def _show_advanced_options(self, update: Update, _context: ContextTypes.DEFAULT_TYPE) -> None:
+    async def _show_advanced_options(
+        self, update: Update, _context: ContextTypes.DEFAULT_TYPE
+    ) -> None:
         """Show advanced message management options"""
         text = (
             "⚙️ **ADVANCED MESSAGE OPTIONS**\n"
@@ -906,7 +977,9 @@ class MessageHandlers:
         keyboard = [
             [
                 InlineKeyboardButton("📋 Message Templates", callback_data="messages_templates"),
-                InlineKeyboardButton("🤖 Auto Optimization", callback_data="messages_auto_optimize"),
+                InlineKeyboardButton(
+                    "🤖 Auto Optimization", callback_data="messages_auto_optimize"
+                ),
             ],
             [
                 InlineKeyboardButton("📊 Deep Analytics", callback_data="messages_deep_analytics"),
@@ -942,7 +1015,7 @@ class MessageHandlers:
             f"└ Contact support if issue persists\n\n"
             f"💡 **Quick Actions:**"
         )
-        
+
         keyboard = [
             [
                 InlineKeyboardButton("🔄 Refresh Messages", callback_data="messages_menu"),
@@ -956,6 +1029,10 @@ class MessageHandlers:
         reply_markup = InlineKeyboardMarkup(keyboard)
 
         if update.message:
-            await update.message.reply_text(error_msg, parse_mode="Markdown", reply_markup=reply_markup)
+            await update.message.reply_text(
+                error_msg, parse_mode="Markdown", reply_markup=reply_markup
+            )
         elif update.callback_query:
-            await update.callback_query.edit_message_text(error_msg, parse_mode="Markdown", reply_markup=reply_markup)
+            await update.callback_query.edit_message_text(
+                error_msg, parse_mode="Markdown", reply_markup=reply_markup
+            )

@@ -2,7 +2,6 @@
 Bot Manager - Manages Telegram Bot and Userbot
 """
 
-
 from loguru import logger
 
 from src.services.config_service import ConfigService
@@ -63,23 +62,24 @@ class BotManager:
             if self.userbot:
                 logger.info("Userbot already running")
                 return True
-                
+
             logger.info("🔄 Starting userbot authentication...")
             self.userbot = UserBot()
             await self.userbot.start()
             logger.info("✅ Userbot started successfully")
             return True
-            
+
         except Exception as e:
             logger.error(f"❌ Failed to start userbot: {e}")
             if self.userbot:
                 await self.userbot.stop()
                 self.userbot = None
             return False
+
     def is_running(self) -> bool:
         """Check if services are running"""
         return self.running
-        
+
     def is_userbot_running(self) -> bool:
         """Check if userbot is running"""
         return self.userbot is not None and self.userbot.is_running

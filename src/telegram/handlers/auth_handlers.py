@@ -25,7 +25,7 @@ class AuthHandlers:
         try:
             # Check if userbot is already authenticated
             is_authenticated = await self._check_userbot_status()
-            
+
             if is_authenticated:
                 text = (
                     "✅ **AUTHENTICATION STATUS: CONNECTED**\n"
@@ -43,7 +43,7 @@ class AuthHandlers:
                     "• Start broadcasting from the main dashboard\n\n"
                     "🔧 **Advanced Options:**"
                 )
-                
+
                 keyboard = [
                     [
                         InlineKeyboardButton("🔄 Restart Connection", callback_data="auth_restart"),
@@ -77,7 +77,7 @@ class AuthHandlers:
                     "⚡ **Speed:** Setup completes in under 30 seconds\n\n"
                     "🎯 **Ready to connect your account?**"
                 )
-                
+
                 keyboard = [
                     [InlineKeyboardButton("🚀 Start Authentication", callback_data="auth_start")],
                     [
@@ -89,9 +89,9 @@ class AuthHandlers:
                         InlineKeyboardButton("📚 Tutorial", callback_data="tutorial"),
                     ],
                 ]
-                
+
             reply_markup = InlineKeyboardMarkup(keyboard)
-            
+
             if update.callback_query:
                 await update.callback_query.edit_message_text(
                     text, parse_mode="Markdown", reply_markup=reply_markup
@@ -100,12 +100,14 @@ class AuthHandlers:
                 await update.message.reply_text(
                     text, parse_mode="Markdown", reply_markup=reply_markup
                 )
-                
+
         except Exception as e:
             logger.error(f"Error showing auth status: {e}")
             await self._send_error_message(update, "Failed to check authentication status")
 
-    async def start_authentication(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    async def start_authentication(
+        self, update: Update, context: ContextTypes.DEFAULT_TYPE
+    ) -> None:
         """Enhanced authentication process with better UX"""
         try:
             if self.auth_in_progress:
@@ -113,12 +115,12 @@ class AuthHandlers:
                     update,
                     "⚠️ **Authentication in progress**\n\n"
                     "Please wait for the current process to complete.\n"
-                    "If you've been waiting more than 2 minutes, try restarting."
+                    "If you've been waiting more than 2 minutes, try restarting.",
                 )
                 return
-                
+
             self.auth_in_progress = True
-            
+
             # Show enhanced starting message
             await self._send_message(
                 update,
@@ -126,22 +128,24 @@ class AuthHandlers:
                 "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
                 "📱 **Step 1/3:** Connecting to Telegram servers...\n"
                 "⏳ **Status:** Preparing verification code\n\n"
-                "Please wait a moment while we establish a secure connection."
+                "Please wait a moment while we establish a secure connection.",
             )
-            
+
             # Start authentication process in background
             asyncio.create_task(self._authenticate_userbot(update, context))
-            
+
         except Exception as e:
             logger.error(f"Error starting authentication: {e}")
             self.auth_in_progress = False
             await self._send_error_message(update, "Failed to start authentication process")
 
-    async def _authenticate_userbot(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    async def _authenticate_userbot(
+        self, update: Update, context: ContextTypes.DEFAULT_TYPE
+    ) -> None:
         """Enhanced authentication with better error handling"""
         try:
             from pyrogram import Client
-            
+
             # Initialize client with enhanced error handling
             client = Client(
                 "userbot_session",
@@ -150,9 +154,9 @@ class AuthHandlers:
                 phone_number=settings.TELEGRAM_PHONE_NUMBER,
                 workdir="sessions",
             )
-            
+
             await client.connect()
-            
+
             # Update status
             await self._send_message(
                 update,
@@ -160,12 +164,12 @@ class AuthHandlers:
                 "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
                 "📱 **Step 2/3:** Sending verification code...\n"
                 "⏳ **Status:** Processing request\n\n"
-                "🔔 Check your Telegram app for an incoming message!"
+                "🔔 Check your Telegram app for an incoming message!",
             )
-            
+
             # Send verification code
             sent_code = await client.send_code(settings.TELEGRAM_PHONE_NUMBER)
-            
+
             # Show enhanced code request
             text = (
                 "📱 **VERIFICATION CODE SENT!**\n"
@@ -184,25 +188,25 @@ class AuthHandlers:
                 "⚡ **Quick Tip:** The code usually arrives within seconds!\n"
                 "🔒 **Security:** Your code is valid for this session only"
             )
-            
+
             keyboard = [
                 [InlineKeyboardButton("❌ Cancel Setup", callback_data="auth_cancel")],
                 [InlineKeyboardButton("🔄 Resend Code", callback_data="auth_resend")],
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
-            
+
             await self._send_message_with_keyboard(update, text, reply_markup)
-            
+
             # Set waiting state
             if context.user_data is not None:
                 context.user_data["waiting_for"] = "auth_code"
                 context.user_data["auth_client"] = client
                 context.user_data["auth_phone_code_hash"] = sent_code.phone_code_hash
-                
+
         except Exception as e:
             logger.error(f"Authentication error: {e}")
             self.auth_in_progress = False
-            
+
             error_details = str(e)
             if "PHONE_NUMBER_INVALID" in error_details:
                 error_msg = "Invalid phone number format. Please check your .env configuration."
@@ -210,25 +214,27 @@ class AuthHandlers:
                 error_msg = "Invalid API credentials. Please verify your Telegram API settings."
             else:
                 error_msg = f"Authentication setup failed: {error_details}"
-                
+
             await self._send_error_message(update, error_msg)
-            
+
             # Clean up
             try:
-                if context.user_data and 'auth_client' in context.user_data:
-                    await context.user_data['auth_client'].disconnect()
-                    context.user_data.pop('auth_client', None)
+                if context.user_data and "auth_client" in context.user_data:
+                    await context.user_data["auth_client"].disconnect()
+                    context.user_data.pop("auth_client", None)
             except Exception:
                 pass
 
-    async def handle_verification_code(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    async def handle_verification_code(
+        self, update: Update, context: ContextTypes.DEFAULT_TYPE
+    ) -> None:
         """Enhanced verification code handling with better feedback"""
         try:
             if not update.message or not update.message.text:
                 return
-                
+
             code = update.message.text.strip()
-            
+
             # Enhanced code validation
             if not code.isdigit():
                 await update.message.reply_text(
@@ -237,7 +243,7 @@ class AuthHandlers:
                     "No spaces, dashes, or other characters."
                 )
                 return
-                
+
             if len(code) < 4 or len(code) > 8:
                 await update.message.reply_text(
                     "❌ **Invalid Code Length**\n\n"
@@ -245,7 +251,7 @@ class AuthHandlers:
                     "Please check your Telegram app and try again."
                 )
                 return
-                
+
             # Show enhanced processing message
             processing_msg = await update.message.reply_text(
                 "🔄 **VERIFYING CODE**\n"
@@ -254,19 +260,19 @@ class AuthHandlers:
                 "🔒 **Security:** Establishing secure session...\n\n"
                 "Please wait a moment..."
             )
-            
+
             # Get client from context
-            if not context.user_data or 'auth_client' not in context.user_data:
+            if not context.user_data or "auth_client" not in context.user_data:
                 await processing_msg.edit_text(
                     "❌ **Session Expired**\n\n"
                     "Your authentication session has expired.\n"
                     "Please restart the process with `/auth`"
                 )
                 return
-                
-            client = context.user_data['auth_client']
-            phone_code_hash = context.user_data['auth_phone_code_hash']
-            
+
+            client = context.user_data["auth_client"]
+            phone_code_hash = context.user_data["auth_phone_code_hash"]
+
             try:
                 # Sign in with enhanced progress feedback
                 await processing_msg.edit_text(
@@ -276,13 +282,9 @@ class AuthHandlers:
                     "🔒 **Security:** Creating encrypted session...\n\n"
                     "Almost done!"
                 )
-                
-                await client.sign_in(
-                    settings.TELEGRAM_PHONE_NUMBER,
-                    phone_code_hash,
-                    code
-                )
-                
+
+                await client.sign_in(settings.TELEGRAM_PHONE_NUMBER, phone_code_hash, code)
+
                 # Enhanced success message
                 await processing_msg.edit_text(
                     "✅ **AUTHENTICATION SUCCESSFUL!**\n"
@@ -299,24 +301,24 @@ class AuthHandlers:
                     "• Start your automation journey!\n\n"
                     "🏠 Returning to dashboard in 3 seconds..."
                 )
-                
+
                 # Initialize userbot instance
                 self.userbot_instance = UserBot()
                 await self.userbot_instance.start()
-                
+
                 # Clean up context
                 context.user_data.pop("waiting_for", None)
                 context.user_data.pop("auth_client", None)
                 context.user_data.pop("auth_phone_code_hash", None)
                 self.auth_in_progress = False
-                
+
                 # Show dashboard after delay
                 await asyncio.sleep(3)
                 await self.show_auth_status(update, context)
-                
+
             except Exception as sign_in_error:
                 logger.error(f"Sign in error: {sign_in_error}")
-                
+
                 error_details = str(sign_in_error)
                 if "PHONE_CODE_INVALID" in error_details:
                     error_msg = (
@@ -345,14 +347,14 @@ class AuthHandlers:
                         f"Error: {error_details}\n\n"
                         "Please try again or contact support if the issue persists."
                     )
-                    
+
                 await processing_msg.edit_text(error_msg)
-                
+
                 # Reset if expired
                 if "EXPIRED" in error_details:
                     context.user_data.pop("waiting_for", None)
                     self.auth_in_progress = False
-                    
+
         except Exception as e:
             logger.error(f"Error handling verification code: {e}")
             await self._send_error_message(update, "Failed to process verification code")
@@ -362,9 +364,9 @@ class AuthHandlers:
         try:
             import os
             from pathlib import Path
-            
+
             session_file = Path("sessions/userbot_session.session")
-            
+
             if session_file.exists():
                 os.remove(session_file)
                 status_text = "🗑️ **Session Successfully Cleared**"
@@ -372,7 +374,7 @@ class AuthHandlers:
             else:
                 status_text = "ℹ️ **No Session Found**"
                 detail_text = "No active session was found to clear."
-                
+
             text = (
                 f"{status_text}\n"
                 f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
@@ -386,7 +388,7 @@ class AuthHandlers:
                 f"Use the **'Start Authentication'** button below to reconnect your account.\n\n"
                 f"🔒 **Security:** This action helps protect your account if you suspect unauthorized access."
             )
-            
+
             keyboard = [
                 [InlineKeyboardButton("🚀 Start Authentication", callback_data="auth_start")],
                 [
@@ -395,12 +397,12 @@ class AuthHandlers:
                 ],
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
-            
+
             if update.callback_query:
                 await update.callback_query.edit_message_text(
                     text, parse_mode="Markdown", reply_markup=reply_markup
                 )
-                
+
         except Exception as e:
             logger.error(f"Error clearing session: {e}")
             await self._send_error_message(update, "Failed to clear session data")
@@ -417,11 +419,11 @@ class AuthHandlers:
                     "🔍 **Checking:** Session validity, API access, server connectivity\n\n"
                     "Please wait..."
                 )
-            
+
             await asyncio.sleep(1)  # Brief delay for UX
-            
+
             is_connected = await self._check_userbot_status()
-            
+
             if is_connected:
                 # Enhanced success report
                 text = (
@@ -458,12 +460,14 @@ class AuthHandlers:
                     "• Follow the setup wizard for easy configuration\n"
                     "• Test again after successful authentication"
                 )
-                
+
             keyboard = [
                 [
                     InlineKeyboardButton("🔄 Run Test Again", callback_data="auth_test"),
-                    InlineKeyboardButton("🚀 Start Auth" if not is_connected else "🏠 Dashboard",
-                                       callback_data="auth_start" if not is_connected else "dashboard"),
+                    InlineKeyboardButton(
+                        "🚀 Start Auth" if not is_connected else "🏠 Dashboard",
+                        callback_data="auth_start" if not is_connected else "dashboard",
+                    ),
                 ],
                 [
                     InlineKeyboardButton("📊 System Status", callback_data="refresh_status"),
@@ -471,12 +475,12 @@ class AuthHandlers:
                 ],
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
-            
+
             if update.callback_query:
                 await update.callback_query.edit_message_text(
                     text, parse_mode="Markdown", reply_markup=reply_markup
                 )
-                
+
         except Exception as e:
             logger.error(f"Error testing connection: {e}")
             await self._send_error_message(update, "Failed to perform connection test")
@@ -541,7 +545,7 @@ class AuthHandlers:
             "• Complete process in one session\n"
             "• Test connection after successful setup"
         )
-        
+
         keyboard = [
             [
                 InlineKeyboardButton("🚀 Start Authentication", callback_data="auth_start"),
@@ -557,7 +561,7 @@ class AuthHandlers:
             ],
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
-        
+
         if update.callback_query:
             await update.callback_query.edit_message_text(
                 text, parse_mode="Markdown", reply_markup=reply_markup
@@ -612,7 +616,7 @@ class AuthHandlers:
             "├ Transparent privacy practices\n"
             "└ User rights fully respected"
         )
-        
+
         keyboard = [
             [
                 InlineKeyboardButton("🗑️ Clear Session", callback_data="auth_clear"),
@@ -624,13 +628,15 @@ class AuthHandlers:
             ],
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
-        
+
         if update.callback_query:
             await update.callback_query.edit_message_text(
                 text, parse_mode="Markdown", reply_markup=reply_markup
             )
 
-    async def handle_callback(self, update: Update, context: ContextTypes.DEFAULT_TYPE, data: str) -> None:
+    async def handle_callback(
+        self, update: Update, context: ContextTypes.DEFAULT_TYPE, data: str
+    ) -> None:
         """Enhanced callback handling with comprehensive routing"""
         if data == "auth_status":
             await self.show_auth_status(update, context)
@@ -655,11 +661,13 @@ class AuthHandlers:
         elif data == "auth_resend":
             await self.resend_code(update, context)
 
-    async def show_connection_info(self, update: Update, _context: ContextTypes.DEFAULT_TYPE) -> None:
+    async def show_connection_info(
+        self, update: Update, _context: ContextTypes.DEFAULT_TYPE
+    ) -> None:
         """Show detailed connection information"""
         try:
             is_connected = await self._check_userbot_status()
-            
+
             if is_connected:
                 text = (
                     "📊 **CONNECTION INFORMATION**\n"
@@ -702,12 +710,14 @@ class AuthHandlers:
                     "🔧 **Required Action:**\n"
                     "Authentication setup needed to enable full functionality."
                 )
-            
+
             keyboard = [
                 [
                     InlineKeyboardButton("🧪 Test Connection", callback_data="auth_test"),
-                    InlineKeyboardButton("🚀 Start Auth" if not is_connected else "🔄 Restart",
-                                       callback_data="auth_start" if not is_connected else "auth_restart"),
+                    InlineKeyboardButton(
+                        "🚀 Start Auth" if not is_connected else "🔄 Restart",
+                        callback_data="auth_start" if not is_connected else "auth_restart",
+                    ),
                 ],
                 [
                     InlineKeyboardButton("🔙 Auth Menu", callback_data="auth_status"),
@@ -715,32 +725,34 @@ class AuthHandlers:
                 ],
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
-            
+
             if update.callback_query:
                 await update.callback_query.edit_message_text(
                     text, parse_mode="Markdown", reply_markup=reply_markup
                 )
-                
+
         except Exception as e:
             logger.error(f"Error showing connection info: {e}")
             await self._send_error_message(update, "Failed to retrieve connection information")
 
-    async def cancel_authentication(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    async def cancel_authentication(
+        self, update: Update, context: ContextTypes.DEFAULT_TYPE
+    ) -> None:
         """Cancel ongoing authentication process"""
         try:
             # Clean up context
             if context.user_data:
                 context.user_data.pop("waiting_for", None)
-                if 'auth_client' in context.user_data:
+                if "auth_client" in context.user_data:
                     try:
-                        await context.user_data['auth_client'].disconnect()
+                        await context.user_data["auth_client"].disconnect()
                     except Exception:
                         pass
-                    context.user_data.pop('auth_client', None)
-                context.user_data.pop('auth_phone_code_hash', None)
-            
+                    context.user_data.pop("auth_client", None)
+                context.user_data.pop("auth_phone_code_hash", None)
+
             self.auth_in_progress = False
-            
+
             text = (
                 "❌ **AUTHENTICATION CANCELLED**\n"
                 "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
@@ -753,7 +765,7 @@ class AuthHandlers:
                 "💡 **You can restart authentication anytime:**\n"
                 "Use the button below when you're ready to proceed."
             )
-            
+
             keyboard = [
                 [InlineKeyboardButton("🚀 Start Authentication", callback_data="auth_start")],
                 [
@@ -762,12 +774,12 @@ class AuthHandlers:
                 ],
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
-            
+
             if update.callback_query:
                 await update.callback_query.edit_message_text(
                     text, parse_mode="Markdown", reply_markup=reply_markup
                 )
-                
+
         except Exception as e:
             logger.error(f"Error cancelling authentication: {e}")
             await self._send_error_message(update, "Failed to cancel authentication")
@@ -775,10 +787,10 @@ class AuthHandlers:
     async def resend_code(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         """Resend verification code"""
         try:
-            if not context.user_data or 'auth_client' not in context.user_data:
+            if not context.user_data or "auth_client" not in context.user_data:
                 await self._send_error_message(update, "No active authentication session")
                 return
-            
+
             if update.callback_query:
                 await update.callback_query.edit_message_text(
                     "🔄 **RESENDING VERIFICATION CODE**\n"
@@ -786,12 +798,12 @@ class AuthHandlers:
                     "📱 **Status:** Requesting new code...\n"
                     "⏳ Please wait a moment..."
                 )
-            
+
             # This would need additional implementation for code resending
             # For now, restart the process
             await asyncio.sleep(1)
             await self.start_authentication(update, context)
-            
+
         except Exception as e:
             logger.error(f"Error resending code: {e}")
             await self._send_error_message(update, "Failed to resend verification code")
@@ -800,6 +812,7 @@ class AuthHandlers:
         """Enhanced userbot status checking"""
         try:
             from pathlib import Path
+
             session_file = Path("sessions/userbot_session.session")
             return session_file.exists() and session_file.stat().st_size > 0
         except Exception as e:
@@ -813,10 +826,14 @@ class AuthHandlers:
         elif update.message:
             await update.message.reply_text(text, parse_mode="Markdown")
 
-    async def _send_message_with_keyboard(self, update: Update, text: str, reply_markup: InlineKeyboardMarkup) -> None:
+    async def _send_message_with_keyboard(
+        self, update: Update, text: str, reply_markup: InlineKeyboardMarkup
+    ) -> None:
         """Send message with keyboard helper"""
         if update.callback_query:
-            await update.callback_query.edit_message_text(text, parse_mode="Markdown", reply_markup=reply_markup)
+            await update.callback_query.edit_message_text(
+                text, parse_mode="Markdown", reply_markup=reply_markup
+            )
         elif update.message:
             await update.message.reply_text(text, parse_mode="Markdown", reply_markup=reply_markup)
 
@@ -833,7 +850,7 @@ class AuthHandlers:
             f"└ Contact support if issue persists\n\n"
             f"💡 Use the buttons below for assistance."
         )
-        
+
         keyboard = [
             [
                 InlineKeyboardButton("🔄 Try Again", callback_data="auth_start"),
@@ -842,5 +859,5 @@ class AuthHandlers:
             [InlineKeyboardButton("🏠 Dashboard", callback_data="dashboard")],
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
-        
+
         await self._send_message_with_keyboard(update, text, reply_markup)

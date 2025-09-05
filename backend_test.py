@@ -35,7 +35,7 @@ class TelegramBotTester:
         """Run a single test"""
         self.tests_run += 1
         print(f"\n🔍 Testing {name}...")
-        
+
         try:
             result = test_func(*args, **kwargs)
             if result:
@@ -55,8 +55,8 @@ class TelegramBotTester:
             response = requests.get(f"{BASE_URL}/getMe", timeout=10)
             if response.status_code == 200:
                 self.bot_info = response.json()
-                if self.bot_info.get('ok'):
-                    bot_data = self.bot_info['result']
+                if self.bot_info.get("ok"):
+                    bot_data = self.bot_info["result"]
                     print(f"   Bot Name: {bot_data.get('first_name', 'Unknown')}")
                     print(f"   Username: @{bot_data.get('username', 'Unknown')}")
                     print(f"   Bot ID: {bot_data.get('id', 'Unknown')}")
@@ -72,8 +72,8 @@ class TelegramBotTester:
             response = requests.get(f"{BASE_URL}/getMyCommands", timeout=10)
             if response.status_code == 200:
                 data = response.json()
-                if data.get('ok'):
-                    commands = data.get('result', [])
+                if data.get("ok"):
+                    commands = data.get("result", [])
                     print(f"   Commands configured: {len(commands)}")
                     for cmd in commands[:5]:  # Show first 5 commands
                         print(f"   - /{cmd.get('command')}: {cmd.get('description')}")
@@ -89,9 +89,9 @@ class TelegramBotTester:
             response = requests.get(f"{BASE_URL}/getWebhookInfo", timeout=10)
             if response.status_code == 200:
                 data = response.json()
-                if data.get('ok'):
-                    webhook_info = data.get('result', {})
-                    webhook_url = webhook_info.get('url', '')
+                if data.get("ok"):
+                    webhook_info = data.get("result", {})
+                    webhook_url = webhook_info.get("url", "")
                     if webhook_url:
                         print(f"   Webhook URL: {webhook_url}")
                         print(f"   Pending updates: {webhook_info.get('pending_update_count', 0)}")
@@ -109,18 +109,18 @@ class TelegramBotTester:
             response = requests.get(f"{BASE_URL}/getUpdates?limit=5", timeout=10)
             if response.status_code == 200:
                 data = response.json()
-                if data.get('ok'):
-                    updates = data.get('result', [])
+                if data.get("ok"):
+                    updates = data.get("result", [])
                     print(f"   Recent updates: {len(updates)}")
-                    
+
                     # Look for a test chat ID from recent updates
                     for update in updates:
-                        if 'message' in update:
-                            chat_id = update['message']['chat']['id']
+                        if "message" in update:
+                            chat_id = update["message"]["chat"]["id"]
                             if not self.test_chat_id:
                                 self.test_chat_id = chat_id
                                 print(f"   Found test chat ID: {chat_id}")
-                    
+
                     return True
             return False
         except Exception as e:
@@ -132,24 +132,24 @@ class TelegramBotTester:
         try:
             log_file = Path("/app/logs/app.log")
             if log_file.exists():
-                with open(log_file, 'r') as f:
+                with open(log_file, "r") as f:
                     lines = f.readlines()
-                
+
                 recent_lines = lines[-20:]  # Last 20 lines
-                error_count = sum(1 for line in recent_lines if 'ERROR' in line)
-                warning_count = sum(1 for line in recent_lines if 'WARNING' in line)
-                
+                error_count = sum(1 for line in recent_lines if "ERROR" in line)
+                warning_count = sum(1 for line in recent_lines if "WARNING" in line)
+
                 print(f"   Recent log lines: {len(recent_lines)}")
                 print(f"   Errors in recent logs: {error_count}")
                 print(f"   Warnings in recent logs: {warning_count}")
-                
+
                 # Show recent errors if any
                 if error_count > 0:
                     print("   Recent errors:")
                     for line in recent_lines:
-                        if 'ERROR' in line:
+                        if "ERROR" in line:
                             print(f"     {line.strip()}")
-                
+
                 return error_count == 0  # Pass if no errors
             else:
                 print("   Log file not found")
@@ -163,9 +163,9 @@ class TelegramBotTester:
         try:
             log_file = Path("/app/logs/app.log")
             if log_file.exists():
-                with open(log_file, 'r') as f:
+                with open(log_file, "r") as f:
                     content = f.read()
-                
+
                 # Look for database connection messages
                 if "✅ Connected to MongoDB" in content:
                     print("   Database connection confirmed in logs")
@@ -185,12 +185,13 @@ class TelegramBotTester:
         """Test if system process is running"""
         try:
             import subprocess
-            result = subprocess.run(['ps', 'aux'], capture_output=True, text=True)
-            if 'main.py' in result.stdout:
+
+            result = subprocess.run(["ps", "aux"], capture_output=True, text=True)
+            if "main.py" in result.stdout:
                 # Extract PID
-                lines = result.stdout.split('\n')
+                lines = result.stdout.split("\n")
                 for line in lines:
-                    if 'main.py' in line and 'python' in line:
+                    if "main.py" in line and "python" in line:
                         parts = line.split()
                         if len(parts) > 1:
                             pid = parts[1]
@@ -206,12 +207,14 @@ class TelegramBotTester:
         """Test if configuration is valid"""
         try:
             from src.core.config import settings
-            
+
             print(f"   API ID configured: {'Yes' if settings.TELEGRAM_API_ID else 'No'}")
             print(f"   API Hash configured: {'Yes' if settings.TELEGRAM_API_HASH else 'No'}")
             print(f"   Bot Token configured: {'Yes' if settings.TELEGRAM_BOT_TOKEN else 'No'}")
-            print(f"   Phone Number configured: {'Yes' if settings.TELEGRAM_PHONE_NUMBER else 'No'}")
-            
+            print(
+                f"   Phone Number configured: {'Yes' if settings.TELEGRAM_PHONE_NUMBER else 'No'}"
+            )
+
             return settings.is_configured()
         except Exception as e:
             print(f"   Error checking configuration: {e}")
@@ -222,27 +225,27 @@ class TelegramBotTester:
         print("🤖 OTOGRAM TELEGRAM AUTOMATION SYSTEM TESTING")
         print("=" * 50)
         print(f"Test started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        
+
         # Core connectivity tests
         self.run_test("Bot API Connectivity", self.test_bot_connectivity)
         self.run_test("Bot Commands Setup", self.test_bot_commands)
         self.run_test("Webhook Configuration", self.test_webhook_info)
         self.run_test("Recent Bot Updates", self.test_recent_updates)
-        
+
         # System health tests
         self.run_test("System Process Status", self.test_system_process)
         self.run_test("Configuration Validity", self.test_configuration_validity)
         self.run_test("Database Connectivity", self.test_database_connectivity)
         self.run_test("System Logs Check", self.test_system_logs)
-        
+
         # Print results
         print("\n📊 TEST RESULTS")
         print("=" * 30)
         print(f"Tests run: {self.tests_run}")
         print(f"Tests passed: {self.tests_passed}")
         print(f"Tests failed: {self.tests_run - self.tests_passed}")
-        print(f"Success rate: {(self.tests_passed/self.tests_run)*100:.1f}%")
-        
+        print(f"Success rate: {(self.tests_passed / self.tests_run) * 100:.1f}%")
+
         if self.tests_passed == self.tests_run:
             print("\n🎉 ALL TESTS PASSED! System is healthy.")
             return 0

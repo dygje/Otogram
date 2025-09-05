@@ -20,39 +20,41 @@ class MockDatabase:
     def __init__(self):
         self.client = MagicMock()
         self.db = MagicMock()
-    
+
     def get_collection(self, name):
         return MagicMock()
-    
+
     async def connect(self, *args, **kwargs):
         pass
-    
+
     async def disconnect(self):
         pass
+
 
 # Mock services for testing
 class MockService:
     def __init__(self):
         pass
-    
+
     async def get_message_count(self):
         return {"total": 5, "active": 3, "inactive": 2}
-    
+
     async def get_group_stats(self):
         return {"total": 10, "active": 7, "inactive": 3}
-    
+
     async def get_blacklist_stats(self):
         return {"total": 2, "permanent": 1, "temporary": 1, "expired": 0}
-    
+
     async def get_all_messages(self):
         return []
-    
+
     async def get_all_groups(self):
         return []
 
+
 # Patch database at module level
 mock_database = MockDatabase()
-sys.modules['src.core.database'].database = mock_database
+sys.modules["src.core.database"].database = mock_database
 
 
 class InterfaceComponentTester:
@@ -67,13 +69,13 @@ class InterfaceComponentTester:
         """Run a single test"""
         self.tests_run += 1
         print(f"\n🔍 Testing {name}...")
-        
+
         try:
             if asyncio.iscoroutinefunction(test_func):
                 result = asyncio.run(test_func(*args, **kwargs))
             else:
                 result = test_func(*args, **kwargs)
-            
+
             if result:
                 self.tests_passed += 1
                 print(f"✅ Passed - {name}")
@@ -81,7 +83,9 @@ class InterfaceComponentTester:
                 return True
             else:
                 print(f"❌ Failed - {name}")
-                self.test_results.append({"name": name, "status": "FAILED", "error": "Test returned False"})
+                self.test_results.append(
+                    {"name": name, "status": "FAILED", "error": "Test returned False"}
+                )
                 return False
         except Exception as e:
             print(f"❌ Failed - {name}: {str(e)}")
@@ -92,21 +96,27 @@ class InterfaceComponentTester:
         """Test management bot import and basic structure"""
         try:
             from src.telegram.management_bot import ManagementBot
-            
+
             # Check if class exists and has required methods
             required_methods = [
-                'start', 'stop', '_add_handlers', 'start_command',
-                'main_menu', 'status_command', 'help_command', 'handle_callback'
+                "start",
+                "stop",
+                "_add_handlers",
+                "start_command",
+                "main_menu",
+                "status_command",
+                "help_command",
+                "handle_callback",
             ]
-            
+
             for method in required_methods:
                 if not hasattr(ManagementBot, method):
                     print(f"   Missing method: {method}")
                     return False
-            
+
             print(f"   All required methods present: {len(required_methods)}")
             return True
-            
+
         except ImportError as e:
             print(f"   Import error: {e}")
             return False
@@ -118,21 +128,24 @@ class InterfaceComponentTester:
         """Test auth handlers import and structure"""
         try:
             from src.telegram.handlers.auth_handlers import AuthHandlers
-            
+
             # Check required methods
             required_methods = [
-                'show_auth_status', 'handle_callback', 'handle_text_input',
-                '_show_auth_wizard', '_show_session_info'
+                "show_auth_status",
+                "handle_callback",
+                "handle_text_input",
+                "_show_auth_wizard",
+                "_show_session_info",
             ]
-            
+
             for method in required_methods:
                 if not hasattr(AuthHandlers, method):
                     print(f"   Missing method: {method}")
                     return False
-            
+
             print(f"   Auth handler methods verified: {len(required_methods)}")
             return True
-            
+
         except ImportError as e:
             print(f"   Import error: {e}")
             return False
@@ -144,21 +157,24 @@ class InterfaceComponentTester:
         """Test message handlers import and structure"""
         try:
             from src.telegram.handlers.message_handlers import MessageHandlers
-            
+
             # Check required methods
             required_methods = [
-                'list_messages', 'add_message_command', 'handle_callback',
-                'handle_text_input', '_show_message_analytics'
+                "list_messages",
+                "add_message_command",
+                "handle_callback",
+                "handle_text_input",
+                "_show_message_analytics",
             ]
-            
+
             for method in required_methods:
                 if not hasattr(MessageHandlers, method):
                     print(f"   Missing method: {method}")
                     return False
-            
+
             print(f"   Message handler methods verified: {len(required_methods)}")
             return True
-            
+
         except ImportError as e:
             print(f"   Import error: {e}")
             return False
@@ -170,21 +186,25 @@ class InterfaceComponentTester:
         """Test group handlers import and structure"""
         try:
             from src.telegram.handlers.group_handlers import GroupHandlers
-            
+
             # Check required methods
             required_methods = [
-                'list_groups', 'add_group_command', 'add_groups_bulk_command',
-                'handle_callback', 'handle_text_input', '_show_group_analytics'
+                "list_groups",
+                "add_group_command",
+                "add_groups_bulk_command",
+                "handle_callback",
+                "handle_text_input",
+                "_show_group_analytics",
             ]
-            
+
             for method in required_methods:
                 if not hasattr(GroupHandlers, method):
                     print(f"   Missing method: {method}")
                     return False
-            
+
             print(f"   Group handler methods verified: {len(required_methods)}")
             return True
-            
+
         except ImportError as e:
             print(f"   Import error: {e}")
             return False
@@ -196,23 +216,27 @@ class InterfaceComponentTester:
         """Test ManagementBot class initialization"""
         try:
             # Mock database and services
-            with patch('src.core.database.database', MockDatabase()), \
-                 patch('src.services.config_service.ConfigService', MockService), \
-                 patch('src.services.message_service.MessageService', MockService), \
-                 patch('src.services.group_service.GroupService', MockService), \
-                 patch('src.services.blacklist_service.BlacklistService', MockService):
-                
+            with (
+                patch("src.core.database.database", MockDatabase()),
+                patch("src.services.config_service.ConfigService", MockService),
+                patch("src.services.message_service.MessageService", MockService),
+                patch("src.services.group_service.GroupService", MockService),
+                patch("src.services.blacklist_service.BlacklistService", MockService),
+            ):
                 from src.telegram.management_bot import ManagementBot
-                
+
                 # Create instance
                 bot = ManagementBot()
-                
+
                 # Check if handlers are initialized
                 required_handlers = [
-                    'auth_handlers', 'message_handlers', 'group_handlers',
-                    'config_handlers', 'blacklist_handlers'
+                    "auth_handlers",
+                    "message_handlers",
+                    "group_handlers",
+                    "config_handlers",
+                    "blacklist_handlers",
                 ]
-                
+
                 for handler in required_handlers:
                     if not hasattr(bot, handler):
                         print(f"   Missing handler: {handler}")
@@ -220,10 +244,10 @@ class InterfaceComponentTester:
                     if getattr(bot, handler) is None:
                         print(f"   Handler not initialized: {handler}")
                         return False
-                
+
                 print(f"   All handlers initialized: {len(required_handlers)}")
                 return True
-            
+
         except Exception as e:
             print(f"   Initialization error: {e}")
             return False
@@ -232,23 +256,24 @@ class InterfaceComponentTester:
         """Test individual handler initialization"""
         try:
             # Mock database and services for handler initialization
-            with patch('src.core.database.database', MockDatabase()), \
-                 patch('src.services.config_service.ConfigService', MockService), \
-                 patch('src.services.message_service.MessageService', MockService), \
-                 patch('src.services.group_service.GroupService', MockService), \
-                 patch('src.services.blacklist_service.BlacklistService', MockService):
-                
+            with (
+                patch("src.core.database.database", MockDatabase()),
+                patch("src.services.config_service.ConfigService", MockService),
+                patch("src.services.message_service.MessageService", MockService),
+                patch("src.services.group_service.GroupService", MockService),
+                patch("src.services.blacklist_service.BlacklistService", MockService),
+            ):
                 from src.telegram.handlers.auth_handlers import AuthHandlers
                 from src.telegram.handlers.group_handlers import GroupHandlers
                 from src.telegram.handlers.message_handlers import MessageHandlers
-                
+
                 # Test each handler initialization
                 handlers = [
                     ("AuthHandlers", AuthHandlers),
                     ("MessageHandlers", MessageHandlers),
-                    ("GroupHandlers", GroupHandlers)
+                    ("GroupHandlers", GroupHandlers),
                 ]
-                
+
                 for name, handler_class in handlers:
                     try:
                         handler_class()
@@ -256,9 +281,9 @@ class InterfaceComponentTester:
                     except Exception as e:
                         print(f"   {name}: ❌ Failed to initialize - {e}")
                         return False
-                
+
                 return True
-            
+
         except Exception as e:
             print(f"   Handler initialization error: {e}")
             return False
@@ -267,54 +292,49 @@ class InterfaceComponentTester:
         """Test callback routing functionality"""
         try:
             # Mock database and services
-            with patch('src.core.database.database', MockDatabase()), \
-                 patch('src.services.config_service.ConfigService', MockService), \
-                 patch('src.services.message_service.MessageService', MockService), \
-                 patch('src.services.group_service.GroupService', MockService), \
-                 patch('src.services.blacklist_service.BlacklistService', MockService):
-                
+            with (
+                patch("src.core.database.database", MockDatabase()),
+                patch("src.services.config_service.ConfigService", MockService),
+                patch("src.services.message_service.MessageService", MockService),
+                patch("src.services.group_service.GroupService", MockService),
+                patch("src.services.blacklist_service.BlacklistService", MockService),
+            ):
                 from src.telegram.management_bot import ManagementBot
                 from telegram import CallbackQuery, Chat, Message, Update, User
-                
+
                 # Create mock objects
                 bot = ManagementBot()
-                
+
                 # Mock update and context
                 mock_user = User(id=123, first_name="Test", is_bot=False)
                 mock_chat = Chat(id=123, type="private")
                 mock_message = Message(
-                    message_id=1,
-                    date=datetime.now(),
-                    chat=mock_chat,
-                    from_user=mock_user
+                    message_id=1, date=datetime.now(), chat=mock_chat, from_user=mock_user
                 )
-                
+
                 mock_callback_query = CallbackQuery(
                     id="test_callback",
                     from_user=mock_user,
                     chat_instance="test_instance",
                     message=mock_message,
-                    data="dashboard"
+                    data="dashboard",
                 )
-                
-                mock_update = Update(
-                    update_id=1,
-                    callback_query=mock_callback_query
-                )
-                
+
+                mock_update = Update(update_id=1, callback_query=mock_callback_query)
+
                 mock_context = MagicMock()
-                
+
                 # Mock the answer method
                 mock_callback_query.answer = AsyncMock()
                 mock_callback_query.edit_message_text = AsyncMock()
-                
+
                 # Test callback handling
-                with patch.object(bot, '_get_system_stats', return_value="Mock stats"):
+                with patch.object(bot, "_get_system_stats", return_value="Mock stats"):
                     await bot.handle_callback(mock_update, mock_context)
-                
+
                 print("   Callback routing test completed successfully")
                 return True
-            
+
         except Exception as e:
             print(f"   Callback routing error: {e}")
             traceback.print_exc()
@@ -324,24 +344,22 @@ class InterfaceComponentTester:
         """Test message formatting consistency"""
         try:
             from src.telegram.management_bot import ManagementBot
-            
+
             bot = ManagementBot()
-            
+
             # Test various message formats by checking if they contain expected elements
-            
+
             # Check if the bot has methods that would generate these messages
-            methods_to_check = [
-                'start_command', 'main_menu', 'status_command', 'help_command'
-            ]
-            
+            methods_to_check = ["start_command", "main_menu", "status_command", "help_command"]
+
             for method_name in methods_to_check:
                 if not hasattr(bot, method_name):
                     print(f"   Missing formatting method: {method_name}")
                     return False
-            
+
             print(f"   Message formatting methods verified: {len(methods_to_check)}")
             return True
-            
+
         except Exception as e:
             print(f"   Message formatting error: {e}")
             return False
@@ -350,7 +368,7 @@ class InterfaceComponentTester:
         """Test button layout consistency"""
         try:
             from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-            
+
             # Test if we can create the expected button structures
             test_layouts = [
                 # Main dashboard layout
@@ -362,7 +380,7 @@ class InterfaceComponentTester:
                     [
                         InlineKeyboardButton("🔐 Authentication", callback_data="auth_status"),
                         InlineKeyboardButton("🚫 Blacklist", callback_data="blacklist_dashboard"),
-                    ]
+                    ],
                 ],
                 # Welcome screen layout
                 [
@@ -373,20 +391,20 @@ class InterfaceComponentTester:
                     [
                         InlineKeyboardButton("🔐 Authentication", callback_data="auth_status"),
                         InlineKeyboardButton("📚 User Guide", callback_data="tutorial"),
-                    ]
-                ]
+                    ],
+                ],
             ]
-            
+
             for i, layout in enumerate(test_layouts):
                 try:
                     InlineKeyboardMarkup(layout)
-                    print(f"   Layout {i+1}: ✅ Valid structure")
+                    print(f"   Layout {i + 1}: ✅ Valid structure")
                 except Exception as e:
-                    print(f"   Layout {i+1}: ❌ Invalid structure - {e}")
+                    print(f"   Layout {i + 1}: ❌ Invalid structure - {e}")
                     return False
-            
+
             return True
-            
+
         except Exception as e:
             print(f"   Button layout error: {e}")
             return False
@@ -397,25 +415,25 @@ class InterfaceComponentTester:
             from src.telegram.handlers.auth_handlers import AuthHandlers
             from src.telegram.handlers.group_handlers import GroupHandlers
             from src.telegram.handlers.message_handlers import MessageHandlers
-            
+
             # Check if handlers have error handling methods
             handlers = [
                 ("AuthHandlers", AuthHandlers()),
                 ("MessageHandlers", MessageHandlers()),
-                ("GroupHandlers", GroupHandlers())
+                ("GroupHandlers", GroupHandlers()),
             ]
-            
-            error_methods = ['_send_error_message', 'handle_callback', 'handle_text_input']
-            
+
+            error_methods = ["_send_error_message", "handle_callback", "handle_text_input"]
+
             for handler_name, handler in handlers:
                 for method_name in error_methods:
                     if hasattr(handler, method_name):
                         print(f"   {handler_name}.{method_name}: ✅ Present")
                     else:
                         print(f"   {handler_name}.{method_name}: ⚠️ Not found")
-            
+
             return True
-            
+
         except Exception as e:
             print(f"   Error handling test error: {e}")
             return False
@@ -424,25 +442,26 @@ class InterfaceComponentTester:
         """Test integration with service classes"""
         try:
             # Mock database and services
-            with patch('src.core.database.database', MockDatabase()), \
-                 patch('src.services.config_service.ConfigService', MockService), \
-                 patch('src.services.message_service.MessageService', MockService), \
-                 patch('src.services.group_service.GroupService', MockService), \
-                 patch('src.services.blacklist_service.BlacklistService', MockService):
-                
+            with (
+                patch("src.core.database.database", MockDatabase()),
+                patch("src.services.config_service.ConfigService", MockService),
+                patch("src.services.message_service.MessageService", MockService),
+                patch("src.services.group_service.GroupService", MockService),
+                patch("src.services.blacklist_service.BlacklistService", MockService),
+            ):
                 from src.telegram.handlers.group_handlers import GroupHandlers
                 from src.telegram.handlers.message_handlers import MessageHandlers
-                
+
                 # Test if handlers have service dependencies
                 message_handler = MessageHandlers()
                 group_handler = GroupHandlers()
-                
+
                 # Check if services are accessible
                 services_to_check = [
-                    (message_handler, 'message_service'),
-                    (group_handler, 'group_service')
+                    (message_handler, "message_service"),
+                    (group_handler, "group_service"),
                 ]
-                
+
                 for handler, service_name in services_to_check:
                     if hasattr(handler, service_name):
                         service = getattr(handler, service_name)
@@ -453,9 +472,9 @@ class InterfaceComponentTester:
                     else:
                         print(f"   {service_name}: ❌ Missing")
                         return False
-                
+
                 return True
-            
+
         except Exception as e:
             print(f"   Service integration error: {e}")
             return False
@@ -465,29 +484,29 @@ class InterfaceComponentTester:
         try:
             from src.core.config import settings
             from src.core.constants import MAX_RECENT_ITEMS_DISPLAY, PREVIEW_MESSAGE_LENGTH
-            
+
             # Check if constants are defined
             constants = [
                 ("MAX_RECENT_ITEMS_DISPLAY", MAX_RECENT_ITEMS_DISPLAY),
-                ("PREVIEW_MESSAGE_LENGTH", PREVIEW_MESSAGE_LENGTH)
+                ("PREVIEW_MESSAGE_LENGTH", PREVIEW_MESSAGE_LENGTH),
             ]
-            
+
             for name, value in constants:
                 if isinstance(value, int) and value > 0:
                     print(f"   {name}: ✅ Valid ({value})")
                 else:
                     print(f"   {name}: ❌ Invalid value")
                     return False
-            
+
             # Check settings access
-            if hasattr(settings, 'TELEGRAM_BOT_TOKEN'):
+            if hasattr(settings, "TELEGRAM_BOT_TOKEN"):
                 print("   Settings access: ✅ Available")
             else:
                 print("   Settings access: ❌ Not available")
                 return False
-            
+
             return True
-            
+
         except Exception as e:
             print(f"   Constants/config error: {e}")
             return False
@@ -505,7 +524,7 @@ class InterfaceComponentTester:
             from src.services.blacklist_service import BlacklistService
             from src.services.group_service import GroupService
             from src.services.message_service import MessageService
-            
+
             # Verify imports are available (prevents F401 warnings)
             assert settings is not None
             assert MAX_RECENT_ITEMS_DISPLAY is not None
@@ -516,13 +535,13 @@ class InterfaceComponentTester:
             assert BlacklistService is not None
             assert GroupService is not None
             assert MessageService is not None
-            
+
             print("   All core dependencies: ✅ Resolved")
             print("   All service dependencies: ✅ Resolved")
             print("   All model dependencies: ✅ Resolved")
-            
+
             return True
-            
+
         except ImportError as e:
             print(f"   Dependency resolution error: {e}")
             return False
@@ -534,43 +553,44 @@ class InterfaceComponentTester:
         """Test integration between different handlers"""
         try:
             # Mock database and services
-            with patch('src.core.database.database', MockDatabase()), \
-                 patch('src.services.config_service.ConfigService', MockService), \
-                 patch('src.services.message_service.MessageService', MockService), \
-                 patch('src.services.group_service.GroupService', MockService), \
-                 patch('src.services.blacklist_service.BlacklistService', MockService):
-                
+            with (
+                patch("src.core.database.database", MockDatabase()),
+                patch("src.services.config_service.ConfigService", MockService),
+                patch("src.services.message_service.MessageService", MockService),
+                patch("src.services.group_service.GroupService", MockService),
+                patch("src.services.blacklist_service.BlacklistService", MockService),
+            ):
                 from src.telegram.management_bot import ManagementBot
-                
+
                 bot = ManagementBot()
-                
+
                 # Check if all handlers are properly integrated
                 handlers = [
-                    'auth_handlers',
-                    'message_handlers',
-                    'group_handlers',
-                    'config_handlers',
-                    'blacklist_handlers'
+                    "auth_handlers",
+                    "message_handlers",
+                    "group_handlers",
+                    "config_handlers",
+                    "blacklist_handlers",
                 ]
-                
+
                 for handler_name in handlers:
                     handler = getattr(bot, handler_name)
-                    
+
                     # Check if handler has required callback method
-                    if hasattr(handler, 'handle_callback'):
+                    if hasattr(handler, "handle_callback"):
                         print(f"   {handler_name}: ✅ Callback integration ready")
                     else:
                         print(f"   {handler_name}: ❌ Missing callback integration")
                         return False
-                    
+
                     # Check if handler has text input method
-                    if hasattr(handler, 'handle_text_input'):
+                    if hasattr(handler, "handle_text_input"):
                         print(f"   {handler_name}: ✅ Text input integration ready")
                     else:
                         print(f"   {handler_name}: ⚠️ No text input handling")
-                
+
                 return True
-            
+
         except Exception as e:
             print(f"   Handler integration error: {e}")
             return False
@@ -580,7 +600,7 @@ class InterfaceComponentTester:
         print("🤖 OTOGRAM INTERFACE COMPONENT TESTING")
         print("=" * 55)
         print(f"Test started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        
+
         # Import & Initialization Tests
         print("\n📦 IMPORT & INITIALIZATION TESTS")
         print("-" * 40)
@@ -591,7 +611,7 @@ class InterfaceComponentTester:
         self.run_test("Management Bot Initialization", self.test_management_bot_initialization)
         self.run_test("Handler Initialization", self.test_handler_initialization)
         self.run_test("Dependency Resolution", self.test_dependency_resolution)
-        
+
         # Interface Component Tests
         print("\n🎨 INTERFACE COMPONENT TESTS")
         print("-" * 40)
@@ -599,41 +619,41 @@ class InterfaceComponentTester:
         self.run_test("Button Layout Structure", self.test_button_layout_structure)
         self.run_test("Error Handling Patterns", self.test_error_handling_patterns)
         self.run_test("Constants & Configuration", self.test_constants_and_config)
-        
+
         # Integration Tests
         print("\n🔗 INTEGRATION TESTS")
         print("-" * 40)
         self.run_test("Callback Routing", self.test_callback_routing)
         self.run_test("Service Integration", self.test_service_integration)
         self.run_test("Handler Integration", self.test_handler_integration)
-        
+
         # Print detailed results
         print("\n📊 DETAILED TEST RESULTS")
         print("=" * 40)
-        
+
         passed_tests = [r for r in self.test_results if r["status"] == "PASSED"]
         failed_tests = [r for r in self.test_results if r["status"] in ["FAILED", "ERROR"]]
-        
+
         if passed_tests:
             print(f"\n✅ PASSED TESTS ({len(passed_tests)}):")
             for test in passed_tests:
                 print(f"   • {test['name']}")
-        
+
         if failed_tests:
             print(f"\n❌ FAILED TESTS ({len(failed_tests)}):")
             for test in failed_tests:
                 print(f"   • {test['name']}")
-                if test['error']:
+                if test["error"]:
                     print(f"     Error: {test['error']}")
-        
+
         # Summary
         print("\n📊 SUMMARY")
         print("=" * 30)
         print(f"Tests run: {self.tests_run}")
         print(f"Tests passed: {self.tests_passed}")
         print(f"Tests failed: {self.tests_run - self.tests_passed}")
-        print(f"Success rate: {(self.tests_passed/self.tests_run)*100:.1f}%")
-        
+        print(f"Success rate: {(self.tests_passed / self.tests_run) * 100:.1f}%")
+
         if self.tests_passed == self.tests_run:
             print("\n🎉 ALL INTERFACE TESTS PASSED!")
             print("✅ Modernized interface components are working correctly")
