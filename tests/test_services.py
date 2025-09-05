@@ -86,8 +86,11 @@ class TestBlacklistService:
         # Add to blacklist
         blacklist_data = BlacklistCreate(
             group_id="-1001234567890",
+            group_identifier="test_group",
             blacklist_type=BlacklistType.PERMANENT,
             reason=BlacklistReason.USER_BLOCKED,
+            duration_seconds=None,
+            error_message="Test error"
         )
         await service.add_to_blacklist(blacklist_data)
 
