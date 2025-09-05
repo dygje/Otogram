@@ -501,14 +501,21 @@ class InterfaceComponentTester:
             from src.core.database import Database
             from src.models.blacklist import BlacklistEntry
             from src.models.group import Group
-
-            # Test model imports
             from src.models.message import Message
             from src.services.blacklist_service import BlacklistService
             from src.services.group_service import GroupService
-
-            # Test service imports
             from src.services.message_service import MessageService
+            
+            # Verify imports are available (prevents F401 warnings)
+            assert settings is not None
+            assert MAX_RECENT_ITEMS_DISPLAY is not None
+            assert Database is not None
+            assert BlacklistEntry is not None
+            assert Group is not None
+            assert Message is not None
+            assert BlacklistService is not None
+            assert GroupService is not None
+            assert MessageService is not None
             
             print("   All core dependencies: ✅ Resolved")
             print("   All service dependencies: ✅ Resolved")
