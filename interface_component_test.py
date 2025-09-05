@@ -518,7 +518,7 @@ class InterfaceComponentTester:
             from src.core.config import settings
             from src.core.constants import MAX_RECENT_ITEMS_DISPLAY
             from src.core.database import Database
-            from src.models.blacklist import BlacklistEntry
+            from src.models.blacklist import Blacklist
             from src.models.group import Group
             from src.models.message import Message
             from src.services.blacklist_service import BlacklistService
@@ -529,7 +529,7 @@ class InterfaceComponentTester:
             assert settings is not None
             assert MAX_RECENT_ITEMS_DISPLAY is not None
             assert Database is not None
-            assert BlacklistEntry is not None
+            assert Blacklist is not None
             assert Group is not None
             assert Message is not None
             assert BlacklistService is not None
