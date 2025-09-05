@@ -192,7 +192,7 @@ class AuthFeatureTester:
         try:
             from src.telegram.handlers.auth_handlers import AuthHandlers
             
-            auth_handlers = AuthHandlers()
+            AuthHandlers()
             
             # Test callback data that should be handled
             test_callbacks = [
@@ -205,7 +205,7 @@ class AuthFeatureTester:
             ]
             
             # Check if handle_callback method can process these
-            for callback in test_callbacks:
+            for _callback in test_callbacks:
                 # We can't actually test the callback without a real Update object
                 # But we can check if the method exists and accepts the right parameters
                 pass

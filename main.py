@@ -114,7 +114,7 @@ class TelegramAutomationApp:
         """Handle shutdown signals"""
         logger.info(f"📡 Received signal {signum}")
         # Store task reference to avoid RUF006 warning
-        task = asyncio.create_task(self.stop())
+        asyncio.create_task(self.stop())
         # We don't await here as this is a signal handler
 
 

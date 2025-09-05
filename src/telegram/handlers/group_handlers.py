@@ -732,7 +732,6 @@ class GroupHandlers:
 
             # Enhanced group information display
             status_text = "🟢 **Active**" if group.is_active else "⚪ **Inactive**"
-            identifier = group.group_username or group.group_id or group.group_link or "Unknown"
             
             # Format display identifier
             if group.group_title:

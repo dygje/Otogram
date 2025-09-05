@@ -203,7 +203,7 @@ class FinalSystemValidator:
         passed = 0
         total = len(validations)
         
-        for name, validation_func in validations:
+        for _name, validation_func in validations:
             if validation_func():
                 passed += 1
         

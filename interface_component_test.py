@@ -251,7 +251,7 @@ class InterfaceComponentTester:
                 
                 for name, handler_class in handlers:
                     try:
-                        handler = handler_class()
+                        handler_class()
                         print(f"   {name}: ✅ Initialized successfully")
                     except Exception as e:
                         print(f"   {name}: ❌ Failed to initialize - {e}")
@@ -328,16 +328,6 @@ class InterfaceComponentTester:
             bot = ManagementBot()
             
             # Test various message formats by checking if they contain expected elements
-            test_cases = [
-                # Test welcome message format
-                ("Welcome message", "🚀 **OTOGRAM AUTOMATION SYSTEM**"),
-                # Test dashboard format
-                ("Dashboard format", "🏠 **CONTROL DASHBOARD**"),
-                # Test status format
-                ("Status format", "📊 **SYSTEM STATUS REPORT**"),
-                # Test help format
-                ("Help format", "💡 **OTOGRAM HELP CENTER**")
-            ]
             
             # Check if the bot has methods that would generate these messages
             methods_to_check = [
@@ -389,7 +379,7 @@ class InterfaceComponentTester:
             
             for i, layout in enumerate(test_layouts):
                 try:
-                    keyboard = InlineKeyboardMarkup(layout)
+                    InlineKeyboardMarkup(layout)
                     print(f"   Layout {i+1}: ✅ Valid structure")
                 except Exception as e:
                     print(f"   Layout {i+1}: ❌ Invalid structure - {e}")

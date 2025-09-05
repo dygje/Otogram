@@ -203,9 +203,9 @@ class TelegramBotInteractionTester:
             from src.services.message_service import MessageService
             
             # Try to create service instances
-            message_service = MessageService()
-            group_service = GroupService()
-            blacklist_service = BlacklistService()
+            MessageService()
+            GroupService()
+            BlacklistService()
             
             print("   All database services can be instantiated")
             return True

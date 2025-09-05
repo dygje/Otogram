@@ -249,7 +249,7 @@ class ComprehensiveSystemTester:
             from src.services.message_service import MessageService
             
             # Try to instantiate message service
-            message_service = MessageService()
+            MessageService()
             self.log_result("Message Storage Service", True, "Message service can be instantiated")
             
         except Exception as e:
@@ -263,7 +263,7 @@ class ComprehensiveSystemTester:
             from src.services.group_service import GroupService
             
             # Try to instantiate group service
-            group_service = GroupService()
+            GroupService()
             self.log_result("Group Storage Service", True, "Group service can be instantiated")
             
         except Exception as e:
