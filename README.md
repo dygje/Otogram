@@ -233,7 +233,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 **Otogram** is a personal project built with modern Python practices and clean architecture principles, optimized for solo developers and personal use.
 
-**Status**: Personal Project Ready | **Version**: 2.0.4
+**Status**: Personal Project Ready | **Version**: 2.0.5
 
 ---
 
