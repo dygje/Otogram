@@ -218,7 +218,7 @@ class AuthHandlers:
                 if context.user_data and 'auth_client' in context.user_data:
                     await context.user_data['auth_client'].disconnect()
                     context.user_data.pop('auth_client', None)
-            except:
+            except Exception:
                 pass
 
     async def handle_verification_code(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
