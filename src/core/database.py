@@ -213,7 +213,10 @@ class Database:
                 health["collections"] = await self.list_collections()
 
                 # Get stats
-                health["stats"] = await self.get_database_stats()
+                try:
+                    health["stats"] = await self.get_database_stats()
+                except Exception as stats_error:
+                    health["stats"] = {"error": str(stats_error)}
 
         except Exception as e:
             health["error"] = str(e)
