@@ -734,7 +734,7 @@ class AuthHandlers:
                 if 'auth_client' in context.user_data:
                     try:
                         await context.user_data['auth_client'].disconnect()
-                    except:
+                    except Exception:
                         pass
                     context.user_data.pop('auth_client', None)
                 context.user_data.pop('auth_phone_code_hash', None)
