@@ -317,14 +317,14 @@ class ManagementBot:
         except Exception as e:
             logger.error(f"Error getting system stats: {e}")
             return (
-                f"📊 **System Overview**\n"
-                f"├ Status: ⚠️ Loading...\n"
-                f"├ Authentication: ⏳ Checking...\n"
-                f"└ Health Score: Initializing\n\n"
-                f"📝 **Content Status**\n"
-                f"├ Messages: ⏳ Loading...\n"
-                f"├ Groups: ⏳ Loading...\n"
-                f"└ Blacklist: ⏳ Loading...\n"
+                "📊 **System Overview**\n"
+                "├ Status: ⚠️ Loading...\n"
+                "├ Authentication: ⏳ Checking...\n"
+                "└ Health Score: Initializing\n\n"
+                "📝 **Content Status**\n"
+                "├ Messages: ⏳ Loading...\n"
+                "├ Groups: ⏳ Loading...\n"
+                "└ Blacklist: ⏳ Loading...\n"
             )
 
     async def handle_callback(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:

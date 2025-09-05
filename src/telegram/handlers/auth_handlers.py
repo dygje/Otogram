@@ -4,14 +4,13 @@ Enhanced with 2025 UI/UX best practices for seamless user experience
 """
 
 import asyncio
-from typing import Any
 
 from loguru import logger
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.ext import ContextTypes
 
 from src.core.config import settings
 from src.telegram.userbot import UserBot
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram.ext import ContextTypes
 
 
 class AuthHandlers:
@@ -142,7 +141,6 @@ class AuthHandlers:
         """Enhanced authentication with better error handling"""
         try:
             from pyrogram import Client
-            from pyrogram.errors import SessionPasswordNeeded, PhoneCodeInvalid, PhoneCodeExpired
             
             # Initialize client with enhanced error handling
             client = Client(
@@ -464,7 +462,7 @@ class AuthHandlers:
             keyboard = [
                 [
                     InlineKeyboardButton("🔄 Run Test Again", callback_data="auth_test"),
-                    InlineKeyboardButton("🚀 Start Auth" if not is_connected else "🏠 Dashboard", 
+                    InlineKeyboardButton("🚀 Start Auth" if not is_connected else "🏠 Dashboard",
                                        callback_data="auth_start" if not is_connected else "dashboard"),
                 ],
                 [
@@ -708,7 +706,7 @@ class AuthHandlers:
             keyboard = [
                 [
                     InlineKeyboardButton("🧪 Test Connection", callback_data="auth_test"),
-                    InlineKeyboardButton("🚀 Start Auth" if not is_connected else "🔄 Restart", 
+                    InlineKeyboardButton("🚀 Start Auth" if not is_connected else "🔄 Restart",
                                        callback_data="auth_start" if not is_connected else "auth_restart"),
                 ],
                 [

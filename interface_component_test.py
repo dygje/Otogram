@@ -14,7 +14,6 @@ from unittest.mock import AsyncMock, MagicMock, patch
 # Add app directory to Python path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from loguru import logger
 
 # Mock database connection for testing
 class MockDatabase:
@@ -96,7 +95,7 @@ class InterfaceComponentTester:
             
             # Check if class exists and has required methods
             required_methods = [
-                'start', 'stop', '_add_handlers', 'start_command', 
+                'start', 'stop', '_add_handlers', 'start_command',
                 'main_menu', 'status_command', 'help_command', 'handle_callback'
             ]
             
@@ -148,7 +147,7 @@ class InterfaceComponentTester:
             
             # Check required methods
             required_methods = [
-                'list_messages', 'add_message_command', 'handle_callback', 
+                'list_messages', 'add_message_command', 'handle_callback',
                 'handle_text_input', '_show_message_analytics'
             ]
             
@@ -240,8 +239,8 @@ class InterfaceComponentTester:
                  patch('src.services.blacklist_service.BlacklistService', MockService):
                 
                 from src.telegram.handlers.auth_handlers import AuthHandlers
-                from src.telegram.handlers.message_handlers import MessageHandlers
                 from src.telegram.handlers.group_handlers import GroupHandlers
+                from src.telegram.handlers.message_handlers import MessageHandlers
                 
                 # Test each handler initialization
                 handlers = [
@@ -275,8 +274,7 @@ class InterfaceComponentTester:
                  patch('src.services.blacklist_service.BlacklistService', MockService):
                 
                 from src.telegram.management_bot import ManagementBot
-                from telegram import Update, CallbackQuery, Message, Chat, User
-                from telegram.ext import ContextTypes
+                from telegram import CallbackQuery, Chat, Message, Update, User
                 
                 # Create mock objects
                 bot = ManagementBot()
@@ -407,8 +405,8 @@ class InterfaceComponentTester:
         """Test error handling patterns in handlers"""
         try:
             from src.telegram.handlers.auth_handlers import AuthHandlers
-            from src.telegram.handlers.message_handlers import MessageHandlers
             from src.telegram.handlers.group_handlers import GroupHandlers
+            from src.telegram.handlers.message_handlers import MessageHandlers
             
             # Check if handlers have error handling methods
             handlers = [
@@ -442,8 +440,8 @@ class InterfaceComponentTester:
                  patch('src.services.group_service.GroupService', MockService), \
                  patch('src.services.blacklist_service.BlacklistService', MockService):
                 
-                from src.telegram.handlers.message_handlers import MessageHandlers
                 from src.telegram.handlers.group_handlers import GroupHandlers
+                from src.telegram.handlers.message_handlers import MessageHandlers
                 
                 # Test if handlers have service dependencies
                 message_handler = MessageHandlers()
@@ -475,8 +473,8 @@ class InterfaceComponentTester:
     def test_constants_and_config(self):
         """Test constants and configuration access"""
         try:
-            from src.core.constants import MAX_RECENT_ITEMS_DISPLAY, PREVIEW_MESSAGE_LENGTH
             from src.core.config import settings
+            from src.core.constants import MAX_RECENT_ITEMS_DISPLAY, PREVIEW_MESSAGE_LENGTH
             
             # Check if constants are defined
             constants = [
@@ -511,16 +509,16 @@ class InterfaceComponentTester:
             from src.core.config import settings
             from src.core.constants import MAX_RECENT_ITEMS_DISPLAY
             from src.core.database import Database
-            
-            # Test service imports
-            from src.services.message_service import MessageService
-            from src.services.group_service import GroupService
-            from src.services.blacklist_service import BlacklistService
-            
+            from src.models.blacklist import BlacklistEntry
+            from src.models.group import Group
+
             # Test model imports
             from src.models.message import Message
-            from src.models.group import Group
-            from src.models.blacklist import BlacklistEntry
+            from src.services.blacklist_service import BlacklistService
+            from src.services.group_service import GroupService
+
+            # Test service imports
+            from src.services.message_service import MessageService
             
             print("   All core dependencies: ✅ Resolved")
             print("   All service dependencies: ✅ Resolved")
@@ -552,7 +550,7 @@ class InterfaceComponentTester:
                 # Check if all handlers are properly integrated
                 handlers = [
                     'auth_handlers',
-                    'message_handlers', 
+                    'message_handlers',
                     'group_handlers',
                     'config_handlers',
                     'blacklist_handlers'
@@ -613,7 +611,7 @@ class InterfaceComponentTester:
         self.run_test("Handler Integration", self.test_handler_integration)
         
         # Print detailed results
-        print(f"\n📊 DETAILED TEST RESULTS")
+        print("\n📊 DETAILED TEST RESULTS")
         print("=" * 40)
         
         passed_tests = [r for r in self.test_results if r["status"] == "PASSED"]
@@ -632,7 +630,7 @@ class InterfaceComponentTester:
                     print(f"     Error: {test['error']}")
         
         # Summary
-        print(f"\n📊 SUMMARY")
+        print("\n📊 SUMMARY")
         print("=" * 30)
         print(f"Tests run: {self.tests_run}")
         print(f"Tests passed: {self.tests_passed}")

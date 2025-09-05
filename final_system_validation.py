@@ -4,9 +4,8 @@ Final System Validation for Otogram Telegram Automation System
 Tests the actual running system without interfering with it
 """
 
-import sys
-import time
 import subprocess
+import sys
 from datetime import datetime
 from pathlib import Path
 
@@ -209,13 +208,13 @@ class FinalSystemValidator:
                 passed += 1
         
         # Print results
-        print(f"\n📊 VALIDATION RESULTS")
+        print("\n📊 VALIDATION RESULTS")
         print("=" * 30)
         print(f"Validations passed: {passed}/{total}")
         print(f"Success rate: {(passed/total)*100:.1f}%")
         
         # System status
-        print(f"\n🎯 SYSTEM STATUS:")
+        print("\n🎯 SYSTEM STATUS:")
         if passed == total:
             print("🟢 EXCELLENT: All validations passed - System fully operational")
         elif passed >= 4:
@@ -226,7 +225,7 @@ class FinalSystemValidator:
             print("🔴 POOR: Multiple validations failed - System has issues")
         
         # Detailed status
-        print(f"\n📋 DETAILED STATUS:")
+        print("\n📋 DETAILED STATUS:")
         status_items = [
             ("Bot API Connectivity", self.results['bot_connectivity']),
             ("System Process Running", self.results['system_running']),
@@ -242,7 +241,7 @@ class FinalSystemValidator:
         # Bot details if available
         if 'bot_info' in self.details:
             bot = self.details['bot_info']
-            print(f"\n🤖 BOT INFORMATION:")
+            print("\n🤖 BOT INFORMATION:")
             print(f"   Name: {bot['name']}")
             print(f"   Username: @{bot['username']}")
             print(f"   ID: {bot['id']}")
@@ -250,12 +249,12 @@ class FinalSystemValidator:
         
         # System details if available
         if 'system_pid' in self.details:
-            print(f"\n⚙️  SYSTEM INFORMATION:")
+            print("\n⚙️  SYSTEM INFORMATION:")
             print(f"   Process ID: {self.details['system_pid']}")
-            print(f"   Status: Running")
+            print("   Status: Running")
         
         # Final recommendations
-        print(f"\n💡 RECOMMENDATIONS:")
+        print("\n💡 RECOMMENDATIONS:")
         if passed >= 4:
             print("✅ System is ready for use!")
             print("📱 You can interact with @otogrambot on Telegram")

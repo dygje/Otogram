@@ -4,7 +4,6 @@ Telegram Bot Interaction Testing
 Tests actual bot commands and responses
 """
 
-import asyncio
 import sys
 import time
 from datetime import datetime
@@ -14,7 +13,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 import requests
-from loguru import logger
 
 # Telegram Bot API Configuration
 BOT_TOKEN = "8118820592:AAFX05zaXmmW3nWY2pM7s90Pbqn8f1ptc0M"
@@ -126,7 +124,7 @@ class TelegramBotInteractionTester:
             # Check if bot has required methods
             required_methods = [
                 'start_command',
-                'help_command', 
+                'help_command',
                 'main_menu',
                 'status_command'
             ]
@@ -200,9 +198,9 @@ class TelegramBotInteractionTester:
     def test_database_services(self):
         """Test if database services are accessible"""
         try:
-            from src.services.message_service import MessageService
-            from src.services.group_service import GroupService
             from src.services.blacklist_service import BlacklistService
+            from src.services.group_service import GroupService
+            from src.services.message_service import MessageService
             
             # Try to create service instances
             message_service = MessageService()
@@ -248,8 +246,6 @@ class TelegramBotInteractionTester:
         """Test overall system readiness"""
         try:
             # Check if main components can be imported
-            from src.telegram.bot_manager import BotManager
-            from src.core.database import database
             
             print("   Core system components can be imported")
             
@@ -300,7 +296,7 @@ class TelegramBotInteractionTester:
         self.run_test("System Readiness", self.test_system_readiness)
         
         # Print results
-        print(f"\n📊 INTERACTION TEST RESULTS")
+        print("\n📊 INTERACTION TEST RESULTS")
         print("=" * 35)
         print(f"Tests run: {self.tests_run}")
         print(f"Tests passed: {self.tests_passed}")

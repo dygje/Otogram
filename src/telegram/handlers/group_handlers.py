@@ -498,10 +498,10 @@ class GroupHandlers:
                     # Show first few successful groups
                     for i, group in enumerate(groups[:MAX_BULK_SUCCESS_DISPLAY], 1):
                         identifier = (
-                            group.group_title or 
-                            group.group_username or 
-                            group.group_id or 
-                            group.group_link or 
+                            group.group_title or
+                            group.group_username or
+                            group.group_id or
+                            group.group_link or
                             "Unknown"
                         )
                         # Truncate long identifiers
@@ -525,16 +525,16 @@ class GroupHandlers:
                     )
 
                 result_text += (
-                    f"🚀 **Network Status:**\n"
-                    f"├ All successful groups are **active** and ready\n"
-                    f"├ Broadcasting capability **enabled**\n"
-                    f"├ Network reach **expanded significantly**\n"
-                    f"└ Ready for message distribution\n\n"
-                    f"💡 **Next Steps:**\n"
-                    f"• Review your expanded group network\n"
-                    f"• Ensure you have active broadcast messages\n"
-                    f"• Test with a small broadcast first\n"
-                    f"• Monitor delivery and engagement rates"
+                    "🚀 **Network Status:**\n"
+                    "├ All successful groups are **active** and ready\n"
+                    "├ Broadcasting capability **enabled**\n"
+                    "├ Network reach **expanded significantly**\n"
+                    "└ Ready for message distribution\n\n"
+                    "💡 **Next Steps:**\n"
+                    "• Review your expanded group network\n"
+                    "• Ensure you have active broadcast messages\n"
+                    "• Test with a small broadcast first\n"
+                    "• Monitor delivery and engagement rates"
                 )
 
                 keyboard = [
@@ -916,18 +916,18 @@ class GroupHandlers:
                 f"├ Added: {group.created_at.strftime('%d/%m/%Y')}\n"
                 f"└ Network Role: Broadcasting target\n\n"
                 f"{usage_warning}\n\n" if usage_warning else ""
-                f"🚨 **This action cannot be undone!**\n\n"
-                f"**Consequences of Removal:**\n"
-                f"├ Group permanently removed from network\n"
-                f"├ All delivery statistics will be lost\n"
-                f"├ Cannot be recovered after deletion\n"
-                f"├ Broadcasting reach will be reduced\n"
-                f"└ Group must be re-added manually if needed\n\n"
-                f"**Impact on Broadcasting:**\n"
-                f"├ Reduces total network reach\n"
-                f"├ May affect campaign effectiveness\n"
-                f"└ Consider deactivating instead of deleting\n\n"
-                f"**Are you absolutely certain you want to proceed?**"
+                "🚨 **This action cannot be undone!**\n\n"
+                "**Consequences of Removal:**\n"
+                "├ Group permanently removed from network\n"
+                "├ All delivery statistics will be lost\n"
+                "├ Cannot be recovered after deletion\n"
+                "├ Broadcasting reach will be reduced\n"
+                "└ Group must be re-added manually if needed\n\n"
+                "**Impact on Broadcasting:**\n"
+                "├ Reduces total network reach\n"
+                "├ May affect campaign effectiveness\n"
+                "└ Consider deactivating instead of deleting\n\n"
+                "**Are you absolutely certain you want to proceed?**"
             )
 
             keyboard = [
@@ -1259,9 +1259,9 @@ class GroupHandlers:
                 
                 if top_group and top_group.message_count > 0:
                     top_group_name = (
-                        top_group.group_title or 
-                        top_group.group_username or 
-                        str(top_group.group_id) or 
+                        top_group.group_title or
+                        top_group.group_username or
+                        str(top_group.group_id) or
                         "Unknown"
                     )[:30]
                     

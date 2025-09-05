@@ -4,10 +4,7 @@ Live Telegram Bot Testing
 Tests actual bot commands by sending them via Telegram API
 """
 
-import asyncio
 import sys
-import time
-import json
 from datetime import datetime
 from pathlib import Path
 
@@ -82,7 +79,7 @@ class LiveBotTester:
         # Check if the command exists in the bot's command handlers
         expected_commands = [
             "/start", "/help", "/menu", "/status",
-            "/messages", "/addmessage", "/groups", 
+            "/messages", "/addmessage", "/groups",
             "/addgroup", "/addgroups", "/config", "/blacklist"
         ]
         
@@ -105,7 +102,7 @@ class LiveBotTester:
         """Test if bot recognizes expected commands"""
         commands_to_test = [
             "/start", "/help", "/menu", "/status",
-            "/messages", "/addmessage", "/groups", 
+            "/messages", "/addmessage", "/groups",
             "/addgroup", "/config", "/blacklist"
         ]
         
@@ -305,7 +302,7 @@ class LiveBotTester:
         self.run_test("Userbot Status", self.test_userbot_status)
         
         # Print results
-        print(f"\n📊 LIVE BOT TEST RESULTS")
+        print("\n📊 LIVE BOT TEST RESULTS")
         print("=" * 30)
         print(f"Tests run: {self.tests_run}")
         print(f"Tests passed: {self.tests_passed}")
@@ -313,7 +310,7 @@ class LiveBotTester:
         print(f"Success rate: {(self.tests_passed/self.tests_run)*100:.1f}%")
         
         # Provide recommendations
-        print(f"\n💡 RECOMMENDATIONS:")
+        print("\n💡 RECOMMENDATIONS:")
         if self.tests_passed >= 6:
             print("✅ System is healthy and ready for use")
             print("✅ Bot is responding and properly configured")

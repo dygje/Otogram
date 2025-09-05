@@ -4,10 +4,7 @@ Userbot Authentication Feature Testing
 Tests the new authentication functionality through bot interface
 """
 
-import asyncio
 import sys
-import time
-import json
 from datetime import datetime
 from pathlib import Path
 
@@ -15,7 +12,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 import requests
-from loguru import logger
 
 # Telegram Bot API Configuration
 BOT_TOKEN = "8118820592:AAFX05zaXmmW3nWY2pM7s90Pbqn8f1ptc0M"
@@ -121,7 +117,7 @@ class AuthFeatureTester:
             # Check if required methods exist
             required_methods = [
                 'show_auth_status',
-                'start_authentication', 
+                'start_authentication',
                 'handle_verification_code',
                 'clear_session',
                 'test_connection',
@@ -201,7 +197,7 @@ class AuthFeatureTester:
             # Test callback data that should be handled
             test_callbacks = [
                 'auth_status',
-                'auth_start', 
+                'auth_start',
                 'auth_clear',
                 'auth_test',
                 'auth_help',
@@ -380,7 +376,7 @@ class AuthFeatureTester:
             # Check if required settings are available
             required_settings = [
                 'TELEGRAM_API_ID',
-                'TELEGRAM_API_HASH', 
+                'TELEGRAM_API_HASH',
                 'TELEGRAM_PHONE_NUMBER'
             ]
             
@@ -427,7 +423,7 @@ class AuthFeatureTester:
         self.run_test("Configuration Access", self.test_configuration_access)
         
         # Print results
-        print(f"\n📊 AUTHENTICATION FEATURE TEST RESULTS")
+        print("\n📊 AUTHENTICATION FEATURE TEST RESULTS")
         print("=" * 45)
         print(f"Tests run: {self.tests_run}")
         print(f"Tests passed: {self.tests_passed}")

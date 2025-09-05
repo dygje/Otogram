@@ -8,7 +8,7 @@ import asyncio
 import sys
 from datetime import datetime
 from pathlib import Path
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock
 
 # Add app directory to Python path
 sys.path.insert(0, str(Path(__file__).parent))
@@ -143,7 +143,7 @@ class FunctionalInterfaceTest:
         """Test error message handling patterns"""
         try:
             from src.telegram.handlers.auth_handlers import AuthHandlers
-            from telegram import Update, Message, Chat, User
+            from telegram import Chat, Message, Update, User
             
             # Mock objects
             mock_user = User(id=123, first_name="Test", is_bot=False)
@@ -185,14 +185,14 @@ class FunctionalInterfaceTest:
                 # Main navigation
                 "dashboard",
                 "auth_status",
-                "messages_dashboard", 
+                "messages_dashboard",
                 "groups_dashboard",
                 "blacklist_dashboard",
                 "settings_dashboard",
                 
                 # Auth callbacks
                 "auth_restart",
-                "auth_test", 
+                "auth_test",
                 "auth_clear",
                 "auth_info",
                 
@@ -251,12 +251,12 @@ class FunctionalInterfaceTest:
                         print(f"   {category} emoji invalid: {emoji}")
                         return False
             
-            print(f"   Interface consistency: ✅ Emoji patterns validated")
+            print("   Interface consistency: ✅ Emoji patterns validated")
             
             # Test consistent markdown formatting
             markdown_patterns = [
                 "**BOLD TEXT**",
-                "*italic text*", 
+                "*italic text*",
                 "`code text`",
                 "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"  # Separator line
             ]
@@ -268,7 +268,7 @@ class FunctionalInterfaceTest:
                     print(f"   Invalid markdown pattern: {pattern}")
                     return False
             
-            print(f"   Interface consistency: ✅ Markdown patterns validated")
+            print("   Interface consistency: ✅ Markdown patterns validated")
             return True
             
         except Exception as e:
@@ -291,7 +291,7 @@ class FunctionalInterfaceTest:
         self.run_test("Interface Consistency", self.test_interface_consistency)
         
         # Print detailed results
-        print(f"\n📊 DETAILED TEST RESULTS")
+        print("\n📊 DETAILED TEST RESULTS")
         print("=" * 40)
         
         passed_tests = [r for r in self.test_results if r["status"] == "PASSED"]
@@ -310,7 +310,7 @@ class FunctionalInterfaceTest:
                     print(f"     Error: {test['error']}")
         
         # Summary
-        print(f"\n📊 SUMMARY")
+        print("\n📊 SUMMARY")
         print("=" * 30)
         print(f"Tests run: {self.tests_run}")
         print(f"Tests passed: {self.tests_passed}")

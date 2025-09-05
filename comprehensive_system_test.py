@@ -4,11 +4,8 @@ Comprehensive Otogram System Testing
 Tests all aspects of the Telegram Automation System as requested
 """
 
-import asyncio
-import sys
-import time
-import json
 import subprocess
+import sys
 from datetime import datetime
 from pathlib import Path
 
@@ -418,7 +415,7 @@ class ComprehensiveSystemTester:
         print("=" * 60)
         print(f"Test started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         print(f"Bot Token: {BOT_TOKEN[:20]}...")
-        print(f"System PID: 1783 (as mentioned in review request)")
+        print("System PID: 1783 (as mentioned in review request)")
         
         # 1. Test Telegram Bot Connectivity
         print(f"\n{'='*60}")
@@ -472,16 +469,16 @@ class ComprehensiveSystemTester:
         print(f"Tests failed: {self.tests_run - self.tests_passed}")
         print(f"Success rate: {(self.tests_passed/self.tests_run)*100:.1f}%")
         
-        print(f"\n✅ SUCCESSFUL FUNCTIONALITY:")
+        print("\n✅ SUCCESSFUL FUNCTIONALITY:")
         for success in self.successes:
             print(f"  {success}")
         
         if self.issues_found:
-            print(f"\n❌ ISSUES FOUND:")
+            print("\n❌ ISSUES FOUND:")
             for issue in self.issues_found:
                 print(f"  {issue}")
         
-        print(f"\n💡 SYSTEM STATUS SUMMARY:")
+        print("\n💡 SYSTEM STATUS SUMMARY:")
         if self.tests_passed >= (self.tests_run * 0.9):
             print("🟢 EXCELLENT: System is fully operational and ready for production use")
             print("✅ Bot responds to commands immediately")
@@ -500,7 +497,7 @@ class ComprehensiveSystemTester:
             print("🔴 POOR: System has significant issues")
             print("❌ Multiple critical problems detected")
         
-        print(f"\n🎯 NEXT STEPS:")
+        print("\n🎯 NEXT STEPS:")
         if self.tests_passed >= (self.tests_run * 0.8):
             print("1. ✅ System ready for use!")
             print("2. 📱 Start interacting with @otogrambot on Telegram")

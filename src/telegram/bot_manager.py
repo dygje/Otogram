@@ -2,7 +2,6 @@
 Bot Manager - Manages Telegram Bot and Userbot
 """
 
-from typing import Any
 
 from loguru import logger
 

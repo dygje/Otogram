@@ -669,13 +669,13 @@ class MessageHandlers:
                 f"📝 **Preview:**\n"
                 f"*{preview}*\n\n"
                 f"{usage_warning}\n\n" if usage_warning else ""
-                f"🚨 **This action cannot be undone!**\n\n"
-                f"**Consequences:**\n"
-                f"├ Message will be permanently removed\n"
-                f"├ All usage statistics will be lost\n"
-                f"├ Cannot be recovered after deletion\n"
-                f"└ Broadcasting system will be updated\n\n"
-                f"**Are you absolutely sure you want to proceed?**"
+                "🚨 **This action cannot be undone!**\n\n"
+                "**Consequences:**\n"
+                "├ Message will be permanently removed\n"
+                "├ All usage statistics will be lost\n"
+                "├ Cannot be recovered after deletion\n"
+                "└ Broadcasting system will be updated\n\n"
+                "**Are you absolutely sure you want to proceed?**"
             )
 
             keyboard = [

@@ -4,10 +4,8 @@ Live Authentication Testing
 Tests authentication features through actual bot interactions
 """
 
-import asyncio
 import sys
 import time
-import json
 from datetime import datetime
 from pathlib import Path
 
@@ -15,7 +13,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 import requests
-from loguru import logger
 
 # Telegram Bot API Configuration
 BOT_TOKEN = "8118820592:AAFX05zaXmmW3nWY2pM7s90Pbqn8f1ptc0M"
@@ -194,7 +191,7 @@ class LiveAuthTester:
             
             # Wait for response
             success, responses = self.wait_for_bot_response(
-                timeout=10, 
+                timeout=10,
                 expected_keywords=["USERBOT STATUS", "AUTHENTICATION", "AUTH"]
             )
             
@@ -407,7 +404,7 @@ class LiveAuthTester:
         self.run_test("Bot Connectivity", self.test_bot_connectivity)
         
         # Find admin chat for interactive tests
-        print(f"\n📱 Looking for admin chat...")
+        print("\n📱 Looking for admin chat...")
         self.find_admin_chat()
         
         # Authentication feature tests
@@ -420,7 +417,7 @@ class LiveAuthTester:
         self.run_test("/help Auth Information", self.test_help_command_auth_info)
         
         # Print results
-        print(f"\n📊 LIVE AUTHENTICATION TEST RESULTS")
+        print("\n📊 LIVE AUTHENTICATION TEST RESULTS")
         print("=" * 40)
         print(f"Tests run: {self.tests_run}")
         print(f"Tests passed: {self.tests_passed}")
@@ -428,7 +425,7 @@ class LiveAuthTester:
         print(f"Success rate: {(self.tests_passed/self.tests_run)*100:.1f}%")
         
         # Detailed status
-        print(f"\n📋 AUTHENTICATION FEATURE STATUS:")
+        print("\n📋 AUTHENTICATION FEATURE STATUS:")
         
         if self.admin_chat_id:
             print("✅ Bot is accessible for testing")
@@ -446,7 +443,7 @@ class LiveAuthTester:
         else:
             print("❌ Authentication features need attention")
         
-        print(f"\n💡 TESTING RECOMMENDATIONS:")
+        print("\n💡 TESTING RECOMMENDATIONS:")
         if not self.admin_chat_id:
             print("• Send a message to @otogrambot to enable interactive testing")
         print("• Test authentication flow manually by sending /auth to the bot")

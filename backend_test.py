@@ -4,9 +4,7 @@ Telegram Bot System Testing
 Tests the Otogram Telegram Automation System
 """
 
-import asyncio
 import sys
-import time
 from datetime import datetime
 from pathlib import Path
 
@@ -14,7 +12,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 import requests
-from loguru import logger
 
 # Telegram Bot API Configuration
 BOT_TOKEN = "8118820592:AAFX05zaXmmW3nWY2pM7s90Pbqn8f1ptc0M"
@@ -239,7 +236,7 @@ class TelegramBotTester:
         self.run_test("System Logs Check", self.test_system_logs)
         
         # Print results
-        print(f"\n📊 TEST RESULTS")
+        print("\n📊 TEST RESULTS")
         print("=" * 30)
         print(f"Tests run: {self.tests_run}")
         print(f"Tests passed: {self.tests_passed}")

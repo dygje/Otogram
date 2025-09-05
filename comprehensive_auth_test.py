@@ -4,11 +4,8 @@ Comprehensive Authentication Testing
 Tests all authentication features and integration points
 """
 
-import asyncio
-import sys
-import time
-import json
 import inspect
+import sys
 from datetime import datetime
 from pathlib import Path
 
@@ -16,7 +13,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 import requests
-from loguru import logger
 
 # Telegram Bot API Configuration
 BOT_TOKEN = "8118820592:AAFX05zaXmmW3nWY2pM7s90Pbqn8f1ptc0M"
@@ -306,7 +302,7 @@ class ComprehensiveAuthTester:
                 print("   ❌ handle_callback method missing")
                 return False
             
-            print(f"   ✅ handle_callback method exists")
+            print("   ✅ handle_callback method exists")
             print(f"   Expected callbacks: {len(expected_callbacks)}")
             
             # Check if method is async (required for Telegram handlers)
@@ -455,7 +451,7 @@ class ComprehensiveAuthTester:
         self.run_test("Bot API Integration", self.test_bot_api_integration)
         
         # Print comprehensive results
-        print(f"\n📊 COMPREHENSIVE TEST RESULTS")
+        print("\n📊 COMPREHENSIVE TEST RESULTS")
         print("=" * 40)
         print(f"Tests run: {self.tests_run}")
         print(f"Tests passed: {self.tests_passed}")
@@ -475,7 +471,7 @@ class ComprehensiveAuthTester:
         # Overall assessment
         success_rate = (self.tests_passed / self.tests_run) * 100
         
-        print(f"\n🎯 AUTHENTICATION FEATURE ASSESSMENT:")
+        print("\n🎯 AUTHENTICATION FEATURE ASSESSMENT:")
         
         if success_rate >= 90:
             print("🟢 EXCELLENT - Authentication feature is fully implemented and ready")
@@ -490,7 +486,7 @@ class ComprehensiveAuthTester:
             print("🔴 POOR - Authentication feature needs major fixes")
             status = "BROKEN"
         
-        print(f"\n📋 FEATURE READINESS:")
+        print("\n📋 FEATURE READINESS:")
         print(f"   Status: {status}")
         print(f"   Implementation: {success_rate:.1f}% complete")
         
@@ -501,7 +497,7 @@ class ComprehensiveAuthTester:
         else:
             print("   ❌ Needs fixes before user testing")
         
-        print(f"\n💡 NEXT STEPS:")
+        print("\n💡 NEXT STEPS:")
         if success_rate >= 90:
             print("   • Test authentication flow manually with /auth command")
             print("   • Verify all menu buttons work correctly")
