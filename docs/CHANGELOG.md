@@ -2,7 +2,35 @@
 
 > **Personal project version history - Key changes for solo development**
 
-## [2.0.4] - 2025-09-05 (Latest)
+## [2.0.5] - 2025-01-08 (Latest)
+
+### 🧹 Code Quality & Maintenance Update
+
+#### ✨ Code Quality Improvements
+- **Ruff Integration**: Complete code formatting and linting with ruff
+- **MyPy Type Safety**: Full type checking implementation with proper type hints
+- **Import Cleanup**: Removed all unused imports and dead code
+- **Code Formatting**: Consistent code style across entire codebase
+
+#### 🔧 Technical Enhancements
+- **Error Handling**: Improved bare except statements with proper exception handling
+- **Type Safety**: Fixed all type checking issues for better code reliability
+- **Test Coverage**: Updated test files to match current code structure
+- **Dependencies**: Cleaned up and verified all project dependencies
+
+#### 📚 Documentation Sync
+- **Updated README**: Synchronized with latest features and code structure
+- **Code Comments**: Improved inline documentation and comments
+- **Type Annotations**: Added comprehensive type hints throughout the codebase
+
+#### 🔧 Development Experience
+- **Linting Rules**: Configured personal-friendly ruff rules for solo development
+- **Type Checking**: Relaxed mypy settings appropriate for personal projects
+- **Testing**: Maintained comprehensive test suite with updated imports
+
+---
+
+## [2.0.4] - 2025-09-05
 
 ### 🚀 Major Feature: In-Bot Userbot Authentication
 
